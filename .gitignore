@@ -1,0 +1,48 @@
+# --- Secrets & credentials (NEVER commit) -----------------------------------
+# This project's whole premise is that no API key sits in the judged path.
+# Block every credential shape we might touch during the build, especially the
+# Google ADC service-account JSON used for Gemini/ADK auth.
+.env
+.env.*
+*.key
+*.pem
+secrets.*
+credentials.json
+service-account*.json
+application_default_credentials.json
+*.credentials
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Run / build output (created during the build, never source) ------------
+# The spec confines all generated artifacts to runs/<id>/; keep them out of git.
+runs/
+*.log
+dist/
+build/
+
+# --- Agent tooling state (auto-generated in cwd, never project content) -----
+# oh-my-claudecode writes session/HUD/orchestration state into .omc/ wherever
+# it runs; keep it out of the repo.
+.omc/
+.claude/
+
+# --- Personal session artifacts (mirrors the pre-commit hook policy) --------
+# Dated handover notes are session-continuity scaffolding, not deliverables;
+# the canonical copies live in ~/notes/. Keep them local-only.
+handover-20*.md
+
+# --- OS / editor ------------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
