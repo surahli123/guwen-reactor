@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guwen Reactor — Live Decision Board</title>
+<style>
+  :root{
+    --ink:#23201c; --ink-soft:#5b554c; --paper:#f6f2ea; --card:#fffdf8;
+    --line:#e2dccf; --seal:#a3331f;
+    --done:#3f7d52; --done-bg:#e8f1e9; --active:#b8860b; --active-bg:#fbf3dc;
+    --rec:#1f6f6b; --means:#3a4a73; --means-bg:#eef1f8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:1000px;margin:0 auto;padding:28px 24px 80px;}
+  code{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.85em;}
+  .zh{font-family:"Songti SC","STSong",serif;}
+  h1{font-size:28px;margin:0 0 2px;letter-spacing:-.3px;}
+  h2{font-size:20px;margin:32px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--line);}
+  .sub{color:var(--ink-soft);font-size:14.5px;margin:0;}
+  .ribbon{background:#eef6ee;border:1px solid #cfe3cf;border-left:5px solid var(--done);
+    border-radius:9px;padding:13px 16px;margin:16px 0 8px;font-size:14.5px;} .ribbon b{color:var(--done);}
+  .stamp{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+  .pipe{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 4px;}
+  .step{flex:1 1 110px;min-width:100px;background:var(--card);border:1px solid var(--line);
+    border-radius:8px;padding:9px 11px;position:relative;font-size:12.5px;}
+  .step.done{border-color:#cfe0d2;background:#f3f8f3;} .step.gate{border-color:var(--seal);box-shadow:0 0 0 2px #f4dcd6;}
+  .step .t{font-weight:650;} .step .mark{position:absolute;top:7px;right:9px;}
+  .dec{border-radius:10px;padding:10px 16px;margin:9px 0;border-left:5px solid var(--done);background:#f8fbf8;border:1px solid var(--line);}
+  .dhead{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  .badge{font-size:11.5px;font-weight:700;letter-spacing:.4px;border-radius:5px;padding:2px 8px;background:var(--done-bg);color:var(--done);}
+  .dhead h3{margin:0;font-size:15.5px;}
+  .donesum{font-size:13px;margin:5px 0 0;color:var(--ink-soft);} .donesum b{color:var(--done);}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0;}
+  .panel.gate{border:2px solid var(--seal);box-shadow:0 4px 16px rgba(163,51,31,.10);}
+  .vrow{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 0;}
+  .vchip{background:var(--done-bg);color:var(--done);border:1px solid #cfe3cf;border-radius:20px;
+    padding:3px 12px;font-size:13px;font-weight:650;}
+  .changed{font-size:14px;margin:10px 0 0;} .changed li{margin:4px 0;}
+  .changed b{color:var(--rec);}
+  .gateq{font-size:16px;font-weight:650;margin:0 0 6px;color:var(--seal);}
+  .gateopts{font-size:14.5px;margin:8px 0 0;} .gateopts li{margin:6px 0;}
+  .gateopts b{color:var(--ink);}
+  .files{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;}
+  .fcard{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:11px 14px;font-size:13px;}
+  .fcard b{font-size:14px;} .fcard .p{color:var(--seal);font-size:12px;}
+  .footer{margin-top:32px;padding-top:14px;border-top:2px solid var(--line);color:var(--ink-soft);
+    font-size:13px;display:flex;flex-wrap:wrap;gap:18px;} .footer b{color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="sub">Kaggle Vibe-Coding Capstone · Agents for Good · planning (no code yet)</p>
+  <h1>Guwen Reactor <span class="zh" style="color:#a3331f;font-size:20px">古文反應堆</span> — Decision Board</h1>
+
+  <div class="ribbon">
+    <b>✓ Plan revised &amp; verified.</b> All 4 decisions + every review fix folded in; 3 independent critics
+    passed with zero gaps. The plan is <b>build-ready and waiting for your approval</b> before “go.”
+    <div class="stamp">branch <code>chore/init-planning-archive</code> · canonical plan now 1094 lines (v1 archived)</div>
+  </div>
+
+  <div class="pipe">
+    <div class="step done"><span class="mark">✓</span><div class="t">Repo</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">Plan v1</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">Eng review</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">Codex review</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">Reconcile</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">Grill D1–D4</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">Revise+verify</div></div>
+    <div class="step gate"><span class="mark">▶</span><div class="t">Your approval</div></div>
+  </div>
+
+  <h2>Decisions — all locked ✓</h2>
+  <div class="dec"><div class="dhead"><span class="badge">✓ D1</span><h3>Gate works by auditing a structured form per claim (not judging prose).</h3></div></div>
+  <div class="dec"><div class="dhead"><span class="badge">✓ D2</span><h3>Gold facts anchored to their Chinese lines + 1 independent check. Trace: claim → fact → 古文.</h3></div></div>
+  <div class="dec"><div class="dhead"><span class="badge">✓ D3</span><h3>Hard-gate the plot; interpretation advisory-only. Keep all 5 concepts.</h3></div></div>
+  <div class="dec"><div class="dhead"><span class="badge">✓ D4</span><h3>Phase 4 split 4a+4b across D3.5–D5; Day 10 = true buffer.</h3></div></div>
+
+  <h2>Plan revised &amp; verified</h2>
+  <div class="panel">
+    <ul class="changed">
+      <li>Eval core rebuilt: <b>structured-claim generation + deterministic structural audit</b> (all keyword-matching removed).</li>
+      <li>Gold now <b>Chinese-line-anchored</b>; <code>evaluate_run</code> defined <b>before</b> the drift suite (bug fixed).</li>
+      <li><b>Injection + invalid-fact-id now block export</b>; <code>UNSUPPORTED_DETAIL</code> can be critical; coverage uses validated fact-ids.</li>
+      <li>New <b>specificity test</b> (proves it doesn’t over-block); generated text sanitized before judging; baseline band pre-registered.</li>
+      <li>Interpretive layer = <b>P2 advisory</b>, first on the cut-list; schedule re-baselined.</li>
+    </ul>
+    <div class="vrow">
+      <span class="vchip">✓ Decisions D1–D4 implemented</span>
+      <span class="vchip">✓ All 13 review fixes landed</span>
+      <span class="vchip">✓ Internally consistent</span>
+    </div>
+    <p class="stamp">Verified by 3 independent critic agents, each with line-cited evidence + my own grep check.</p>
+  </div>
+
+  <h2 class="gateq">▶ Your gate</h2>
+  <div class="panel gate">
+    <p class="gateq">The revised plan is ready. What next?</p>
+    <ul class="gateopts">
+      <li><b>Approve</b> the revised plan → then your explicit <b>“go”</b> starts the build at <b>D0.5</b> (env hello-world).</li>
+      <li><b>Or wrap up</b> this (long) session — I save a handover so a fresh session resumes exactly here. Recommended given how deep we are.</li>
+      <li><b>Or request changes</b> to the revised plan first.</li>
+    </ul>
+  </div>
+
+  <h2>Files (on disk)</h2>
+  <div class="files">
+    <div class="fcard"><b>Revised plan</b> · <span class="p">docs/plan/implementation-plan.md</span><br>1094 lines · build-ready</div>
+    <div class="fcard"><b>Decisions spine</b> · <span class="p">docs/plan/decisions-locked.md</span><br>D1–D4 + contracts</div>
+    <div class="fcard"><b>Reviews</b> · <span class="p">docs/plan/reviews/</span><br>eng + codex + reconciliation</div>
+    <div class="fcard"><b>v1 archive</b> · <span class="p">docs/plan/archive/</span><br>pre-revision plan (journey)</div>
+  </div>
+
+  <div class="footer">
+    <span><b>Deadline:</b> 2026-07-06</span>
+    <span><b>Status:</b> plan build-ready, awaiting approval</span>
+    <span><b>Next:</b> approve → “go” → D0.5</span>
+  </div>
+
+</div>
+</body>
+</html>
