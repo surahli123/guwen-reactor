@@ -1,0 +1,12 @@
+[project]
+name = "guwen-reactor"
+version = "0.1.0"
+description = "Source-grounded Classical Chinese to English educational adaptation agent with a deterministic faithfulness gate"
+requires-python = ">=3.11"
+# Runtime deps are tracked in requirements.txt (pinned). This file carries
+# project metadata + the test configuration only.
+
+[tool.pytest.ini_options]
+testpaths = ["evals"]
+python_files = ["test_*.py"]
+addopts = "-q"

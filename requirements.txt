@@ -1,0 +1,9 @@
+# Pinned dependencies for Guwen Reactor — EXACT versions, frozen after the
+# first install (Task 0.2). Resolved on Python 3.14.4; for maximum wheel
+# compatibility, reproducers/judges should use Python 3.11-3.13.
+pydantic==2.13.4
+pyyaml==6.0.3
+pytest==8.4.2
+jinja2==3.1.6
+typer==0.26.7
+rich==13.9.4
