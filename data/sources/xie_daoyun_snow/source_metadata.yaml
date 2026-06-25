@@ -1,0 +1,7 @@
+# provenance: 世說新語·言語第二 · 78字 · ctext.org 核實，文本穩定無重大異文
+source_id: shishuo_xinyu_yan_yu_yong_xue
+allowed: true
+source_mode: public_domain_original
+english_translation_ingested: false
+allowed_operations: [explain_in_own_english, create_teaching_pack, create_text_storyboard, export_educational_adaptation]
+required_export_label: ["AI-assisted educational adaptation based on public-domain original Chinese text."]
