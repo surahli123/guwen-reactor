@@ -1,0 +1,7 @@
+# Phase-2 NEGATIVE fixture (Task 1.2 step 3): policy_gate must BLOCK this (source_mode != public_domain_original).
+source_id: fixture_unclear_license
+allowed: false
+source_mode: unclear_license
+english_translation_ingested: false
+allowed_operations: []
+required_export_label: []

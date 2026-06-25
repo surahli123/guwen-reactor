@@ -1,0 +1,7 @@
+# provenance: 世說新語·雅量第六 · 52字 · ctext.org 核實，傳世文本高度穩定（「折枝」訓壓枝為通行解）
+source_id: shishuo_xinyu_ya_liang_dao_pang_ku_li
+allowed: true
+source_mode: public_domain_original
+english_translation_ingested: false
+allowed_operations: [explain_in_own_english, create_teaching_pack, create_text_storyboard, export_educational_adaptation]
+required_export_label: ["AI-assisted educational adaptation based on public-domain original Chinese text."]
