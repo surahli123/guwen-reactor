@@ -58,9 +58,8 @@
   <h1>Guwen Reactor <span class="zh" style="color:#a3331f;font-size:20px">古文反應堆</span> — Decision Board</h1>
 
   <div class="ribbon">
-    <b>✓ Phase 0 complete</b> — env verified (pytest green · Py 3.14.4) + specs seeded (canonical gate in
-    <code>specs/eval_plan.yaml</code>). <b>Paused for your Phase-1 scene picks.</b> Build log: <code>docs/build_log.md</code>.
-    <div class="stamp">branch <code>feat/phase-0-scaffold</code> · 4 commits (planning ×2 + Phase-0 ×2)</div>
+    <b>✓ Phase 0 · ✓ plan · ✓ 5/5 场景决策全锁</b> — <b>Phase 1 building</b>：Task 1.1 schemas GREEN（pytest 5 passed）。
+    <div class="stamp">branch <code>feat/phase-0-scaffold</code> · 场景研究 = workflow ×10 agents（原文取证 + 对抗可标注性审查）· 新 doc：cross-validation-protocol · annotation-guardrails</div>
   </div>
 
   <div class="pipe">
@@ -71,7 +70,7 @@
     <div class="step done"><span class="mark">✓</span><div class="t">Reconcile</div></div>
     <div class="step done"><span class="mark">✓</span><div class="t">Grill D1–D4</div></div>
     <div class="step done"><span class="mark">✓</span><div class="t">Revise+verify</div></div>
-    <div class="step gate"><span class="mark">▶</span><div class="t">Your approval</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">Approved</div></div>
   </div>
 
   <h2>Decisions — all locked ✓</h2>
@@ -97,15 +96,55 @@
     <p class="stamp">Verified by 3 independent critic agents, each with line-cited evidence + my own grep check.</p>
   </div>
 
-  <h2 class="gateq">▶ Your gate</h2>
-  <div class="panel gate">
-    <p class="gateq">The revised plan is ready. What next?</p>
-    <ul class="gateopts">
-      <li><b>Approve</b> the revised plan → then your explicit <b>“go”</b> starts the build at <b>D0.5</b> (env hello-world).</li>
-      <li><b>Or wrap up</b> this (long) session — I save a handover so a fresh session resumes exactly here. Recommended given how deep we are.</li>
-      <li><b>Or request changes</b> to the revised plan first.</li>
+  <h2 class="gateq">▶ Phase 1 — 选 3 个场景 <span class="sub" style="font-weight:400">（你来定，一次一个）</span></h2>
+  <p class="sub">研究已取证：真实原文 + 可标注性<b>对抗审查</b>（默认怀疑，专找会污染 gold 的坑）。下面 5 个决策按序拍板，① 进行中、②–⑤ 已备好默认值排队。</p>
+
+  <div class="pipe">
+    <div class="step done"><span class="mark">✓</span><div class="t">① video 场景</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">② 微场景 A（实测核心）</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">③ 微场景 B</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">④ gold 独立核对</div></div>
+    <div class="step done"><span class="mark">✓</span><div class="t">⑤ 标注护栏</div></div>
+  </div>
+
+  <div class="dec"><div class="dhead"><span class="badge">✓ ①</span><h3>video 场景 = 三顾茅庐《三国演义·第38回》</h3></div><p class="donesum">demo 门面（recog 满分 · 公有领域 · 动作可演）；<b>不进 hard-gate</b>，模糊量词无碍。owner 确认 2026-06-23。</p></div>
+
+  <div class="dec"><div class="dhead"><span class="badge">✓ ②</span><h3>微场景 A（实测核心）= 咏雪 / 咏絮（谢道韫）《世说新语·言语第二》</h3></div><p class="donesum">6 候选唯一三高（L5 · clean · R5），当<b>标注规范样板</b>。护栏：本名进推论层 · 禁「柳絮优于撒盐」当事实。owner 确认 2026-06-23。</p></div>
+
+  <div class="dec"><div class="dhead"><span class="badge">✓ ③</span><h3>微场景 B = 道旁苦李（王戎识李）《世说新语·雅量第六》</h3></div><p class="donesum">R5 · 52字；坑＝「此必苦李」是<b>推论冒充事实</b>，正是 D1 要抓的头号漂移 → 当 gate 的现场反例。owner 确认 2026-06-23。</p></div>
+
+  <div class="dec" style="border-left-color:var(--rec);background:#eef6f5"><div class="dhead"><span class="badge" style="background:var(--means-bg);color:var(--means)">3 实测场景齐</span><h3>管宁割席（核心）· 咏雪 · 道旁苦李　｜　video = 三顾茅庐</h3></div><p class="donesum">达到 eval_plan 的「≥3 场景 / 40–60 claims」底线。</p></div>
+
+  <div class="dec"><div class="dhead"><span class="badge">✓ ④</span><h3>管宁割席 gold 核对 = 路径 2+3 · 单标注起步 · 第二读者交叉验证随后补</h3></div><p class="donesum">在线锁原文(已三方核对) + 一位独立读者核字面；<b>no-IAA 暂揭露</b>，B 版回填、不阻塞 build。协议 <code>gold-cross-validation-protocol.md</code>。owner 确认 2026-06-23。</p></div>
+
+  <div class="dec"><div class="dhead"><span class="badge">✓ ⑤</span><h3>标注护栏固化 → <code>docs/plan/annotation-guardrails.md</code>（A 通用6条 + B 每场景坑 + C 双向证明）</h3></div><p class="donesum">护栏定义「什么是污染」；specificity test 证不过度拦 · drift suite 证拦得住。owner 确认 2026-06-23。</p></div>
+
+  <h2 class="gateq" style="color:var(--rec)">▶ Phase 1 — building（schemas + source + chinese-anchored gold）</h2>
+  <div class="panel" style="border-color:#cfe0d2">
+    <div class="pipe">
+      <div class="step done"><span class="mark">✓</span><div class="t">1.1 schemas</div></div>
+      <div class="step done"><span class="mark">✓</span><div class="t">1.2 lock 源+metadata</div></div>
+      <div class="step gate"><span class="mark">▶</span><div class="t">1.3 canon_gold.yaml</div></div>
+    </div>
+    <ul class="changed">
+      <li><b>✓ Task 1.1（GREEN · pytest 5 passed）：</b><code>guwen_core/schema_validator.py</code> + <code>evals/test_schema.py</code>。TDD RED→GREEN；StructuredClaim(Contract A) + chunk-anchored AtomicFact(Contract D) + 9 ClaimLabel/AssertionType/Hedging 枚举。<b>下游每个任务 verbatim 复用</b>。</li>
+      <li><b>✓ Task 1.2（ALL PASS）：</b>锁 3 个被测场景 source.zh.txt + metadata（管宁/咏雪/道旁苦李，原文已验）+ <code>_fixture_unclear_license</code> 负向 fixture。版权 posture <b>english_translation_ingested:false</b> 已打印核验。三顾茅庐(video) 不入 eval core。</li>
+      <li><b>▶ Task 1.3（next · 需你关注）：</b>写 chunk-anchored <code>canon_gold.yaml</code>（每条事实锚到中文 chunk）按护栏；<b>AI 出草稿 = Reader-A，人工独立核对随后</b>（per cross-validation 协议）。</li>
     </ul>
   </div>
+
+  <div class="panel">
+    <p class="donesum" style="margin:0 0 8px"><b>候选全表（备查 · 已选 ②咏雪 ③道旁苦李）</b>　L=可标注 · R=辨识度（1–5）· <span style="color:var(--done)">✓clean</span>/<span style="color:var(--active)">⚠caution</span>=对抗审查判定。其余 4 则留作 V2 扩场景备选。</p>
+    <div class="files">
+      <div class="fcard"><b>咏雪 / 咏絮</b>（谢道韫·言语·78字）<span style="color:var(--seal)"> 【②预设·唯一三高】</span><br><span class="p" style="color:var(--done)">L5 · R5 · ✓clean</span><br><span class="zh" style="font-size:12px;color:var(--ink-soft)">谢太傅寒雪日内集…兄女曰「未若柳絮因风起」。公大笑乐。</span><br>唯一坑：禁把「柳絮优于撒盐」当事实（原文只『公大笑乐』）；本名进推论层。</div>
+      <div class="fcard"><b>道旁苦李</b>（王戎识李·雅量·52字）<br><span class="p" style="color:var(--active)">L4 · R5 · ⚠caution</span><br><span class="zh" style="font-size:12px;color:var(--ink-soft)">王戎七岁…「此必苦李」。取之，信然。</span><br>坑：「此必苦李」是王戎的<b>推论</b>，不可当"李确实苦"的事实——6 则中推论坑最集中。</div>
+      <div class="fcard"><b>陈太丘与友期</b>（陈元方·方正·104字）<br><span class="p" style="color:var(--active)">L4 · R5 · ⚠caution</span><br><span class="zh" style="font-size:12px;color:var(--ink-soft)">陈太丘与友期行…元方入门不顾。</span><br>坑：省略主语（"乃至"是谁）易当字面；「慚」「入门不顾」易被写成评价。</div>
+      <div class="fcard"><b>王蓝田食鸡子</b>（忿狷·62字）<br><span class="p">L5 · R3 · ⚠caution</span><br><span class="zh" style="font-size:12px;color:var(--ink-soft)">王蓝田性急。尝食鸡子…啮破即吐之。</span><br>近乎纯动作序列，<b>最不藏推论坑</b>；但"动作+未遂"易切成两条原子→重叠计分。辨识度低。</div>
+      <div class="fcard"><b>华歆王朗乘船避难</b>（德行·86字）<br><span class="p" style="color:var(--active)">L4 · R4 · ⚠caution</span><br><span class="zh" style="font-size:12px;color:var(--ink-soft)">华歆、王朗俱乘船避难…世以此定华、王之优劣。</span><br>与<b>管宁割席同主角（华歆）</b>互文；但"世定优劣"是把诠释写成事实的最强诱惑 + 有异文。</div>
+      <div class="fcard"><b>荀巨伯探友</b>（德行·110字）<br><span class="p" style="color:var(--done)">L4 · R4 · ✓clean</span><br><span class="zh" style="font-size:12px;color:var(--ink-soft)">荀巨伯远看友人疾…遂班军而还，一郡并获全。</span><br>坑：「贼感义而退兵」是<b>因果归因</b>（诠释），原文只给"贼说那句+退兵"两事实。最长。</div>
+    </div>
+  </div>
+
 
   <h2>Files (on disk)</h2>
   <div class="files">
@@ -117,8 +156,8 @@
 
   <div class="footer">
     <span><b>Deadline:</b> 2026-07-06</span>
-    <span><b>Status:</b> plan build-ready, awaiting approval</span>
-    <span><b>Next:</b> approve → “go” → D0.5</span>
+    <span><b>Status:</b> 5/5 决策锁 · Phase 1 building（Task 1.1 GREEN）</span>
+    <span><b>Next:</b> 1.2 lock 源+metadata → 1.3 chinese-anchored gold → Phase 2</span>
   </div>
 
 </div>
