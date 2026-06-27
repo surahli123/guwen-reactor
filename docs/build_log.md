@@ -36,3 +36,18 @@ gcloud auth application-default login
 Iconic video scene (三顧茅廬 default) · independent gold checker (person vs scholarly summary) · the 2 extra eval micro-scenes.
 
 ### Next: Task 0.3 — seed `specs/` (product_spec, eval_plan w/ the single canonical gate, threat_model, behavior.feature, demo_script, writeup_outline) + `AGENTS.md` + `docs/capstone_writeup.md`.
+
+## Phase 2 — Security hardening: venv CVE cleanup (2026-06-27)
+
+**CVEs before:** 1 (pytest 8.4.2 / CVE-2025-71176)
+**CVEs after:** 0
+
+**Action taken:** Upgraded `pytest==8.4.2` → `pytest==9.0.3` (minimum patched version per pip-audit fix recommendation). No removal needed — all other packages were clean.
+
+**Import-path audit:** Grep of `guwen_core/`, `app/`, `evals/` confirmed pytest is a test-runner direct dep only (not imported in production code). No urllib3/requests/starlette/tornado present in project venv pre-audit; those appeared transiently as pip-audit's own transitive deps and were removed after audit completed.
+
+**Packages removed:** None from project venv (pip-audit's 21 transitive additions were uninstalled post-audit, restoring clean 19-package state).
+
+**requirements.txt change:** `pytest==8.4.2` → `pytest==9.0.3`.
+
+**Verification:** `pytest evals/ -q` → 42 passed in 0.38s (Python 3.14.4, pytest-9.0.3). Rollback snapshot: `/private/tmp/claude-501/-Users-surahli/7dd5375f-ddf7-468e-a98e-eb386946d188/scratchpad/venv-freeze-before.txt`.
