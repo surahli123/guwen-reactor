@@ -13,6 +13,7 @@ No gate constants are hardcoded here; everything is loaded from specs/eval_plan.
 from __future__ import annotations
 
 import hashlib
+import os
 import re
 from pathlib import Path
 
@@ -36,17 +37,36 @@ def validate_run_id(run_id: str) -> bool:
 def safe_path(run_id: str, name: str) -> Path:
     """
     Return an absolute path under runs/<run_id>/<name>.
-    Raises ValueError if run_id is invalid or name tries to escape the allowed root.
+
+    Raises ValueError if:
+    - run_id is invalid (traversal / unsafe chars)
+    - name is empty, ".", "..", or contains any path separator
+      NOTE: dots inside a component are allowed (e.g. "v1..2.yaml")
+    - runs/<run_id> exists and is a symlink (would escape confinement)
+    - the realpath of the result escapes the real runs/ root
     """
     validate_run_id(run_id)
-    # Reject slash, backslash, or .. in the artifact name component.
-    if "/" in name or "\\" in name or ".." in name:
+    # Reject empty name and exact "." / ".." components; also reject any separator
+    # characters.  Dots *inside* a name component (e.g. "v1..2.yaml") are fine.
+    if name in {"", ".", ".."} or os.sep in name or "/" in name or "\\" in name:
         raise ValueError(f"illegal artifact name: {name!r}")
-    p = (_REPO_ROOT / "runs" / run_id / name).resolve()
-    root = (_REPO_ROOT / "runs" / run_id).resolve()
-    if not str(p).startswith(str(root)):
-        raise ValueError(f"path escapes allowed root: {p}")
-    return p
+
+    # Anchor to the REAL runs root (symlinks in _REPO_ROOT itself resolved here).
+    runs_root = (_REPO_ROOT / "runs").resolve()
+    run_dir = runs_root / run_id
+
+    # Reject if the run directory is itself a symlink — resolving through it would
+    # let writes land outside the repo (the attack vector described in FIX 3).
+    if run_dir.is_symlink():
+        raise ValueError(f"run directory is a symlink: {run_dir}")
+
+    # Final confinement check: resolve every remaining symlink via os.path.realpath
+    # and confirm the result is still under runs_root.
+    p = run_dir / name
+    p_real = Path(os.path.realpath(p))
+    if not p_real.is_relative_to(runs_root):
+        raise ValueError(f"path escapes allowed root: {p_real}")
+    return p_real
 
 
 def source_guard(meta: dict) -> tuple[bool, list[str]]:
