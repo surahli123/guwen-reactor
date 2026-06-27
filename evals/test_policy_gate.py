@@ -142,3 +142,31 @@ def test_integration_clean_report_against_real_gate():
     """Integration: export_requires_met with real gate from specs/eval_plan.yaml."""
     ok, missing = export_requires_met(_clean_report())
     assert ok is True and missing == []
+
+
+# ── FIX 3: symlink + empty-name + dots-in-filename ────────────────────────
+
+def test_safe_path_rejects_symlinked_run_dir(tmp_path, monkeypatch):
+    """runs/<id> symlink to external dir must raise ValueError (escapes repo)."""
+    import app.policy_gate as pg
+    fake_root = tmp_path / "repo"
+    (fake_root / "runs").mkdir(parents=True)
+    external = tmp_path / "external"
+    external.mkdir()
+    run_id = "run_symlinked"
+    (fake_root / "runs" / run_id).symlink_to(external)
+    monkeypatch.setattr(pg, "_REPO_ROOT", fake_root)
+    with pytest.raises(ValueError):
+        pg.safe_path(run_id, "output.yaml")
+
+
+def test_safe_path_rejects_empty_name():
+    """Empty name returns the dir itself — must raise ValueError."""
+    with pytest.raises(ValueError):
+        safe_path("demo_clean", "")
+
+
+def test_safe_path_allows_dots_in_filename():
+    """Dots INSIDE a filename component (v1..2.yaml) are legal — must NOT raise."""
+    result = safe_path("run01", "v1..2.yaml")
+    assert result.name == "v1..2.yaml"
