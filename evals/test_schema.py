@@ -34,3 +34,34 @@ def test_structured_claim_carries_audit_fields():
 def test_claim_label_enum_rejects_unknown():
     with pytest.raises(ValueError):
         ClaimLabel("NOT_A_LABEL")
+
+
+def test_canon_gold_loads_chunk_anchored():
+    from guwen_core.schema_validator import CanonScene
+    import yaml, pathlib
+    raw = yaml.safe_load(pathlib.Path("data/gold/canon_gold.yaml").read_text(encoding="utf-8"))
+    scene = CanonScene.model_validate(raw["scenes"][0])
+    assert scene.scene_id == "G01"
+    assert {f.id for f in scene.atomic_facts} >= {"F08"}
+    chunk_ids = {ch.chunk_id for ch in scene.source_chunks}
+    # Contract D: every fact anchors to a real chunk
+    for f in scene.atomic_facts:
+        assert set(f.source_chunk_ids) <= chunk_ids
+
+
+def test_all_canon_scenes_valid_and_anchored():
+    """Every scene validates, anchors resolve, beats reference real facts, no dup fact ids."""
+    from guwen_core.schema_validator import CanonScene
+    import yaml, pathlib
+    raw = yaml.safe_load(pathlib.Path("data/gold/canon_gold.yaml").read_text(encoding="utf-8"))
+    scenes = raw["scenes"]
+    assert {s["scene_id"] for s in scenes} >= {"G01", "G02", "G03"}
+    for s in scenes:
+        scene = CanonScene.model_validate(s)
+        chunk_ids = {c.chunk_id for c in scene.source_chunks}
+        fact_ids = [f.id for f in scene.atomic_facts]
+        assert len(fact_ids) == len(set(fact_ids)), f"{scene.scene_id}: duplicate fact ids"
+        for f in scene.atomic_facts:
+            assert set(f.source_chunk_ids) <= chunk_ids, f"{scene.scene_id}/{f.id}: bad anchor"
+        for b in scene.required_beats:
+            assert set(b.fact_ids) <= set(fact_ids), f"{scene.scene_id}/{b.beat_id}: dangling beat ref"

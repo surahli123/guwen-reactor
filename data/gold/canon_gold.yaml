@@ -1,0 +1,246 @@
+# Chinese-anchored canon gold (Contract D / D2). Every atomic_fact.text is an English
+# DENOTATION of its anchored Chinese chunk — actions and speech only, ZERO motive/evaluation
+# (per annotation-guardrails.md). Validates against guwen_core.schema_validator.CanonScene.
+# AI Reader-A draft; independent human denotation check pending (gold-cross-validation-protocol.md).
+#
+# G01 from Build_Ready_Spec_v3 §3.5 (chunk-anchored), with adversarial-audit fixes:
+#   - F03 rewritten action-only ("keeps hoeing / handles no differently") — spec's "treats like"
+#     was a disposition frame that risked smuggling evaluation into the literal layer.
+#   - F05 de-evaluated ("prestigious"→"someone in an official's carriage"); person restored as referent.
+#   - F10 added: literal 同席 (same mat) — the antecedent for B03 割席; closes the denotation chain.
+#   - forbidden_claims extended to defend C02 (华歆慕荣 motive injection) + editorial evaluation,
+#     so the drift suite has a C02 anchor (per annotation-guardrails.md §C two-way proof).
+# Guardrail note: F04 is the literal "picks up then throws away" — NOT "covets/keeps".
+# Deferred to Phase 4a eval_plan: F04 "picks up AND throws away both co-present to credit" contract.
+scenes:
+  - scene_id: G01
+    title_en: "Guan Ning Cuts the Mat"
+    title_zh: "管寧割席"
+    source_id: shishuo_xinyu_de_xing_guan_ning
+
+    source_chunks:
+      - {chunk_id: C01, text_zh: "管寧、華歆共園中鋤菜，見地有片金，管揮鋤與瓦石不異，華捉而擲去之。"}
+      - {chunk_id: C02, text_zh: "又嘗同席讀書，有乘軒冕過門者，寧讀如故，歆廢書出看。"}
+      - {chunk_id: C03, text_zh: "寧割席分坐曰：「子非吾友也。」"}
+
+    atomic_facts:
+      - {id: F01, text: "Guan Ning and Hua Xin are gardening together.", source_chunk_ids: [C01]}
+      - {id: F02, text: "They see a piece of gold in the ground.", source_chunk_ids: [C01]}
+      - {id: F03, text: "Guan Ning keeps hoeing and handles the gold no differently from tile or stone.", source_chunk_ids: [C01]}
+      - {id: F04, text: "Hua Xin picks up the gold and then throws it away.", source_chunk_ids: [C01]}
+      - {id: F05, text: "Someone in an official's carriage passes by the gate while they are reading.", source_chunk_ids: [C02]}
+      - {id: F06, text: "Guan Ning keeps reading.", source_chunk_ids: [C02]}
+      - {id: F07, text: "Hua Xin stops reading to look at the carriage.", source_chunk_ids: [C02]}
+      - {id: F08, text: "Guan Ning cuts the mat and separates their seats.", source_chunk_ids: [C03]}
+      - {id: F09, text: "Guan Ning says Hua Xin is not his friend.", source_chunk_ids: [C03]}
+      - {id: F10, text: "Guan Ning and Hua Xin are sitting on the same mat while reading.", source_chunk_ids: [C02]}
+
+    required_beats:
+      - {beat_id: B01, fact_ids: [F01, F02, F03, F04], description: "Gold test: the two friends respond differently to wealth."}
+      - {beat_id: B02, fact_ids: [F05, F06, F07], description: "Carriage test: the two friends respond differently to status."}
+      - {beat_id: B03, fact_ids: [F08, F09], description: "Mat-cutting: Guan Ning symbolically ends the friendship."}
+
+    forbidden_claims:
+      # C01 denotation traps
+      - "Hua Xin keeps the gold."
+      - "Guan Ning physically attacks Hua Xin."
+      # C02 motive-injection traps (adversarial-audit blocking #2 — gives the drift suite a C02 anchor)
+      - "Hua Xin is drawn to or covets the carriage's status."
+      - "Hua Xin abandons his book because he envies wealth and rank."
+      # editorial-evaluation-as-fact trap (《德行》 connotation slippery slope)
+      - "Guan Ning is morally superior to Hua Xin."
+      # scene-framing traps
+      - "The two reconcile in the scene."
+      - "The scene is romantic."
+
+  # --- G02 詠雪 + G03 道旁苦李: AI Reader-A draft + 3-lens adversarial audit (workflow w3hx36mm0).
+  #     Blocking fixes applied: G02 F02 member-list removed; G03 F03 subjectless 看 merged (open subject), F06 question-content trimmed.
+  #     Human denotation check pending (independent_check_notes.md).
+  - scene_id: G02
+    title_en: Xie Daoyun's Snow Simile
+    title_zh: 詠雪
+    source_id: shishuo_xinyu_yan_yu_yong_xue
+    source_chunks:
+    - chunk_id: C01
+      text_zh: 謝太傅寒雪日內集，
+    - chunk_id: C02
+      text_zh: 與兒女講論文義。
+    - chunk_id: C03
+      text_zh: 俄而雪驟，
+    - chunk_id: C04
+      text_zh: 公欣然曰：「白雪紛紛何所似？」
+    - chunk_id: C05
+      text_zh: 兄子胡兒曰：「撒鹽空中差可擬。」
+    - chunk_id: C06
+      text_zh: 兄女曰：「未若柳絮因風起。」
+    - chunk_id: C07
+      text_zh: 公大笑樂。
+    - chunk_id: C08
+      text_zh: 即公大兄無奕女，左將軍王凝之妻也。
+    atomic_facts:
+    - id: F01
+      text: On a cold, snowy day, Grand Tutor Xie held a family gathering.
+      source_chunk_ids:
+      - C01
+    - id: F02
+      text: He discussed the meaning of literary texts with the younger members of the family.
+      source_chunk_ids:
+      - C02
+    - id: F03
+      text: Shortly afterward, the snow fell suddenly and heavily.
+      source_chunk_ids:
+      - C03
+    - id: F04
+      text: The Lord, with a pleased expression, asked what the thick, fast-falling white snow resembled.
+      source_chunk_ids:
+      - C04
+    - id: F05
+      text: The elder brother's son, Hu'er, said scattering salt in the air could roughly be compared to it.
+      source_chunk_ids:
+      - C05
+    - id: F06
+      text: The elder brother's daughter said it was not as good as willow catkins rising on the wind.
+      source_chunk_ids:
+      - C06
+    - id: F07
+      text: The Lord laughed heartily and was delighted.
+      source_chunk_ids:
+      - C07
+    - id: F08
+      text: She was the daughter of the Lord's eldest elder brother Wuyi.
+      source_chunk_ids:
+      - C08
+    - id: F09
+      text: She was the wife of Wang Ningzhi, General of the Left.
+      source_chunk_ids:
+      - C08
+    required_beats:
+    - beat_id: B01
+      fact_ids:
+      - F01
+      - F02
+      description: 'Setup: on a cold snowy day, Grand Tutor Xie gathers the family and discusses literary texts with the younger generation.'
+    - beat_id: B02
+      fact_ids:
+      - F03
+      - F04
+      description: 'Trigger + question: snow falls suddenly; the Lord, pleased, asks what the falling white snow resembles.'
+    - beat_id: B03
+      fact_ids:
+      - F05
+      description: 'First answer (speaker turn = Hu''er): the scattered-salt simile.'
+    - beat_id: B04
+      fact_ids:
+      - F06
+      description: 'Second answer (speaker turn = the niece): the willow-catkin simile.'
+    - beat_id: B05
+      fact_ids:
+      - F07
+      description: 'Reaction: the Lord laughs heartily and is delighted (recorded reaction only — no stated preference).'
+    forbidden_claims:
+    - The niece's willow-catkin simile is better than Hu'er's scattered-salt simile.
+    - Grand Tutor Xie laughed because the niece's answer was better.
+    - Grand Tutor Xie praised or singled out the niece's answer.
+    - The Grand Tutor is named Xie An.
+    - Hu'er is named Xie Lang.
+    - The niece is named Xie Daoyun.
+    - One of the children felt embarrassed or proud at the Lord's reaction.
+    - The niece won the snow-simile contest.
+    - Grand Tutor Xie was discussing the texts with his own sons and daughters.
+    - The scattered-salt simile is dismissed by the narrator as inferior.
+  - scene_id: G03
+    title_en: Wang Rong and the Roadside Plums
+    title_zh: 道旁苦李
+    source_id: shishuo_xinyu_ya_liang_dao_pang_ku_li
+    source_chunks:
+    - chunk_id: C01
+      text_zh: 王戎七歲，
+    - chunk_id: C02
+      text_zh: 嘗與諸小兒遊。
+    - chunk_id: C03
+      text_zh: 看道邊李樹多子折枝，
+    - chunk_id: C04
+      text_zh: 諸兒競走取之，
+    - chunk_id: C05
+      text_zh: 唯戎不動。
+    - chunk_id: C06
+      text_zh: 人問之，
+    - chunk_id: C07
+      text_zh: 答曰：「樹在道邊而多子，此必苦李。」
+    - chunk_id: C08
+      text_zh: 取之，
+    - chunk_id: C09
+      text_zh: 信然。
+    atomic_facts:
+    - id: F01
+      text: Wang Rong was seven years old.
+      source_chunk_ids:
+      - C01
+    - id: F02
+      text: On one occasion he was roaming and playing with a group of other young children.
+      source_chunk_ids:
+      - C02
+    - id: F03
+      text: By the roadside, a plum tree laden with fruit, its branches weighed down, was seen (subject unspecified).
+      source_chunk_ids:
+      - C03
+    - id: F04
+      text: The other children raced over to pick the plums.
+      source_chunk_ids:
+      - C04
+    - id: F05
+      text: Only Wang Rong did not move (did not go to pick).
+      source_chunk_ids:
+      - C05
+    - id: F06
+      text: Someone asked Wang Rong.
+      source_chunk_ids:
+      - C06
+    - id: F07
+      text: Wang Rong answered that the tree stands by the roadside yet has many fruits, so these must be bitter plums.
+      source_chunk_ids:
+      - C07
+    - id: F08
+      text: Afterward the plums were picked (by an unspecified party).
+      source_chunk_ids:
+      - C08
+    - id: F09
+      text: It turned out to be just as Wang Rong had said.
+      source_chunk_ids:
+      - C09
+    required_beats:
+    - beat_id: B01
+      fact_ids:
+      - F01
+      - F02
+      description: 'Setup: seven-year-old Wang Rong is out roaming with a group of other children.'
+    - beat_id: B02
+      fact_ids:
+      - F03
+      description: They come upon a roadside plum tree so loaded with fruit that the branches bend.
+    - beat_id: B03
+      fact_ids:
+      - F04
+      - F05
+      description: 'Contrast in action: the other children scramble to pick; only Wang Rong does not move.'
+    - beat_id: B04
+      fact_ids:
+      - F06
+      - F07
+      description: 'When asked, Wang Rong states his claim: a heavily-fruited tree left untouched by the roadside must bear bitter plums.'
+    - beat_id: B05
+      fact_ids:
+      - F08
+      - F09
+      description: 'Resolution: the plums are picked, and the outcome matches Wang Rong''s claim.'
+    forbidden_claims:
+    - The plums were tasted and found to be bitter.
+    - The plums are bitter because the tree grows by the roadside.
+    - Wang Rong picked or tasted the plums himself.
+    - Wang Rong is clever, intelligent, or wise.
+    - Wang Rong is precocious or unusually mature for his age.
+    - Wang Rong shows poise or magnanimity.
+    - The other children were greedy or foolish.
+    - The branches of the plum tree were broken or snapped.
+    - Wang Rong reasoned that passers-by had already eaten the sweet plums.
+    - No one ever picked the plums.
