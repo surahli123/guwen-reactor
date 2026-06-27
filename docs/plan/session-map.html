@@ -58,8 +58,8 @@
   <h1>Guwen Reactor <span class="zh" style="color:#a3331f;font-size:20px">古文反應堆</span> — Decision Board</h1>
 
   <div class="ribbon">
-    <b>✓ Phase 0 · ✓ plan · ✓ 5/5 场景决策全锁</b> — <b>Phase 1 building</b>：Task 1.1 schemas GREEN（pytest 5 passed）。
-    <div class="stamp">branch <code>feat/phase-0-scaffold</code> · 场景研究 = workflow ×10 agents（原文取证 + 对抗可标注性审查）· 新 doc：cross-validation-protocol · annotation-guardrails</div>
+    <b>✓ Phase 0 · ✓ plan · ✓ 5/5 场景决策 · ✓ Phase 1 COMPLETE</b> — schemas + 3-scene chinese-anchored gold，<b>pytest 7 passed</b>。<b>Session wrapped 2026-06-26</b>，待人工核对 gold → Phase 2。
+    <div class="stamp">branch <code>feat/phase-0-scaffold</code> · 8 commits · gold 经 3-lens 对抗审查（3/3 场景揪出污染，含 spec 自带 G01 ×2）· handover-2026-06-26-guwen-phase1-gold.md</div>
   </div>
 
   <div class="pipe">
@@ -124,12 +124,12 @@
     <div class="pipe">
       <div class="step done"><span class="mark">✓</span><div class="t">1.1 schemas</div></div>
       <div class="step done"><span class="mark">✓</span><div class="t">1.2 lock 源+metadata</div></div>
-      <div class="step gate"><span class="mark">▶</span><div class="t">1.3 canon_gold.yaml</div></div>
+      <div class="step done"><span class="mark">✓</span><div class="t">1.3 canon_gold（待人工核对）</div></div>
     </div>
     <ul class="changed">
       <li><b>✓ Task 1.1（GREEN · pytest 5 passed）：</b><code>guwen_core/schema_validator.py</code> + <code>evals/test_schema.py</code>。TDD RED→GREEN；StructuredClaim(Contract A) + chunk-anchored AtomicFact(Contract D) + 9 ClaimLabel/AssertionType/Hedging 枚举。<b>下游每个任务 verbatim 复用</b>。</li>
       <li><b>✓ Task 1.2（ALL PASS）：</b>锁 3 个被测场景 source.zh.txt + metadata（管宁/咏雪/道旁苦李，原文已验）+ <code>_fixture_unclear_license</code> 负向 fixture。版权 posture <b>english_translation_ingested:false</b> 已打印核验。三顾茅庐(video) 不入 eval core。</li>
-      <li><b>▶ Task 1.3（next · 需你关注）：</b>写 chunk-anchored <code>canon_gold.yaml</code>（每条事实锚到中文 chunk）按护栏；<b>AI 出草稿 = Reader-A，人工独立核对随后</b>（per cross-validation 协议）。</li>
+      <li><b>✓ Task 1.3（3 场景 gold · schema-green pytest 7 passed · 待你人工核对）：</b><code>canon_gold.yaml</code> + <code>independent_check_notes.md</code>。每则 AI Reader-A 草稿 → 3-lens 对抗审查 → 修 blocking → schema 验证。<b>G01 管宁</b>(10 facts，审查在 spec 自带 gold 揪出 2 污染) · <b>G02 咏雪</b>(9 facts，F02 误把"儿女"当亲生子女+实为姪辈 → 删) · <b>G03 道旁苦李</b>(9 facts，F04 把"诸儿"偷渡成"看"的主语 → 改主语开放；"此必苦李"守住 speech-act)。单标注 · no-IAA 暂揭露。</li>
     </ul>
   </div>
 
@@ -156,8 +156,8 @@
 
   <div class="footer">
     <span><b>Deadline:</b> 2026-07-06</span>
-    <span><b>Status:</b> 5/5 决策锁 · Phase 1 building（Task 1.1 GREEN）</span>
-    <span><b>Next:</b> 1.2 lock 源+metadata → 1.3 chinese-anchored gold → Phase 2</span>
+    <span><b>Status:</b> Phase 1 COMPLETE (1.1/1.2/1.3) · pytest 7 passed · session wrapped 2026-06-26</span>
+    <span><b>Next:</b> 人工核对 3 场景 gold (+ 第二读者) → Phase 2 (sanitizer / safe_prompt / policy_gate)</span>
   </div>
 
 </div>
