@@ -761,9 +761,11 @@ def evaluate_claims(validated: ValidatedClaims, scene: CanonScene) -> AuditResul
                 and c.hedging == Hedging.ASSERTED:                  # B.4 subtle drift
             label, critical = ClaimLabel.UNSUPPORTED_MOTIVATION, True
             counts["unsupported_motivation_claims"] += 1
+        # B.5 STRENGTHENED (review #4): see guwen_core/structural_audit.py + decisions-locked rule 5 —
+        # flag when source_fact_ids is empty OR a cited id is outside the claim's DECLARED beat.
         elif c.assertion_type in (AssertionType.ACTION, AssertionType.VISUAL) \
-                and not c.source_fact_ids:                          # B.5 (fix C1)
-            label, critical = ClaimLabel.UNSUPPORTED_DETAIL, True   # asserted new event = critical
+                and unsupported_event(c, beat_facts):              # B.5 (fix C1 + review #4)
+            label, critical = ClaimLabel.UNSUPPORTED_DETAIL, True   # asserted new/misattributed event = critical
         elif c.hedging == Hedging.HEDGED and c.assertion_type in (
                 AssertionType.INTERPRETATION, AssertionType.MOTIVE, AssertionType.EMOTION):
             label, critical = ClaimLabel.VALID_HEDGED_INTERPRETATION, False  # B.6 hedged-valid

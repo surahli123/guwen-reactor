@@ -4,6 +4,13 @@ All notable changes to Guwen Reactor. Format: [Keep a Changelog](https://keepach
 
 ## [Unreleased]
 
+### Added — 2026-06-28 — Phase 2 (security core) + Phase 3 (fixtures) + Phase 4a (eval core — the wow)
+- **Adversarial review of the session goal spec** (4 OMC lenses + independent Codex, refute-verified → execute-with-edits, 0 blockers): 6 reconciliations applied before the build (`reviews/2026-06-28-goal-spec-adversarial.md`). A follow-up independent code review of the eval core then caught + closed a **MAJOR `beat_id=None` gate bypass**.
+- **Phase 2 — security core:** `guwen_core/source_sanitizer.py` (NFKC + zero-width strip + sha256), `guwen_core/safe_prompt.py` (fenced judge prompt + `detect_injection`), `app/policy_gate.py` (loads the single canonical gate; injection + fact-id gated). (Built earlier; now recorded.)
+- **Phase 3 — fixtures:** `runs/demo_clean/{adaptation,structured_claims}.yaml` (G01, 10 claims, beat-aligned, coverage 1.0) + `guwen_core/adaptation_gen.py` (offline loader; live Gemini stays `[CONTRACT]`/S13). `.gitignore` carve-out so the demo fixtures are committable.
+- **Phase 4a — eval core (NON-CUTTABLE; the deterministic faithfulness gate):** `claim_validator.py` (Contract A) · `structural_audit.py` (Contract B, **strengthened rule 5: beat↔fact-id alignment** — blocks fabricated events citing real-but-wrong / undeclared-beat ids) · `coverage.py` (Contract C, plot-claims only) · `evals/run_eval_suite.py::evaluate_run` (Contract E, stage-aware `export_status`) · specificity over-block guard (Contract G).
+- **`pytest evals/` = 65 passed.** Clean fixture → `READY_FOR_APPROVAL`; injection / invalid-id / forbidden / unhedged-motive / empty-id / wrong-beat / beat-less-bypass → BLOCKED; valid hedged interpretation → not blocked.
+
 ### Added — 2026-06-26 — Phase 1 (schemas + sources + 3-scene chinese-anchored gold)
 - **Scene picks** (research + adversarial-labelability workflow, one decision at a time): video=三顧茅廬; 3 measured eval scenes **G01 管寧割席 · G02 詠雪 · G03 道旁苦李**; gold check = route 2+3 + second-reader cross-validation (deferred).
 - **Protocols:** `docs/plan/gold-cross-validation-protocol.md` (2-reader blind, percent-agreement + κ small-N caveat) + `docs/plan/annotation-guardrails.md` (通用 + 每場景 + specificity/drift two-way proof).
