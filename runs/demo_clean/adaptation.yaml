@@ -1,0 +1,25 @@
+# Clean adaptation fixture — the human-readable storyboard for G01 管寧割席 (Wave 0 / Task 3.1).
+# Each gated plot artifact (panels.*.caption_en, cultural_decoder.note_en) is the source for one
+# StructuredClaim in structured_claims.yaml (linked by artifact_path). Faithful, fully source-grounded.
+scene_id: G01
+run_id: demo_clean
+title_en: "Guan Ning Cuts the Mat"
+title_zh: "管寧割席"
+source_id: shishuo_xinyu_de_xing_guan_ning
+
+storyboard:
+  panels:
+    - {id: P01, beat_id: B01, caption_en: "Guan Ning and Hua Xin work the vegetable garden together."}
+    - {id: P02, beat_id: B01, caption_en: "Their hoes uncover a piece of gold lying in the soil."}
+    - {id: P03, beat_id: B01, caption_en: "Guan Ning keeps hoeing, handling the gold no differently from a piece of tile or stone."}
+    - {id: P04, beat_id: B01, caption_en: "Hua Xin picks the gold up, then throws it away."}
+    - {id: P05, beat_id: B02, caption_en: "While the two sit reading, an official's carriage passes by the gate."}
+    - {id: P06, beat_id: B02, caption_en: "Guan Ning reads on as before."}
+    - {id: P07, beat_id: B02, caption_en: "Hua Xin puts down his book and goes out to look at the carriage."}
+    - {id: P08, beat_id: B03, caption_en: "Guan Ning cuts the mat and separates their seats."}
+    - {id: P09, beat_id: B03, caption_en: "Guan Ning says that Hua Xin is not his friend."}
+
+cultural_decoder:
+  note_en: "Taken together, these contrasting responses to the gold may suggest the two friends place different value on wealth."
+
+aigc_label: "AI-generated adaptation. No existing English translation was provided to the generator."

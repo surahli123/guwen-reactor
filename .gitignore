@@ -25,7 +25,11 @@ env/
 
 # --- Run / build output (created during the build, never source) ------------
 # The spec confines all generated artifacts to runs/<id>/; keep them out of git.
-runs/
+# EXCEPT the two committed demo fixtures (demo_clean / demo_drift): they are the offline
+# test inputs the eval core TDDs against and the canvas renders (Task 3.1, review #1).
+runs/*
+!runs/demo_clean/
+!runs/demo_drift/
 *.log
 dist/
 build/
