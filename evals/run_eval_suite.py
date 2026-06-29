@@ -24,6 +24,7 @@ from app.policy_gate import export_requires_met
 from guwen_core.claim_validator import validate_claims
 from guwen_core.coverage import beat_coverage
 from guwen_core.schema_validator import CanonScene, StructuredClaim
+from guwen_core.safety_eval import safety_check
 from guwen_core.structural_audit import evaluate_claims
 
 _REPO_ROOT = Path(__file__).parent.parent
@@ -69,7 +70,7 @@ def evaluate_run(run_dir: str | Path) -> dict:
     # Upstream/stage bools — default-pass with a TODO until their real steps land.
     rep["source_policy_valid"] = True                    # TODO(4b/source): wire source_guard meta
     rep["source_sanitized"] = True                       # claim_text sanitized in validate_claims (Contract H)
-    rep["safety_pass"] = True                            # TODO(S7 / 4b.2): wire safety_eval
+    rep["safety_pass"] = safety_check(validated.claims).passed  # S7 / 4b.2 — real structural deny-list
     rep["workflow_integrity_pass"] = True                # TODO(S9 / 4b.6): wire workflow_integrity
     rep["human_approved"] = False                        # set at approval (S10 / 4b.4)
     rep["aigc_label_manifest_bound"] = False             # set at export (S10 / 4b.4)

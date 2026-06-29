@@ -30,6 +30,9 @@ env/
 runs/*
 !runs/demo_clean/
 !runs/demo_drift/
+# ...but generated run OUTPUTS (trace/manifest) are not fixtures — re-ignore them.
+runs/**/trace.jsonl
+runs/**/manifest.yaml
 *.log
 dist/
 build/
