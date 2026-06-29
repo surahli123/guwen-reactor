@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guwen Reactor &mdash; Gate Demo: 管寧割席 (Guan Ning Cuts the Mat)</title>
+<style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+        --bg:             #F8F9FA;
+        --surface:        #FFFFFF;
+        --border:         #E5E7EB;
+        --text-primary:   #111827;
+        --text-secondary: #6B7280;
+        --text-muted:     #9CA3AF;
+        --accent-red:     #991B1B;
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        --serif: Georgia, "Times New Roman", serif;
+        --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text-primary);
+        line-height: 1.6;
+        font-size: 15px;
+    }
+
+    .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 28px;
+    }
+
+    /* ---- Header ---- */
+    header {
+        background: #0F172A;
+        color: #F1F5F9;
+        padding: 52px 0 44px;
+        border-bottom: 4px solid var(--accent-red);
+    }
+
+    .project-label {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #64748B;
+        margin-bottom: 20px;
+    }
+
+    .scene-zh {
+        font-family: var(--serif);
+        font-size: 52px;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        color: #F1F5F9;
+        line-height: 1.2;
+        margin-bottom: 10px;
+    }
+
+    .scene-en {
+        font-size: 22px;
+        font-weight: 300;
+        color: #94A3B8;
+        margin-bottom: 18px;
+        letter-spacing: 0.01em;
+    }
+
+    .source-ref {
+        font-size: 13px;
+        color: #475569;
+        font-style: italic;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+        padding: 52px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .section-eyebrow {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 6px;
+    }
+
+    .section-title {
+        font-family: var(--serif);
+        font-size: 26px;
+        font-weight: 400;
+        color: var(--text-primary);
+        margin-bottom: 28px;
+    }
+
+    /* ---- Source chunks ---- */
+    .source-chunks { display: grid; gap: 12px; }
+
+    .source-chunk {
+        padding: 16px 20px;
+        border-radius: 6px;
+    }
+
+    .chunk-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .zh-text {
+        font-family: var(--serif);
+        font-size: 20px;
+        letter-spacing: 0.06em;
+        line-height: 1.75;
+        color: var(--text-primary);
+    }
+
+    /* ---- Shared pill/tag styles ---- */
+    .mono-tag {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+    }
+
+    .mono-tag.dim { color: var(--text-muted); font-weight: 400; }
+
+    .beat-pill {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        padding: 2px 7px;
+        border-radius: 3px;
+        color: #FFFFFF;
+    }
+
+    .meta-pill {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--text-muted);
+        background: #F3F4F6;
+        padding: 1px 5px;
+        border-radius: 3px;
+    }
+
+    .facts-tag { color: #6B7280; }
+
+    /* ---- Storyboard ---- */
+    .beat-group { margin-bottom: 32px; }
+
+    .beat-group-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .beat-group-id {
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .beat-group-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+
+    .panels-grid { display: grid; gap: 8px; }
+
+    .panel-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 12px 16px;
+    }
+
+    .panel-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    .panel-caption {
+        font-size: 14px;
+        color: var(--text-primary);
+        line-height: 1.55;
+    }
+
+    .cultural-note {
+        background: #FFFBEB;
+        border: 1px solid #FCD34D;
+        border-left: 4px solid #F59E0B;
+        border-radius: 4px;
+        padding: 14px 18px;
+        margin-top: 16px;
+    }
+
+    .cultural-note-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #92400E;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .cultural-note-text {
+        font-size: 14px;
+        color: #78350F;
+        font-style: italic;
+        line-height: 1.55;
+    }
+
+    /* ---- Gate section ---- */
+    .gate-explanation {
+        background: #F0F9FF;
+        border: 1px solid #BAE6FD;
+        border-left: 4px solid #0284C7;
+        border-radius: 6px;
+        padding: 18px 22px;
+        margin-bottom: 32px;
+        font-size: 14px;
+        color: #0C4A6E;
+        line-height: 1.7;
+    }
+
+    .gate-explanation strong { font-weight: 600; }
+
+    .gate-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    @media (max-width: 720px) {
+        .gate-columns { grid-template-columns: 1fr; }
+    }
+
+    /* ---- Run card ---- */
+    .run-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .run-card-header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        padding-bottom: 14px;
+        margin-bottom: 14px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .run-id-label {
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .run-subtitle {
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        margin-bottom: 12px;
+        align-self: flex-start;
+    }
+
+    .coverage-line {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 14px;
+    }
+
+    .coverage-line strong { color: var(--text-primary); }
+
+    /* ---- Gate checklist rows ---- */
+    .gate-grid-rows { display: grid; gap: 4px; margin-bottom: 12px; }
+
+    .gate-row {
+        display: grid;
+        grid-template-columns: 20px 1fr auto auto;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+
+    .gate-icon { font-weight: 700; text-align: center; font-size: 13px; }
+
+    .gate-key {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-secondary);
+        word-break: break-all;
+    }
+
+    .gate-val {
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+        text-align: right;
+        padding: 0 4px;
+    }
+
+    .gate-req {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        white-space: nowrap;
+    }
+
+    /* ---- Missing block ---- */
+    .missing-block {
+        background: #FFF1F2;
+        border: 1px solid #FECDD3;
+        border-radius: 5px;
+        padding: 12px 16px;
+        margin-bottom: 14px;
+    }
+
+    .missing-label {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #BE123C;
+        margin-bottom: 8px;
+    }
+
+    .missing-list { list-style: none; display: grid; gap: 4px; }
+
+    .missing-list li {
+        font-size: 12px;
+        color: #9F1239;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .missing-list li::before { content: "✗"; color: #E11D48; font-weight: 700; }
+
+    code {
+        font-family: var(--mono);
+        font-size: 11px;
+        background: #FEE2E2;
+        padding: 1px 5px;
+        border-radius: 2px;
+        color: #BE123C;
+    }
+
+    /* ---- Claims list ---- */
+    .claims-heading {
+        font-family: var(--mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        margin-top: 16px;
+    }
+
+    .claims-list { display: grid; gap: 6px; }
+
+    .claim-row {
+        background: #F9FAFB;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 10px 12px;
+    }
+
+    .claim-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+    .claim-text {
+        font-size: 13px;
+        color: var(--text-primary);
+        line-height: 1.5;
+        margin-bottom: 7px;
+    }
+
+    .label-badge {
+        display: inline-block;
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 2px 8px;
+        border-radius: 3px;
+    }
+
+    /* ---- Footer ---- */
+    footer {
+        background: #0F172A;
+        color: #475569;
+        padding: 36px 0;
+        text-align: center;
+    }
+
+    .aigc-label {
+        font-size: 13px;
+        color: #94A3B8;
+        letter-spacing: 0.01em;
+        margin-bottom: 10px;
+    }
+
+    .footer-meta {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: #334155;
+    }
+    
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+    <div class="project-label">Guwen Reactor &nbsp;&middot;&nbsp; Faithfulness Gate Demo</div>
+    <h1 class="scene-zh">管寧割席</h1>
+    <p class="scene-en">Guan Ning Cuts the Mat</p>
+    <p class="source-ref">
+        Source: 《世說新語&middot;德行》 &mdash; <em>Shishuo Xinyu: Virtuous Conduct</em>
+        &nbsp;&middot;&nbsp; Scene G01
+    </p>
+</div>
+</header>
+
+<section class="section">
+<div class="container">
+    <div class="section-eyebrow">Source text</div>
+    <h2 class="section-title">Original Classical Chinese &mdash; Three Source Chunks</h2>
+    <div class="source-chunks">
+
+        <div class="source-chunk" style="background:#EFF6FF;border-left:4px solid #2563EB;">
+            <div class="chunk-header">
+                <span class="mono-tag">C01</span>
+                <span class="beat-pill" style="background:#2563EB;">B01</span>
+            </div>
+            <p class="zh-text">管寧、華歆共園中鋤菜，見地有片金，管揮鋤與瓦石不異，華捉而擲去之。</p>
+        </div>
+        <div class="source-chunk" style="background:#F5F3FF;border-left:4px solid #7C3AED;">
+            <div class="chunk-header">
+                <span class="mono-tag">C02</span>
+                <span class="beat-pill" style="background:#7C3AED;">B02</span>
+            </div>
+            <p class="zh-text">又嘗同席讀書，有乘軒冕過門者，寧讀如故，歆廢書出看。</p>
+        </div>
+        <div class="source-chunk" style="background:#FFF1F2;border-left:4px solid #BE123C;">
+            <div class="chunk-header">
+                <span class="mono-tag">C03</span>
+                <span class="beat-pill" style="background:#BE123C;">B03</span>
+            </div>
+            <p class="zh-text">寧割席分坐曰：「子非吾友也。」</p>
+        </div>
+    </div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+    <div class="section-eyebrow">English storyboard &nbsp;&middot;&nbsp; run: demo_clean</div>
+    <h2 class="section-title">Adaptation Panels &mdash; Beat by Beat</h2>
+    
+        <div class="beat-group">
+            <div class="beat-group-header">
+                <span class="beat-group-id" style="color:#1D4ED8;">B01</span>
+                <span class="beat-group-desc">Gold test: the two friends respond differently to wealth.</span>
+            </div>
+            <div class="panels-grid">
+            <div class="panel-card" style="border-left:3px solid #2563EB;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P01</span>
+                    <span class="beat-pill" style="background:#2563EB;">B01</span>
+                </div>
+                <p class="panel-caption">Guan Ning and Hua Xin work the vegetable garden together.</p>
+            </div>
+            <div class="panel-card" style="border-left:3px solid #2563EB;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P02</span>
+                    <span class="beat-pill" style="background:#2563EB;">B01</span>
+                </div>
+                <p class="panel-caption">Their hoes uncover a piece of gold lying in the soil.</p>
+            </div>
+            <div class="panel-card" style="border-left:3px solid #2563EB;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P03</span>
+                    <span class="beat-pill" style="background:#2563EB;">B01</span>
+                </div>
+                <p class="panel-caption">Guan Ning keeps hoeing, handling the gold no differently from a piece of tile or stone.</p>
+            </div>
+            <div class="panel-card" style="border-left:3px solid #2563EB;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P04</span>
+                    <span class="beat-pill" style="background:#2563EB;">B01</span>
+                </div>
+                <p class="panel-caption">Hua Xin picks the gold up, then throws it away.</p>
+            </div></div>
+        </div>
+        <div class="beat-group">
+            <div class="beat-group-header">
+                <span class="beat-group-id" style="color:#6D28D9;">B02</span>
+                <span class="beat-group-desc">Carriage test: the two friends respond differently to status.</span>
+            </div>
+            <div class="panels-grid">
+            <div class="panel-card" style="border-left:3px solid #7C3AED;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P05</span>
+                    <span class="beat-pill" style="background:#7C3AED;">B02</span>
+                </div>
+                <p class="panel-caption">While the two sit reading, an official's carriage passes by the gate.</p>
+            </div>
+            <div class="panel-card" style="border-left:3px solid #7C3AED;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P06</span>
+                    <span class="beat-pill" style="background:#7C3AED;">B02</span>
+                </div>
+                <p class="panel-caption">Guan Ning reads on as before.</p>
+            </div>
+            <div class="panel-card" style="border-left:3px solid #7C3AED;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P07</span>
+                    <span class="beat-pill" style="background:#7C3AED;">B02</span>
+                </div>
+                <p class="panel-caption">Hua Xin puts down his book and goes out to look at the carriage.</p>
+            </div></div>
+        </div>
+        <div class="beat-group">
+            <div class="beat-group-header">
+                <span class="beat-group-id" style="color:#9F1239;">B03</span>
+                <span class="beat-group-desc">Mat-cutting: Guan Ning symbolically ends the friendship.</span>
+            </div>
+            <div class="panels-grid">
+            <div class="panel-card" style="border-left:3px solid #BE123C;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P08</span>
+                    <span class="beat-pill" style="background:#BE123C;">B03</span>
+                </div>
+                <p class="panel-caption">Guan Ning cuts the mat and separates their seats.</p>
+            </div>
+            <div class="panel-card" style="border-left:3px solid #BE123C;">
+                <div class="panel-header">
+                    <span class="mono-tag dim">P09</span>
+                    <span class="beat-pill" style="background:#BE123C;">B03</span>
+                </div>
+                <p class="panel-caption">Guan Ning says that Hua Xin is not his friend.</p>
+            </div></div>
+        </div>
+        <div class="cultural-note">
+            <span class="cultural-note-label">Cultural decoder (advisory)</span>
+            <p class="cultural-note-text">Taken together, these contrasting responses to the gold may suggest the two friends place different value on wealth.</p>
+        </div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+    <div class="section-eyebrow">The wow</div>
+    <h2 class="section-title">Faithfulness Gate &mdash; Faithful vs. Fabricated, Side by Side</h2>
+
+    <div class="gate-explanation">
+        <strong>This gate is deterministic &mdash; not an LLM vibe-check.</strong>
+        It audits the declared structure of every StructuredClaim (assertion_type, hedging field,
+        source_fact_ids, beat alignment) against the locked canon gold. No keyword matching.
+        No semantic similarity. Semantic entailment is advisory only and never blocks export.
+        <br><br>
+        <strong>Accepts:</strong> the clean run, where every plot claim is structurally grounded
+        and the one interpretive claim is properly hedged &rarr;
+        <strong>READY_FOR_APPROVAL</strong>, coverage 3/3, all claims green.
+        &nbsp;&nbsp;
+        <strong>Rejects:</strong> the drift run, which plants a motive claim asserted as fact
+        (assertion_type=motive, hedging=asserted) &rarr;
+        <strong>BLOCKED</strong>, content gate failed, export prevented.
+    </div>
+
+    <div class="gate-columns">
+        
+        <div class="run-card">
+            <div class="run-card-header">
+                <span class="run-id-label">demo_clean</span>
+                <span class="run-subtitle">faithful adaptation</span>
+            </div>
+
+            <div class="status-badge"
+                 style="background:#F0FDF4;border:2px solid #16A34A;color:#15803D;">
+                READY_FOR_APPROVAL
+            </div>
+
+            <div class="coverage-line">
+                Beat coverage: <strong>3/3</strong>
+                &nbsp;&middot;&nbsp;
+                Factual precision: <strong>9/9</strong>
+            </div>
+
+            <div class="gate-grid-rows">
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">unsupported_critical_claims</span>
+                <span class="gate-val">0</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">contradicted_claims</span>
+                <span class="gate-val">0</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">unsupported_motivation_claims</span>
+                <span class="gate-val">0</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">invalid_fact_id_claims</span>
+                <span class="gate-val">0</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">prompt_injection_attempts</span>
+                <span class="gate-val">0</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">required_beat_coverage</span>
+                <span class="gate-val">3/3</span>
+                <span class="gate-req">&gt;= 0.85</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">safety_pass</span>
+                <span class="gate-val">True</span>
+                <span class="gate-req">= true</span>
+            </div></div>
+
+            
+
+            <div class="claims-heading">Claims (10)</div>
+            <div class="claims-list">
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C01</span>
+                    <span class="meta-pill">beat:B01</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F01</span>
+                </div>
+                <p class="claim-text">Guan Ning and Hua Xin work the vegetable garden together.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C02</span>
+                    <span class="meta-pill">beat:B01</span>
+                    <span class="meta-pill">type:visual</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F02</span>
+                </div>
+                <p class="claim-text">Their hoes uncover a piece of gold lying in the soil.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C03</span>
+                    <span class="meta-pill">beat:B01</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F03</span>
+                </div>
+                <p class="claim-text">Guan Ning keeps hoeing, handling the gold no differently from a piece of tile or stone.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C04</span>
+                    <span class="meta-pill">beat:B01</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F04</span>
+                </div>
+                <p class="claim-text">Hua Xin picks the gold up, then throws it away.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C05</span>
+                    <span class="meta-pill">beat:B02</span>
+                    <span class="meta-pill">type:visual</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F05</span>
+                </div>
+                <p class="claim-text">While the two sit reading, an official's carriage passes by the gate.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C06</span>
+                    <span class="meta-pill">beat:B02</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F06</span>
+                </div>
+                <p class="claim-text">Guan Ning reads on as before.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C07</span>
+                    <span class="meta-pill">beat:B02</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F07</span>
+                </div>
+                <p class="claim-text">Hua Xin puts down his book and goes out to look at the carriage.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C08</span>
+                    <span class="meta-pill">beat:B03</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F08</span>
+                </div>
+                <p class="claim-text">Guan Ning cuts the mat and separates their seats.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C09</span>
+                    <span class="meta-pill">beat:B03</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F09</span>
+                </div>
+                <p class="claim-text">Guan Ning says that Hua Xin is not his friend.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C10</span>
+                    <span class="meta-pill">beat:—</span>
+                    <span class="meta-pill">type:interpretation</span>
+                    <span class="meta-pill">hedging:hedged</span>
+                    <span class="meta-pill facts-tag">facts:F03, F04</span>
+                </div>
+                <p class="claim-text">Taken together, these contrasting responses to the gold may suggest the two friends place different value on wealth.</p>
+                <span class="label-badge" style="background:#ECFDF5;color:#065F46;border:1px solid #059669;">✓ hedged&nbsp;VALID_HEDGED_INTERPRETATION</span>
+            </div></div>
+        </div>
+        
+        <div class="run-card">
+            <div class="run-card-header">
+                <span class="run-id-label">demo_drift</span>
+                <span class="run-subtitle">planted fabrication</span>
+            </div>
+
+            <div class="status-badge"
+                 style="background:#FFF1F2;border:2px solid #E11D48;color:#BE123C;">
+                BLOCKED
+            </div>
+
+            <div class="coverage-line">
+                Beat coverage: <strong>3/3</strong>
+                &nbsp;&middot;&nbsp;
+                Factual precision: <strong>9/10</strong>
+            </div>
+
+            <div class="gate-grid-rows">
+            <div class="gate-row" style="background:#FFF1F2;">
+                <span class="gate-icon" style="color:#BE123C;">✗</span>
+                <span class="gate-key">unsupported_critical_claims</span>
+                <span class="gate-val">1</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">contradicted_claims</span>
+                <span class="gate-val">0</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#FFF1F2;">
+                <span class="gate-icon" style="color:#BE123C;">✗</span>
+                <span class="gate-key">unsupported_motivation_claims</span>
+                <span class="gate-val">1</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">invalid_fact_id_claims</span>
+                <span class="gate-val">0</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">prompt_injection_attempts</span>
+                <span class="gate-val">0</span>
+                <span class="gate-req">== 0</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">required_beat_coverage</span>
+                <span class="gate-val">3/3</span>
+                <span class="gate-req">&gt;= 0.85</span>
+            </div>
+            <div class="gate-row" style="background:#F0FDF4;">
+                <span class="gate-icon" style="color:#15803D;">✓</span>
+                <span class="gate-key">safety_pass</span>
+                <span class="gate-val">True</span>
+                <span class="gate-req">= true</span>
+            </div></div>
+
+            
+            <div class="missing-block">
+                <div class="missing-label">Content gates not met — export BLOCKED</div>
+                <ul class="missing-list"><li><code>unsupported_critical_claims</code></li><li><code>unsupported_motivation_claims</code></li></ul>
+            </div>
+
+            <div class="claims-heading">Claims (10)</div>
+            <div class="claims-list">
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C01</span>
+                    <span class="meta-pill">beat:B01</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F01</span>
+                </div>
+                <p class="claim-text">Guan Ning and Hua Xin work the vegetable garden together.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C02</span>
+                    <span class="meta-pill">beat:B01</span>
+                    <span class="meta-pill">type:visual</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F02</span>
+                </div>
+                <p class="claim-text">Their hoes uncover a piece of gold lying in the soil.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C03</span>
+                    <span class="meta-pill">beat:B01</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F03</span>
+                </div>
+                <p class="claim-text">Guan Ning keeps hoeing, handling the gold no differently from a piece of tile or stone.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C04</span>
+                    <span class="meta-pill">beat:B01</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F04</span>
+                </div>
+                <p class="claim-text">Hua Xin picks the gold up, then throws it away.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C05</span>
+                    <span class="meta-pill">beat:B02</span>
+                    <span class="meta-pill">type:visual</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F05</span>
+                </div>
+                <p class="claim-text">While the two sit reading, an official's carriage passes by the gate.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C06</span>
+                    <span class="meta-pill">beat:B02</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F06</span>
+                </div>
+                <p class="claim-text">Guan Ning reads on as before.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C07</span>
+                    <span class="meta-pill">beat:B02</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F07</span>
+                </div>
+                <p class="claim-text">Hua Xin puts down his book and goes out to look at the carriage.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C08</span>
+                    <span class="meta-pill">beat:B03</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F08</span>
+                </div>
+                <p class="claim-text">Guan Ning cuts the mat and separates their seats.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" >
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C09</span>
+                    <span class="meta-pill">beat:B03</span>
+                    <span class="meta-pill">type:action</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F09</span>
+                </div>
+                <p class="claim-text">Guan Ning says that Hua Xin is not his friend.</p>
+                <span class="label-badge" style="background:#F0FDF4;color:#15803D;border:1px solid #16A34A;">✓&nbsp;SUPPORTED</span>
+            </div>
+            <div class="claim-row" style="background:#FFF1F2;border-left:3px solid #E11D48;">
+                <div class="claim-meta-row">
+                    <span class="mono-tag">C10</span>
+                    <span class="meta-pill">beat:—</span>
+                    <span class="meta-pill">type:motive</span>
+                    <span class="meta-pill">hedging:asserted</span>
+                    <span class="meta-pill facts-tag">facts:F03, F04</span>
+                </div>
+                <p class="claim-text">Taken together, these contrasting responses to the gold may suggest the two friends place different value on wealth.</p>
+                <span class="label-badge" style="background:#FFF1F2;color:#BE123C;border:1px solid #E11D48;">✗&nbsp;UNSUPPORTED_MOTIVATION</span>
+            </div></div>
+        </div>
+    </div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+    <p class="aigc-label">AI-generated adaptation. No existing English translation was provided to the generator.</p>
+    <p class="footer-meta">
+        Guwen Reactor &nbsp;&middot;&nbsp; Kaggle Vibe-Coding Capstone 2026
+        &nbsp;&middot;&nbsp; Gate defined in specs/eval_plan.yaml (Contract F)
+    </p>
+</div>
+</footer>
+
+</body>
+</html>
