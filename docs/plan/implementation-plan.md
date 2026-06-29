@@ -943,7 +943,7 @@ def test_caps_at_three_attempts_and_fails_closed():
 ### Task 4b.5: CLI end-to-end (NON-CUTTABLE DoD) `[FULL-CODE]` `P0`
 
 **Files:** `app/cli.py` (typer), `evals/test_e2e.py`.
-**Interfaces — Consumes:** `evaluate_run` (4a.4), approval/export (4b.4), and every module above. Pipeline order = `source_policy_checked → source_sanitized → claims_validated → structural_audit → coverage → safety → approval_requested → export_written`.
+**Interfaces — Consumes:** `evaluate_run` (4a.4), approval/export (4b.4), and every module above. Pipeline order (canonical vocabulary = `eval_plan.yaml workflow_integrity.required_events`, review #6) = `source_policy_checked → source_sanitized → artifact_written → claims_validated → structural_audited → coverage_computed → safety_checked → eval_completed → approval_requested → export_written`.
 
 - [ ] **Step 1: Write the end-to-end failing tests:**
 ```python

@@ -76,10 +76,11 @@ baseline:
   scored_by: evaluate_run        # apples-to-apples with the agent
   expected_fail_band: [0.30, 0.40]
   adjustment_rule: >
-    Pre-registered, decided before seeing results: if the baseline fails <30%, the
-    gold/claims are too lenient -> add a harder eval scene. If >50%, the baseline prompt
-    is unfairly weak -> give it the same template hints. Never tune prompts or scenes
-    after seeing which way the number moved (no broken ruler).
+    Pre-registered, decided before seeing results, covering the FULL number line (no dead
+    zone — review #3): baseline <30% -> gold/claims too lenient -> add a harder eval scene.
+    30-50% -> NO adjustment (30-40% is the target band; 40-50% is tolerated upper margin).
+    >50% -> baseline prompt unfairly weak -> give it the same template hints. Never tune
+    prompts or scenes after seeing which way the number moved (no broken ruler).
   report_failure_modes:
     [contradicted, unsupported_motivation, unsupported_detail, missed_required_beats, interpretive_distortion, unsafe_added_content]
 
@@ -94,8 +95,11 @@ safety:
 # --- Workflow integrity (deterministic OTel-named trace, IN_ORDER) ---
 workflow_integrity:
   mode: IN_ORDER
+  # review #6: D1-consistent vocabulary (claims are VALIDATED, not "extracted") matching
+  # evaluate_run order (Contract E). trace.py MUST emit exactly these; a unit test asserts
+  # emitter-vocabulary == this set so a rename can never silently fail workflow_integrity.
   required_events:
-    [source_policy_checked, source_sanitized, artifact_written, claims_extracted, eval_completed, approval_requested, export_written]
+    [source_policy_checked, source_sanitized, artifact_written, claims_validated, structural_audited, coverage_computed, safety_checked, eval_completed, approval_requested, export_written]
 
 # --- Regen loop / Denial-of-Wallet ---
 session_convergence:
