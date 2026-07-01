@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>看得见的忠实 · 管寧割席 — Guwen Reactor</title>
+<!--
+  Visible Faithfulness / 看得见的忠实 — scene G01 管寧割席.
+  Single self-contained file. NO external requests (no CDN, no webfont, no fetch) so it
+  runs fully offline for Kaggle judges / GitHub Pages. All story content is committed data
+  (canon_gold.yaml + runs/demo_clean); the reading layer is a faithful adaptation whose every
+  line traces to a verified claim + a 文言 source phrase (see the 考据 panel).
+  WHY vanilla + system fonts: the offline constraint forbids CDN React/webfonts; the whole
+  page renders from the SCENE data object below, which is the point — "the page IS the data."
+-->
+<style>
+  /* ---- pigment palette: muted mineral tones (research: neon jade/gold = slop; real 石青/石绿 are dark) ---- */
+  :root{
+    --ground:#141109;              /* deep ink ground the scroll floats on (like the reference's dark letterbox) */
+    --silk:#e8dab9;               /* aged silk / 绢本 */
+    --silk-2:#e0cfa8;             /* silk mid */
+    --silk-edge:#c7b184;          /* aged edge */
+    --ink:#2a2116;               /* primary ink text */
+    --ink-soft:#6a5c42;          /* secondary ink */
+    --ink-faint:#9a8a6a;         /* tertiary / muted marginalia */
+    --qing:#2f5b6d;              /* 石青 azurite (muted) */
+    --lu:#3f7458;               /* 石绿 malachite (muted) */
+    --amber:#e6a441;            /* 灯火 verification light */
+    --amber-soft:#f0c072;
+    --zhu:#a83a29;              /* 朱砂 seal red (aged vermilion, orange-shifted — not #F00) */
+    --zhu-bright:#c2422c;
+    --line:rgba(122,102,64,.28);/* hairline rules */
+    /* font registers — all system fonts, zero download */
+    --f-title:"Xingkai SC","STXingkai","Weibei SC","Baoli SC","KaiTi","Kaiti SC","STKaiti","楷体",serif;
+    --f-song:"Songti SC","STSong","Songti TC","SimSun","Noto Serif SC",serif;
+    --f-kai:"Kaiti SC","STKaiti","KaiTi","楷体","Noto Serif SC",serif;
+    --f-hand:"Hannotate SC","Xingkai SC","Kaiti SC","STKaiti",cursive,serif; /* 朱批 handwritten register */
+    --f-latin:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(120% 80% at 50% 0%, #241d12 0%, var(--ground) 70%);
+    color:var(--ink);
+    font-family:var(--f-song);
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    padding:clamp(16px,4vw,56px) clamp(12px,3vw,40px);
+  }
+
+  /* ---- the scroll (手卷): silk ground floating on ink, paper grain + soft vignette ---- */
+  .scroll{
+    position:relative;
+    max-width:1120px;
+    margin:0 auto;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.04)),
+      radial-gradient(140% 120% at 50% 0%, var(--silk) 0%, var(--silk-2) 55%, var(--silk-edge) 100%);
+    border-radius:2px;
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(90,70,40,.35);
+    /* SVG paper-grain filter applied via ::before so text stays crisp */
+    overflow:hidden;
+  }
+  .scroll::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+    filter:url(#paper);
+    opacity:.5;mix-blend-mode:multiply;
+  }
+  /* faint 青绿 ink-wash at the foot — atmosphere, not illustration (restraint over ornament) */
+  .scroll::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none;z-index:0;
+    background:linear-gradient(180deg, transparent 0%, rgba(47,91,109,.10) 55%, rgba(63,116,88,.16) 100%);
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 60%);
+            mask-image:linear-gradient(180deg,transparent,#000 60%);
+    filter:url(#brush);
+  }
+  .scroll > *{position:relative;z-index:1;}
+
+  /* aged bands at the two ends of a handscroll (天头/拖尾) */
+  .scroll{border-left:14px solid transparent;border-right:14px solid transparent;
+    background-clip:padding-box;}
+
+  /* ---------------- 卷首 (opening) ---------------- */
+  header.head{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:24px;
+    padding:clamp(30px,5vw,64px) clamp(24px,5vw,72px) clamp(24px,4vw,44px);
+    align-items:start;
+  }
+  .eyebrow{
+    font-family:var(--f-kai);
+    letter-spacing:.35em;
+    font-size:13px;
+    color:var(--zhu);
+    margin-bottom:18px;
+  }
+  .tagline-zh{
+    font-family:var(--f-title);
+    font-size:clamp(28px,4.4vw,46px);
+    letter-spacing:.14em;
+    color:var(--ink);
+    line-height:1.3;
+  }
+  .tagline-en{
+    font-family:var(--f-latin);
+    font-style:italic;
+    font-size:clamp(15px,1.6vw,19px);
+    color:var(--ink-soft);
+    margin-top:8px;
+    letter-spacing:.02em;
+  }
+  .lede{
+    font-family:var(--f-kai);
+    font-size:clamp(14px,1.5vw,16px);
+    color:var(--ink-soft);
+    margin-top:22px;
+    max-width:46ch;
+    line-height:1.95;
+  }
+  .lede b{color:var(--ink);font-weight:600;}
+  /* vertical calligraphic title block (竖排) on the right — the signature of the 山河卷 look */
+  .title-vert{
+    writing-mode:vertical-rl;
+    text-orientation:upright;
+    font-family:var(--f-title);
+    font-size:clamp(40px,7vw,72px);
+    letter-spacing:.18em;
+    color:var(--ink);
+    line-height:1.05;
+    padding-left:8px;
+    text-shadow:0 1px 0 rgba(255,255,255,.25);
+  }
+  .title-src{
+    writing-mode:vertical-rl;
+    font-family:var(--f-song);
+    font-size:13px;
+    color:var(--ink-faint);
+    letter-spacing:.1em;
+    margin-right:6px;
+    align-self:end;
+  }
+  .head-right{display:flex;gap:6px;justify-content:flex-end;}
+
+  /* ---------------- main: reading + 考据 ---------------- */
+  .body{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 320px;
+    gap:0;
+    border-top:1px solid var(--line);
+  }
+  .reading{padding:clamp(20px,3.5vw,40px) clamp(24px,5vw,60px);}
+  @media (max-width:860px){
+    .body{grid-template-columns:1fr;}
+    .kaoju-wrap{position:static !important;border-left:none !important;border-top:1px solid var(--line);}
+  }
+
+  /* ---- beat block: 文言 source + vivid reading lines ---- */
+  .beat{margin-bottom:clamp(28px,4vw,48px);}
+  .beat-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;}
+  .beat-seal{
+    font-family:var(--f-title);
+    font-size:20px;
+    color:var(--silk);
+    background:var(--qing);
+    padding:4px 10px 6px;
+    border-radius:2px;
+    letter-spacing:.08em;
+    box-shadow:0 2px 6px -2px rgba(0,0,0,.4);
+  }
+  .beat-title{font-family:var(--f-latin);font-style:italic;color:var(--ink-soft);font-size:15px;}
+  .beat-desc{font-family:var(--f-kai);color:var(--ink-faint);font-size:13px;}
+
+  /* 文言 chunk — the original line, phrases are span-wrapped for highlight-on-考据 */
+  .yuanwen{
+    font-family:var(--f-song);
+    font-size:clamp(17px,1.9vw,20px);
+    letter-spacing:.08em;
+    line-height:2.1;
+    color:var(--ink);
+    padding:12px 16px;
+    margin-bottom:16px;
+    border-left:3px solid var(--qing);
+    background:rgba(47,91,109,.05);
+  }
+  .yuanwen .ph{border-radius:2px;transition:background .35s, color .35s, box-shadow .35s;padding:0 1px;}
+  .yuanwen .ph.lit{
+    background:rgba(230,164,65,.34);
+    box-shadow:0 0 0 1px rgba(230,164,65,.5), 0 0 14px 2px var(--amber-soft);
+    color:#3a2c12;
+  }
+
+  /* ---- a reading line: amber lamp + vivid English, clickable ---- */
+  .line{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:14px;
+    align-items:start;
+    padding:9px 12px 9px 8px;
+    border-radius:4px;
+    cursor:pointer;
+    transition:background .25s;
+    border:1px solid transparent;
+  }
+  .line:hover{background:rgba(122,102,64,.07);}
+  .line:focus-visible{outline:none;border-color:var(--amber);background:rgba(230,164,65,.10);}
+  .line.active{background:rgba(230,164,65,.13);border-color:rgba(230,164,65,.4);}
+  .line-en{font-family:var(--f-latin);font-size:clamp(16px,1.75vw,19px);color:var(--ink);line-height:1.7;}
+  .line.active .line-en{color:#1c1508;}
+
+  /* 灯火 lamp: warm radial core + layered glow (research: box-shadow stack, not a flat dot) */
+  .lamp{
+    width:15px;height:15px;margin-top:8px;border-radius:50%;
+    background:radial-gradient(circle at 40% 35%, var(--amber-soft), var(--amber) 55%, #b9791f 100%);
+    box-shadow:0 0 4px 1px rgba(230,164,65,.7), 0 0 12px 3px rgba(230,164,65,.35);
+    flex-shrink:0;position:relative;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .lamp{animation:flicker 4.5s ease-in-out infinite;}
+    .line:nth-child(odd) .lamp{animation-delay:-2s;}
+  }
+  @keyframes flicker{0%,100%{opacity:.85;}45%{opacity:1;}70%{opacity:.78;}}
+  .line.active .lamp{box-shadow:0 0 6px 2px rgba(230,164,65,.9), 0 0 20px 6px rgba(230,164,65,.5);}
+
+  /* the 考据 hint icon at the end of each line */
+  .line-cue{font-family:var(--f-kai);font-size:11px;color:var(--ink-faint);letter-spacing:.15em;
+    opacity:0;transition:opacity .2s;white-space:nowrap;}
+  .line:hover .line-cue,.line.active .line-cue{opacity:1;}
+  .line-en-row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;}
+
+  /* ---- hedged interpretation: distinct from asserted plot lines ---- */
+  .interp{
+    margin-top:10px;padding:14px 16px;
+    border-left:3px dashed var(--lu);
+    background:rgba(63,116,88,.06);
+    font-family:var(--f-latin);font-style:italic;color:var(--ink-soft);
+    font-size:clamp(15px,1.6vw,17px);line-height:1.7;
+    display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;cursor:pointer;border-radius:4px;
+  }
+  .interp .tag{
+    font-family:var(--f-kai);font-style:normal;font-size:10px;letter-spacing:.12em;
+    color:var(--lu);border:1px solid rgba(63,116,88,.5);border-radius:2px;padding:2px 6px;white-space:nowrap;margin-top:3px;
+  }
+
+  /* ---- 如果没有闸门 toggle + ghost false line ---- */
+  .gate-bar{
+    margin:22px 0 6px;padding:14px 16px;border-radius:4px;
+    background:rgba(168,58,41,.05);border:1px solid rgba(168,58,41,.2);
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .gate-bar .q{font-family:var(--f-kai);font-size:14px;color:var(--ink);}
+  .gate-bar .q small{display:block;font-family:var(--f-latin);font-style:italic;color:var(--ink-faint);font-size:12px;margin-top:2px;}
+  .switch{position:relative;width:52px;height:28px;flex-shrink:0;cursor:pointer;}
+  .switch input{opacity:0;width:100%;height:100%;cursor:pointer;position:absolute;z-index:2;}
+  .switch .track{position:absolute;inset:0;background:#b7a583;border-radius:999px;transition:background .3s;}
+  .switch .knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--silk);
+    box-shadow:0 1px 3px rgba(0,0,0,.4);transition:transform .3s;}
+  .switch input:checked ~ .track{background:var(--zhu);}
+  .switch input:checked ~ .knob{transform:translateX(24px);}
+
+  .ghost{
+    margin:2px 0 0 34px;padding:0;max-height:0;overflow:hidden;
+    transition:max-height .45s ease, opacity .35s;opacity:0;
+  }
+  .ghost.show{max-height:260px;opacity:1;margin-top:12px;}
+  .ghost-inner{
+    border-left:3px solid var(--zhu);background:rgba(168,58,41,.06);
+    padding:12px 16px;border-radius:0 4px 4px 0;
+  }
+  .ghost-label{font-family:var(--f-kai);font-size:11px;letter-spacing:.1em;color:var(--zhu);margin-bottom:6px;}
+  .ghost-false{
+    font-family:var(--f-latin);font-size:17px;color:#8a4133;position:relative;display:inline;
+    line-height:1.7;
+  }
+  /* 朱笔 strike — a vermilion correction stroke (朱批 tradition), slightly irregular */
+  .ghost-false .strike{
+    position:absolute;left:-2px;right:-2px;top:52%;height:2.5px;background:var(--zhu-bright);
+    transform:rotate(-.6deg);border-radius:2px;box-shadow:0 0 3px rgba(194,66,44,.5);
+  }
+  .ghost-reason{
+    font-family:var(--f-hand);font-size:14px;color:var(--zhu);margin-top:12px;line-height:1.7;
+    padding-left:14px;border-left:2px solid rgba(168,58,41,.35);
+  }
+  .ghost-verdict{
+    display:inline-flex;align-items:center;gap:8px;margin-top:12px;
+    font-family:var(--f-kai);font-size:12px;letter-spacing:.08em;color:var(--silk);
+    background:var(--zhu);padding:5px 12px;border-radius:2px;
+  }
+  .ghost-verdict b{font-family:var(--f-latin);letter-spacing:.1em;}
+
+  /* ---------------- 考据 panel (册页 marginalia, sticky sidecar) ---------------- */
+  .kaoju-wrap{
+    position:sticky;top:0;align-self:start;
+    border-left:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(180,150,95,.08), rgba(180,150,95,.02));
+    min-height:100%;
+  }
+  .kaoju{padding:clamp(22px,3vw,32px) clamp(18px,2.5vw,26px);}
+  .kaoju-eyebrow{
+    font-family:var(--f-title);font-size:22px;color:var(--ink);letter-spacing:.1em;
+    display:flex;align-items:center;gap:8px;margin-bottom:4px;
+  }
+  .kaoju-eyebrow .en{font-family:var(--f-latin);font-style:italic;font-size:12px;color:var(--ink-faint);letter-spacing:.05em;}
+  .kaoju-hint{font-family:var(--f-kai);color:var(--ink-faint);font-size:13px;margin-top:20px;line-height:1.9;}
+
+  .kaoju-card{opacity:0;transition:opacity .3s;}
+  .kaoju-card.show{opacity:1;}
+  .kaoju-row{margin-top:18px;}
+  .kaoju-k{font-family:var(--f-kai);font-size:11px;letter-spacing:.14em;color:var(--ink-faint);margin-bottom:5px;}
+  .kaoju-yuanwen{font-family:var(--f-song);font-size:19px;color:var(--ink);line-height:1.9;letter-spacing:.06em;}
+  .kaoju-yuanwen em{font-style:normal;background:rgba(230,164,65,.32);box-shadow:0 0 0 1px rgba(230,164,65,.5);border-radius:2px;padding:0 2px;}
+  .kaoju-claim{font-family:var(--f-latin);font-size:14px;color:var(--ink-soft);line-height:1.65;font-style:italic;}
+
+  /* 印章 stamp for provenance — small square 朱 seal (authentication) */
+  .stamp{
+    margin-top:20px;display:inline-flex;align-items:center;gap:9px;
+    font-family:var(--f-kai);font-size:12px;color:var(--zhu);letter-spacing:.06em;
+  }
+  .stamp .sq{
+    font-family:var(--f-title);font-size:15px;color:var(--silk);background:var(--zhu);
+    width:30px;height:30px;display:grid;place-items:center;border-radius:2px;
+    transform:rotate(-3deg);box-shadow:0 1px 4px rgba(0,0,0,.3);position:relative;
+  }
+  .stamp .sq::after{content:"";position:absolute;inset:0;filter:url(#brush);opacity:.25;mix-blend-mode:overlay;border-radius:2px;}
+
+  /* ---------------- 卷尾 (trust badge + colophon) ---------------- */
+  footer.foot{
+    border-top:1px solid var(--line);
+    padding:clamp(28px,4vw,48px) clamp(24px,5vw,60px);
+    display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,40px);align-items:center;
+  }
+  @media (max-width:640px){footer.foot{grid-template-columns:1fr;text-align:center;justify-items:center;}}
+
+  /* the big 印章 trust seal — 白文 (white on red), motto 言必有據 = "every word has a source" */
+  .trust-seal{
+    width:112px;height:112px;flex-shrink:0;background:var(--zhu);
+    border-radius:3px;transform:rotate(-2.5deg);position:relative;
+    box-shadow:0 4px 14px -4px rgba(0,0,0,.5);
+    display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+    padding:9px;gap:2px;
+  }
+  .trust-seal::after{content:"";position:absolute;inset:0;filter:url(#brush);opacity:.3;mix-blend-mode:overlay;border-radius:3px;}
+  .trust-seal span{font-family:var(--f-title);font-size:30px;color:var(--silk);display:grid;place-items:center;letter-spacing:0;}
+
+  .trust-lines{}
+  .trust-stat{font-family:var(--f-song);font-size:clamp(16px,2vw,20px);color:var(--ink);letter-spacing:.02em;line-height:1.7;}
+  .trust-stat .n{font-family:var(--f-latin);font-weight:700;color:var(--lu);font-size:1.15em;}
+  .trust-stat.blocked .n{color:var(--zhu);}
+  .trust-sub{font-family:var(--f-kai);font-size:12.5px;color:var(--ink-faint);margin-top:2px;line-height:1.6;}
+  .trust-note{font-family:var(--f-latin);font-style:italic;font-size:12px;color:var(--ink-faint);margin-top:14px;line-height:1.6;max-width:60ch;border-top:1px dashed var(--line);padding-top:12px;}
+  .aigc{font-family:var(--f-kai);font-size:11px;color:var(--ink-faint);margin-top:10px;letter-spacing:.04em;}
+</style>
+</head>
+<body>
+
+<!-- offline SVG filter defs: paper grain + brush/ink-bleed edge (feTurbulence, all local) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="paper" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="7" stitchTiles="stitch" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .06 0"/>
+    <feComposite operator="over" in2="SourceGraphic"/>
+    <feDiffuseLighting in="n" surfaceScale="1.4" diffuseConstant="1" lighting-color="#fff" result="light">
+      <feDistantLight azimuth="45" elevation="60"/>
+    </feDiffuseLighting>
+    <feColorMatrix in="light" type="matrix" values="0 0 0 0 .82  0 0 0 0 .72  0 0 0 0 .5  0 0 0 .5 0"/>
+  </filter>
+  <filter id="brush">
+    <feTurbulence type="turbulence" baseFrequency="0.012 0.03" numOctaves="2" seed="11" result="t"/>
+    <feDisplacementMap in="SourceGraphic" in2="t" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<main class="scroll" id="scroll">
+  <header class="head">
+    <div class="head-left">
+      <div class="eyebrow">看得见的忠实 · VISIBLE FAITHFULNESS</div>
+      <div class="tagline-zh">生动，却句句有据</div>
+      <div class="tagline-en">Vivid — yet every line traceable to its source.</div>
+      <p class="lede">
+        这是一则古文的<b>生动重述</b>。读来是故事，<b>点任意一句</b>，
+        便见它底下压着一条已核实的事实、一句真实的原文——
+        <b>忠实，看得见</b>。生动只在原文的意象里生长，绝不虚构。
+      </p>
+    </div>
+    <div class="head-right">
+      <div class="title-src">世說新語 · 德行</div>
+      <h1 class="title-vert">管寧割席</h1>
+    </div>
+  </header>
+
+  <div class="body">
+    <section class="reading" id="reading" aria-label="生动重述 · 点句考据"><!-- rendered from SCENE --></section>
+
+    <aside class="kaoju-wrap">
+      <div class="kaoju">
+        <div class="kaoju-eyebrow">考據 <span class="en">provenance</span></div>
+        <div class="kaoju-hint" id="kaojuHint">点亮的每一盏灯，都是一句<b>已核实</b>的话。<br>点左侧任意一句，看它的原文出处与引擎核过的事实。</div>
+        <div class="kaoju-card" id="kaojuCard" hidden>
+          <div class="kaoju-row">
+            <div class="kaoju-k">文言原文 · SOURCE</div>
+            <div class="kaoju-yuanwen" id="kjYuanwen"></div>
+          </div>
+          <div class="kaoju-row">
+            <div class="kaoju-k">闸门核过的事实 · VERIFIED CLAIM</div>
+            <div class="kaoju-claim" id="kjClaim"></div>
+          </div>
+          <div class="stamp"><span class="sq">據</span><span id="kjStamp"></span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="foot">
+    <div class="trust-seal" id="trustSeal" title="言必有據 — every word has a source">
+      <span>言</span><span>必</span><span>有</span><span>據</span>
+    </div>
+    <div class="trust-lines">
+      <div class="trust-stat" id="statFact"><span class="n">9/9</span> 情节句已核实 · <span class="n">3/3</span> 情节覆盖 · <span class="n">0</span> 虚构</div>
+      <div class="trust-sub">引擎（确定性）判定 · 另有 <b>1</b> 解读，已标注为合理推测（hedged）</div>
+      <div class="trust-note" id="trustNote">
+        徽章报告的是引擎对结构化事实的判定；上方生动读本是忠实<em>改写</em>，
+        每句挂考据链可自证未加料。二者由「考据」相连——这正是「看得见的忠实」。
+      </div>
+      <div class="aigc">AI-generated adaptation · 无既有英译提供给生成器 · Guwen Reactor · Kaggle 2026</div>
+    </div>
+  </footer>
+</main>
+
+<script>
+/* ============================================================================
+   All content is committed data (canon_gold.yaml G01 + runs/demo_clean). The page
+   renders itself from SCENE — nothing is hand-written into the DOM — so the demo
+   literally IS the data it claims to be faithful to.
+   ========================================================================== */
+const SCENE = {
+  beats:[
+    {id:"B01",seal:"金",title:"The Gold",desc:"对财物的两种反应"},
+    {id:"B02",seal:"軒冕",title:"The Carriage",desc:"对权位的两种反应"},
+    {id:"B03",seal:"割席",title:"Cutting the Mat",desc:"以割席绝交"}
+  ],
+  // each chunk is the 文言 source; `parts` lets us highlight the exact phrase a line denotes
+  chunks:{
+    C01:[{k:"a",t:"管寧、華歆"},{k:"F01",t:"共園中鋤菜"},{k:"b",t:"，"},{k:"F02",t:"見地有片金"},{k:"c",t:"，"},{k:"F03",t:"管揮鋤與瓦石不異"},{k:"d",t:"，"},{k:"F04",t:"華捉而擲去之"},{k:"e",t:"。"}],
+    C02:[{k:"F05",t:"又嘗同席讀書，有乘軒冕過門者"},{k:"f",t:"，"},{k:"F06",t:"寧讀如故"},{k:"g",t:"，"},{k:"F07",t:"歆廢書出看"},{k:"h",t:"。"}],
+    C03:[{k:"F08",t:"寧割席分坐"},{k:"i",t:"曰："},{k:"F09",t:"「子非吾友也。」"}]
+  },
+  lines:[
+    {n:1,beat:"B01",chunk:"C01",fact:"F01",en:"In the same garden, Guan Ning and Hua Xin bend to the same rows, hoes rising and falling.",claim:"Guan Ning and Hua Xin work the vegetable garden together."},
+    {n:2,beat:"B01",chunk:"C01",fact:"F02",en:"In the soil at their feet, half-buried, a piece of gold catches their eye.",claim:"Their hoes uncover a piece of gold lying in the soil."},
+    {n:3,beat:"B01",chunk:"C01",fact:"F03",en:"Guan Ning does not slow — his hoe falls on the gold as on any tile or stone.",claim:"Guan Ning keeps hoeing, handling the gold no differently from a piece of tile or stone."},
+    {n:4,beat:"B01",chunk:"C01",fact:"F04",en:"Hua Xin takes the gold in his hand — then throws it aside.",claim:"Hua Xin picks the gold up, then throws it away.",ghost:true},
+    {n:5,beat:"B02",chunk:"C02",fact:"F05",en:"One day, as the two sit reading on the same mat, someone in an official’s carriage passes by the gate.",claim:"While the two sit reading, an official’s carriage passes by the gate."},
+    {n:6,beat:"B02",chunk:"C02",fact:"F06",en:"Guan Ning’s eyes never leave the page.",claim:"Guan Ning reads on as before."},
+    {n:7,beat:"B02",chunk:"C02",fact:"F07",en:"Hua Xin sets down his book and steps out to watch it pass.",claim:"Hua Xin puts down his book and goes out to look at the carriage."},
+    {n:8,beat:"B03",chunk:"C03",fact:"F08",en:"Guan Ning cuts the mat in two and draws their seats apart.",claim:"Guan Ning cuts the mat and separates their seats."},
+    {n:9,beat:"B03",chunk:"C03",fact:"F09",en:"“You are no friend of mine,” he says.",claim:"Guan Ning says that Hua Xin is not his friend."}
+  ],
+  interp:{beat:"B01",facts:["F03","F04"],en:"Set side by side, their two answers to the gold may hint the friends weighed wealth differently.",claim:"Taken together, these contrasting responses to the gold may suggest the two friends place different value on wealth."},
+  ghost:{ // the "如果没有闸门" false line — a real committed forbidden_claim
+    en:"Hua Xin, tempted, slips the gold into his sleeve and keeps it.",
+    reason:"原文「擲去之」——华歆把金子扔了；此句称他留下金子，与已核实事实 F04 <b>矛盾</b>。",
+    verdict:"CONTRADICTED"
+  }
+};
+
+const $ = (s,r=document)=>r.querySelector(s);
+const el = (t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
+
+/* ---- render the 文言 chunk with span-wrapped phrases (for highlight) ---- */
+function renderChunk(cid){
+  const wrap = el("div","yuanwen");
+  wrap.dataset.chunk = cid;
+  SCENE.chunks[cid].forEach(p=>{
+    const s = el("span", p.k.startsWith("F")?"ph":null, p.t);
+    if(p.k.startsWith("F")) s.dataset.fact = p.k;
+    wrap.appendChild(s);
+  });
+  return wrap;
+}
+
+/* ---- render reading, grouped by beat ---- */
+function render(){
+  const root = $("#reading");
+  SCENE.beats.forEach(b=>{
+    const sec = el("div","beat");
+    const head = el("div","beat-head");
+    head.appendChild(el("span","beat-seal",b.seal));
+    head.appendChild(el("span","beat-title",b.title));
+    head.appendChild(el("span","beat-desc",b.desc));
+    sec.appendChild(head);
+    // 文言 source for this beat
+    sec.appendChild(renderChunk(SCENE.lines.find(l=>l.beat===b.id).chunk));
+    // lines
+    SCENE.lines.filter(l=>l.beat===b.id).forEach(l=>{
+      const line = el("div","line");
+      line.tabIndex = 0; line.setAttribute("role","button");
+      line.setAttribute("aria-label","考据第 "+l.n+" 句");
+      line.dataset.n = l.n;
+      line.appendChild(el("span","lamp"));
+      const right = el("div");
+      const row = el("div","line-en-row");
+      row.appendChild(el("span","line-en",l.en));
+      row.appendChild(el("span","line-cue","考據 ›"));
+      right.appendChild(row);
+      line.appendChild(right);
+      line.addEventListener("click",()=>selectLine(l,line));
+      line.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectLine(l,line);}});
+      sec.appendChild(line);
+
+      // ghost (如果没有闸门) attaches under line 4
+      if(l.ghost){
+        sec.appendChild(renderGateBar());
+        sec.appendChild(renderGhost());
+      }
+    });
+    // hedged interpretation lives with its beat (B01)
+    if(b.id===SCENE.interp.beat){
+      const ip = el("div","interp");
+      ip.tabIndex=0; ip.setAttribute("role","button"); ip.dataset.interp="1";
+      ip.appendChild(el("span","tag","解读 · hedged"));
+      ip.appendChild(el("span",null,SCENE.interp.en));
+      ip.addEventListener("click",()=>selectInterp(ip));
+      ip.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectInterp(ip);}});
+      sec.appendChild(ip);
+    }
+    root.appendChild(sec);
+  });
+}
+
+function renderGateBar(){
+  const bar = el("div","gate-bar");
+  const q = el("div","q");
+  q.innerHTML = '如果没有闸门？<small>If the gate were off — what an ungated AI might write here</small>';
+  const sw = el("label","switch");
+  sw.innerHTML = '<input type="checkbox" id="gateToggle" aria-label="如果没有闸门"><span class="track"></span><span class="knob"></span>';
+  bar.appendChild(q); bar.appendChild(sw);
+  return bar;
+}
+function renderGhost(){
+  const g = el("div","ghost"); g.id="ghost";
+  const inner = el("div","ghost-inner");
+  inner.appendChild(el("div","ghost-label","未经闸门的 AI 可能这样写："));
+  const f = el("div","ghost-false");
+  f.innerHTML = SCENE.ghost.en + '<span class="strike"></span>';
+  inner.appendChild(f);
+  const r = el("div","ghost-reason"); r.innerHTML = SCENE.ghost.reason; inner.appendChild(r);
+  const v = el("div","ghost-verdict");
+  v.innerHTML = '朱批 · <b>'+SCENE.ghost.verdict+'</b> · 闸门拦截 · 禁止导出';
+  inner.appendChild(v);
+  g.appendChild(inner);
+  return g;
+}
+
+/* ---- interactions ---- */
+let activeEl = null;
+function clearActive(){
+  if(activeEl) activeEl.classList.remove("active");
+  document.querySelectorAll(".yuanwen .ph.lit").forEach(s=>s.classList.remove("lit"));
+}
+function selectLine(l,node){
+  clearActive(); node.classList.add("active"); activeEl=node;
+  // light the exact 文言 phrase
+  const ph = document.querySelector('.yuanwen[data-chunk="'+l.chunk+'"] .ph[data-fact="'+l.fact+'"]');
+  if(ph) ph.classList.add("lit");
+  // fill 考据 card
+  $("#kaojuHint").hidden = true;
+  const card = $("#kaojuCard"); card.hidden = false; card.classList.add("show");
+  const chunkText = SCENE.chunks[l.chunk].map(p=> p.k===l.fact ? "<em>"+p.t+"</em>" : p.t).join("");
+  $("#kjYuanwen").innerHTML = chunkText;
+  $("#kjClaim").textContent = l.claim;
+  $("#kjStamp").innerHTML = "出自《世說新語 · 德行》 · " + l.fact;
+}
+function selectInterp(node){
+  clearActive(); node.classList.add("active"); activeEl=node;
+  ["F03","F04"].forEach(f=>{const p=document.querySelector('.yuanwen[data-chunk="C01"] .ph[data-fact="'+f+'"]');if(p)p.classList.add("lit");});
+  $("#kaojuHint").hidden = true;
+  const card = $("#kaojuCard"); card.hidden=false; card.classList.add("show");
+  $("#kjYuanwen").innerHTML = "由 <em>管揮鋤與瓦石不異</em> 与 <em>華捉而擲去之</em> 引申";
+  $("#kjClaim").textContent = SCENE.interp.claim;
+  $("#kjStamp").innerHTML = "合理解读 · 已标注 hedged · 不进「已核实」计数";
+}
+
+/* gate toggle: reveal ghost + flip the trust badge to show what WOULD happen */
+function bindGate(){
+  const t = $("#gateToggle"), ghost = $("#ghost");
+  t.addEventListener("change",()=>{
+    const on = t.checked;
+    ghost.classList.toggle("show",on);
+    $("#statFact").innerHTML = on
+      ? '<span class="n">1</span> 虚构被拦截 · <span class="n">CONTRADICTED</span> · 导出 BLOCKED'
+      : '<span class="n">9/9</span> 情节句已核实 · <span class="n">3/3</span> 情节覆盖 · <span class="n">0</span> 虚构';
+    $("#statFact").classList.toggle("blocked",on);
+    $("#trustSeal").style.filter = on ? "grayscale(.5) brightness(.85)" : "";
+    if(on){ ghost.scrollIntoView({behavior:"smooth",block:"center"}); }
+  });
+}
+
+render();
+bindGate();
+</script>
+</body>
+</html>
