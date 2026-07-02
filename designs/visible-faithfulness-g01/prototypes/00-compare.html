@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>舞台结构 A/B/C 对比 — 管寧割席 原型</title>
+<style>
+  :root{--silk:#e8dab9;--ink:#2a2116;--ink-soft:#6a5c42;--zhu:#a83a29;--line:rgba(122,102,64,.3);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#141109;font-family:"Songti SC","STSong","SimSun",serif;color:var(--ink);
+    min-height:100vh;display:grid;place-items:center;padding:40px 20px;}
+  .sheet{max-width:880px;background:var(--silk);border-radius:3px;padding:40px 48px;
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.8);}
+  h1{font-family:"Kaiti SC","STKaiti","楷体",serif;font-size:26px;letter-spacing:.12em;margin-bottom:6px;}
+  .sub{font-size:13px;color:var(--ink-soft);margin-bottom:26px;line-height:1.8;}
+  .card{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);
+    border-radius:3px;padding:18px 22px;margin-bottom:14px;transition:box-shadow .2s,background .2s;}
+  .card:hover{background:rgba(255,250,235,.5);box-shadow:0 4px 14px -6px rgba(40,28,10,.4);}
+  .card b{font-family:"Kaiti SC","STKaiti","楷体",serif;font-size:17px;letter-spacing:.06em;color:var(--zhu);}
+  .card p{font-size:13.5px;color:var(--ink-soft);line-height:1.85;margin-top:6px;}
+  .note{font-size:12px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:16px;
+    margin-top:22px;line-height:1.9;}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>舞台结构三选一 · 原型对比</h1>
+  <div class="sub">
+    唯一变量 = <b>舞台结构</b>;册页面板、签牌、灯火、考据、SCENE 数据三者完全相同(单变量实验)。<br>
+    每个都试同一套动作:<b>点驿站 → 册页滑入 → 点句 → 考据 → 收起</b>。
+  </div>
+
+  <a class="card" href="proto-a-fixed-stage.html">
+    <b>原型 A · 满屏固定舞台 + 镜头轻移</b>
+    <p>最贴 6 张截图:地图满屏、3 驿站一览、点驿站镜头轻推。<br>
+    感受:全景在场感够不够?镜头轻移的"聚焦感"值不值?</p>
+  </a>
+
+  <a class="card" href="proto-b-handscroll.html">
+    <b>原型 B · 真·横向手卷(右→左展开)</b>
+    <p>画布 2.4 屏宽:卷首题跋 → 金 → 軒冕 → 割席 → 卷尾印章,靠「展卷」按钮/触控板横滑/方向键推进(不劫持滚轮)。<br>
+    感受:展卷的叙事推进感 vs 每站的操作成本;右→左顺序是否自然?</p>
+  </a>
+
+  <a class="card" href="proto-c-unroll-intro.html">
+    <b>原型 C · 固定舞台 + 开场展卷动画</b>
+    <p>结构与 A 完全相同,开场多一段 3.4 秒"卷轴展开"仪式(点击可跳过)。<br>
+    感受:开场仪式感加多少分?会不会嫌它挡在内容前面?</p>
+  </a>
+
+  <div class="note">
+    ① 底图是<b>纯 CSS/SVG 占位层峦</b>——真迹《千里江山图》crop 是下一个独立决策,别用底图美丑来评结构。<br>
+    ② 朱笔「如果没有闸门」与信任徽章<b>未接线</b>(右上灰签牌是占位)——它们不影响舞台结构的判断。<br>
+    ③ 三个文件均为单文件离线,0 外部请求。
+  </div>
+</div>
+</body>
+</html>

@@ -53,3 +53,5 @@ handover-20*.md
 .idea/
 .vscode/
 *.swp
+.gstack/
+designs/**/prototypes/shots/
