@@ -1,0 +1,351 @@
+{
+ "research": [
+  {
+   "family": "Fact-checking organizations (PolitiFact, Snopes, Full Fact, AFP Fact Check)",
+   "patterns": [
+    {
+     "name": "Truth-O-Meter gauge + \"If Your Time is short\" + \"Our ruling\"",
+     "product": "PolitiFact.com",
+     "what_it_looks_like": "Article top: speaker photo + exact quote in quotation marks, then a car-speedometer-style gauge icon with an orange needle pointing to one of 6 discrete labels (True/Mostly True/Half True/Mostly False/False/Pants on Fire), each a distinct needle position/color. Below that, a boxed \"If Your Time is short\" section with 2-3 plain-language bullets (a TL;DR) plus a jump-link \"See the sources for this fact-check.\" Full narrative follows, closing with a dedicated \"Our ruling\" paragraph that restates the claim, gives the reasoning, and ends with the exact sentence \"We rate the statement [X].\" Article ends with a numbered, dated Sources list (interviews, gov docs, prior fact-checks). The small gauge icon also appears next to every headline in list/feed views so a whole page of verdicts is scannable without reading text.",
+     "lay_comprehension": "American Press Institute study (Amazeen, Thorson, Muddiman, Graves 2015; n=1020 nationally representative online experiment, YouGov) directly tested this: adding a visual rating gauge to a text correction significantly improved reader comprehension accuracy vs. text-only, for a non-political/low-stakes claim (cereal health claim). For a politically-charged claim, the gauge added NO measurable comprehension benefit beyond plain text -- partisanship dominated. Given a free choice, 56% of readers preferred evidence+visual-scale over evidence-only, and readers who got to pick their own format rated the fact-checking org more favorably regardless of which format they picked.",
+     "url": "https://www.politifact.com/factchecks/2026/jul/01/donald-trump/transgender-sports-supreme-court-ruling-title-IX/"
+    },
+    {
+     "name": "Claim/Rating badge with linked glossary",
+     "product": "Snopes.com",
+     "what_it_looks_like": "Article opens with a boxed \"Claim:\" line stating the precise wording under review, then a \"Rating:\" line showing a small colored icon/badge (red X-circle for False, green check for True, half-shaded icon for Mixture, etc.) as a clickable link labeled \"About this rating\" that jumps to a one-sentence plain-English definition on a dedicated glossary page (/fact-check-ratings/). Body is plain reported narrative with no jargon (e.g. \"However, the images were altered using AI\"). Ends with a formal citation-style Sources list.",
+     "lay_comprehension": "Snopes' own ratings page states it explicitly RETIRED 3 of roughly 20 rating categories in 2025-2026 (Unproven, Unfounded, Research In Progress) for being \"potentially confusing,\" replacing them with plain bulleted-context summaries at the top of articles instead of a jargon label -- direct market evidence that MORE granularity in a verdict taxonomy hurts, not helps, lay comprehension, even for a resourced incumbent.",
+     "url": "https://www.snopes.com/fact-check-ratings/"
+    },
+    {
+     "name": "Two-line plain-verdict box, no visual scale",
+     "product": "Full Fact (fullfact.org)",
+     "what_it_looks_like": "Directly under the headline/date: a two-line bolded summary -- \"What was claimed\" + one plain sentence restating the claim, then \"Our verdict\" + a short verdict phrase (\"Incorrect.\") + one explanatory sentence. No icon, gauge, or color badge anywhere on the page. Trust is carried entirely by directness of language plus inline-linked citations to primary sources (government written answers, official spending documents) woven into the following paragraphs.",
+     "lay_comprehension": "No controlled comprehension study located for this specific format in this research pass. Full Fact's public \"Misinformation Toolkit\" for lay readers (Where's it from? What's missing? How do you feel?) deliberately avoids formal rating jargon, consistent with the plain-text choice, but this is design rationale, not measured evidence.",
+     "url": "https://fullfact.org/politics/270-bn-defence-extra-repeat/"
+    },
+    {
+     "name": "No scale at all -- declarative headline + annotated evidence",
+     "product": "AFP Fact Check (factcheck.afp.com)",
+     "what_it_looks_like": "No rating badge or scale anywhere. The headline itself IS the verdict, stated as plain fact (\"Thai princess death sparks AI-manipulated images of royal family\"). Trust is built by: (a) a photo comparison image explicitly captioned as annotated by AFP with red Xs and \"AI\" labels drawn directly ON the screenshots -- the mark-up sits on the evidence itself, not in a separate meter; (b) step-by-step narrated methodology (reverse image search, detection-tool screenshot); (c) named, on-record quoted sources (the original photographer); (d) byline with fact-checker's name/region and a \"Related stories\" module of other debunks on the same topic.",
+     "lay_comprehension": "No controlled comprehension study located. Included as a contrasting design worth noting for its evidence-annotation approach rather than for measured lay outcomes.",
+     "url": "https://factcheck.afp.com/doc.afp.com.B78A3T4"
+    }
+   ],
+   "warnings": [
+    "The strongest comprehension evidence found (Amazeen et al. 2015, APRI, n=1020) is over a decade old, used a fictional fact-check brand in a lab experiment, and predates today's AI-fabrication landscape -- reasonable to extrapolate from but not a guarantee.",
+    "HKS Misinformation Review (2026) explicitly notes that most fact-checking-label research measures PERCEIVED effectiveness/trust, not literal comprehension of what the label means -- 'readers trust the badge' is much better evidenced across this literature than 'readers understand the badge.' Be honest we are extrapolating on the comprehension claim.",
+    "Political fact-checking research repeatedly shows partisanship swamps any format effect (gauge vs. plain text made zero comprehension difference once political identity was engaged). Not directly analogous to low-stakes classical-literature content, but a caution against assuming any trust-UI pattern generalizes to emotionally-loaded material.",
+    "Full Fact's own 'How we fact-check' methodology page returned a dead/unpublished-page error during this research (https://fullfact.org/about/how-we-fact-check/) -- could not verify their current from-source methodology copy live; relied on a live example article instead, so the 'What was claimed/Our verdict' pattern is confirmed but their stated rationale for it is not."
+   ],
+   "adaptations": [
+    "Lamp: keep the single binary amber lamp (verified) rather than adding a multi-point gauge -- both Snopes's 2025-26 retirement of ambiguous middle categories and Amazeen's finding that scale-granularity adds no benefit for low-stakes content argue for staying binary rather than adding a 'partially verified' tier.",
+    "考据 card: adopt Full Fact's exact two-line skeleton as the FIRST thing shown on click -- 'Source says: [literal phrase]' / 'Engine verdict: [claim -- VERIFIED/CONTRADICTED]' -- before the fuller literal-meaning-and-seal-stamp detail, so a 5-minute reader gets the verdict without reading the whole card (mirrors both Full Fact's box and PolitiFact's 'If Your Time is short').",
+    "Gate-off toggle: follow AFP's annotate-the-evidence-directly pattern -- keep the strikethrough ON the fabricated text itself (already planned) rather than only an abstract badge off to the side, and add a short captioned note next to it in AFP's style (e.g. 'struck through: fabricated when verification gate is disabled') instead of a bare icon.",
+    "考据/method page: give every specialized term (考据, seal stamp, gate) a Snopes-style one-click 'About this term' link to a one-sentence plain definition -- Snopes found this necessary even for its own long-established rating words, so a brand-new audience needs it at least as much."
+   ]
+  },
+  {
+   "family": "Citation UX in AI answers — inline source markers with hover/click disclosure (Perplexity, Bing/Copilot, NotebookLM, ChatGPT/Gemini browsing)",
+   "patterns": [
+    {
+     "name": "Inline numbered citation tag adjacent to the claim, with expandable source list",
+     "product": "Perplexity",
+     "what_it_looks_like": "A small bracketed/superscript numeral (often with the source's favicon) sits immediately after the sentence it supports, not at paragraph end. All AI UX Patterns catalogs this as 'multi-source references — inline citations with metadata like titles and favicons.' A 'Reviewed sources' area below expands into full source cards.",
+     "url": "https://www.shapeof.ai/patterns/citations",
+     "lay_comprehension": "No Perplexity-specific study found. General cross-platform behavioral data (see family-level notes) shows hover/click on this style stays under 25% engagement."
+    },
+    {
+     "name": "Citation chip + hover glance-card + 'Show all sources' side pane",
+     "product": "Bing Copilot / Microsoft Copilot",
+     "what_it_looks_like": "Footnote-style clickable citation chips embedded in the response text; hovering shows a small glance-card preview of the cited page/entity; a 'Show all' side pane or sidecard lists the full curated source set alongside the answer for drill-down.",
+     "url": "https://eaxmedia.com/bing-copilot-inline-citations-sidecards-update/ ; https://www.microsoft.com/en-us/microsoft-copilot/blog/2025/11/07/bringing-the-best-of-ai-search-to-copilot/ (both consulted via search snippets — WebFetch was not run directly on these two, so treat visual description as moderate- not high-confidence)",
+     "lay_comprehension": "Maps closely to the 'Footer'/'Sidebar' conditions tested empirically — see family-level notes below (He & Liu, 2025)."
+    },
+    {
+     "name": "Small grey-oval inline citation number, hover-preview quote, click jumps to source location",
+     "product": "Google NotebookLM",
+     "what_it_looks_like": "A citation appears as a small grey oval containing a number, e.g. [1], placed right after the generated sentence. Hovering surfaces a preview card with the exact quoted passage; clicking opens the source in the left-hand document panel scrolled/highlighted to that exact passage — because NotebookLM is grounded only in user-uploaded sources, the citation always resolves to a real, inspectable location.",
+     "url": "Aggregated from search snippets (Codecademy NotebookLM guide, DataCamp NotebookLM tutorial); the official Google Support page (support.google.com/notebooklm/answer/16215270) could not be fetched directly this session (tool budget hit) — treat as moderate-confidence, not primary-source-verified.",
+     "lay_comprehension": "No NotebookLM-specific study found; product design intent (source-grounded, always-resolvable citation) is architecturally different from web-search citation UIs, which softens some of the 'random citation' risk described below."
+    },
+    {
+     "name": "Inline citation hyperlink numeral, hover reveals URL (desktop only)",
+     "product": "ChatGPT (Search/browsing) and Gemini (grounded/SGE answers)",
+     "what_it_looks_like": "A numeral or small pill is appended inline to a sentence; on desktop web, hovering over it reveals the source URL/title, and clicking opens the source. This hover affordance does not exist the same way in the mobile app, so mobile users must tap through to verify — no passive preview available.",
+     "url": "Aggregated from search snippets (typescape.ai/blog/chatgpt-citations-explained, aurelio.ai/learn/gemini-2-web-search); help.openai.com/en/articles/9237897-chatgpt-search returned HTTP 403 on direct fetch this session, not independently verified.",
+     "lay_comprehension": "This exact pattern was the one directly tested in Ding et al. 2025 (below) — ChatGPT-4 output with citations shown 'as a numeral, e.g. [1]', hover-to-reveal URL."
+    }
+   ],
+   "warnings": [
+    "Citation presence alone inflates self-reported trust independent of citation validity: Ding et al. 2025 (arXiv:2501.01303, Notre Dame + Deloitte, N=303, RCT) found adding citations to ChatGPT-4 answers significantly raised trust — and this held even when the citations were RANDOMLY substituted (unrelated to the actual answer). Random citations scored lower than valid ones but still boosted trust versus zero citations. Directly relevant: a citation-shaped or seal-shaped UI element can manufacture unearned trust regardless of whether real verification happened underneath.",
+    "Verification behavior is rare across all major AI products: a cross-platform study (referenced via nngroup.com/articles/explainable-ai) found hover/click engagement stayed below 25% on every system tested; ChatGPT was the best performer at ~22% hover / ~12% click. One participant said they'd verify 'if needed' but never clicked a single citation during the study session. Design must not assume users will click through to check — most won't.",
+    "Checking a citation more often LOWERS trust than raises it: same Ding et al. 2025 study found a statistically significant DECREASE in self-reported trust among participants who actually checked citations, versus those who didn't. Implication: whatever a user sees on click/hover must be unambiguous and genuinely reassuring — a confusing or seemingly-irrelevant snippet on inspection can do more damage than showing nothing.",
+    "Dumping all sources into an always-visible dense block (footer/full list) can backfire: He & Liu 2025 (arXiv:2512.12207, U. Tennessee + U. Oklahoma, N=394, 5-condition RCT: No-sources / Collapsible / Hover-card / Footer / Sidebar) found the high-visibility Footer and Sidebar conditions INITIALLY REDUCED self-reported knowledge gain and topic interest versus lower-visibility conditions — it reads as clutter/box-checking unless citation density is high enough to back it up. The effect reversed (became positive) only as citation count increased.",
+    "A persistent, spatially-aligned citation panel (sidebar) uniquely increased agreement/persuasion with the AI's claims in the same He & Liu study, independent of how many citations were shown — meaning this UI shape is a strong persuasion lever, not necessarily a comprehension or trust-calibration lever. Worth flagging as an ethical consideration, not just a UX win, if adopted uncritically."
+   ],
+   "adaptations": [
+    "Give the per-line 考据 card a lightweight hover-preview (source phrase + literal meaning in one line) in addition to the full click-to-expand seal-stamp detail — matches the low click-through reality (12-22% even on the best product, ChatGPT) so the ~80% who never click still register 'this line has a real check,' while the minority who do click get full depth.",
+    "Keep the honesty note ('verification runs in the build pipeline, page shows recorded verdicts') visually anchored next to the amber lamp itself, not deferred to the method page — Ding et al.'s finding that citation-shaped UI inflates trust regardless of underlying validity means our trust signal needs its own disclaimer right where the signal appears, not one click away.",
+    "Keep the 考据 card as an on-demand per-line click/expand pattern (closest to He & Liu's 'Collapsible' condition, which drove the highest active engagement of their 5 conditions) rather than a dense always-visible footer of every verdict — the study found dense default-visible source dumps read as clutter and reduced perceived learning unless very citation-dense, which an educational retelling page won't be.",
+    "For the 'What if the gate were off?' toggle, keep the fabricated-line strikethrough live and inline within the article flow (not a separate modal/panel) — this is closest to the Sidebar condition that produced the strongest attitude-shift/persuasion effect in He & Liu; since we are demonstrating a real, verifiable capability (not decorating an unverified claim), that persuasion is earned rather than manufactured, which addresses the trust-halo risk directly."
+   ]
+  },
+  {
+   "family": "Community-sourced annotation & citation-based verifiability markers (X Community Notes; Wikipedia [citation needed] / Reference Previews / \"verifiability not truth\")",
+   "patterns": [
+    {
+     "name": "Community Notes — attached context box",
+     "product": "X (Twitter)",
+     "what_it_looks_like": "A bordered/shaded note panel attached directly beneath a post, containing plain-language corrective text with cited source links. Once a note crosses the 'helpful' threshold it is shown to ALL readers, always visible (unlike replies, which require a click). Below-threshold notes are visible only to contributor-raters. UNVERIFIED THIS SESSION (recalled from training knowledge, could not re-fetch to confirm exact copy): the header text shown to ordinary readers is reportedly something like 'Readers added context they thought people might want to know.'",
+     "url": "https://communitynotes.x.com/guide/en/under-the-hood/ranking-notes (WebFetch blocked with HTTP 402; description synthesized from search snippets, not a full-page fetch) / https://help.x.com/en/using-x/community-notes (WebFetch blocked with HTTP 403)",
+     "lay_comprehension": "PNAS Nexus, May 2024, Drolsbach/Solovev/Pröllochs, JLU Giessen — pre-registered survey, n=1,810 US adults, politically balanced, 4 conditions (control/expert flag/community flag/community note+explanation) x 36 posts. Community notes raised trust 4.8pp (8.2% relative, p<0.001) vs expert flags, and raised perceived-misleadingness identification 9.6pp vs control (beating expert flags at 7.1pp and bare community flags at 6.0pp). Critically: bare community flags (source=crowd, no explanation) underperformed expert flags by 1.3pp — the trust gain comes from the EXPLANATORY CONTEXT, not crowd authority. A second experiment isolated this: adding explanation to ANY label lifted trust 5.35pp independent of source. Partisan asymmetry: Trump supporters showed smaller trust gains on politically-concordant misinformation (4.2pp vs Biden supporters' 7.4pp)."
+    },
+    {
+     "name": "Community Notes coverage/speed failure (cautionary, not a pattern to copy)",
+     "product": "X (Twitter)",
+     "what_it_looks_like": "N/A — this is a pipeline/distribution problem, not a UI element.",
+     "url": "https://fortune.com/2025/07/10/more-than-90-x-community-notes-are-never-published-stuck-limbo-study/ ; https://cdt.org/insights/making-metas-community-notes-work-current-challenges-and-opportunities/",
+     "lay_comprehension": "Reported (2025) that >90% of Community Notes are never shown to readers, including 74% of accurate election-related notes deemed helpful. Median delay before a note surfaces was >7 hours, some up to 70 hours; by the time a note appears ~80% of a viral post's retweets have already happened. Contentious topics rarely reach the cross-ideological 'helpful' threshold needed to publish at all."
+    },
+    {
+     "name": "Wikipedia [citation needed] inline tag",
+     "product": "Wikipedia",
+     "what_it_looks_like": "Small bracketed superscript text '[citation needed]' inserted inline immediately after an unsourced claim, inside normal reading flow (not a separate panel or modal) — signals 'this specific claim lacks a source' at the point of the claim itself.",
+     "url": "https://en.wikipedia.org/wiki/Citation_needed ; https://en.wikipedia.org/wiki/Template:Citation_needed",
+     "lay_comprehension": "No controlled comprehension study found. But indirect evidence of legibility: as of June 2025, >604,000 pages (~1% of English Wikipedia) still carry it, and it has become pop-culture shorthand outside Wikipedia entirely (memes, Randall Munroe's XKCD and his 2014 book 'What If?' both use it for comic effect) — suggesting ordinary readers do parse it correctly as an 'unverified claim' marker even without training, since the joke only works if the meaning is legible."
+    },
+    {
+     "name": "Wikipedia Reference Previews (footnote hover card)",
+     "product": "Wikipedia / Wikimedia Foundation + WMDE",
+     "what_it_looks_like": "Hovering (desktop) or tapping (mobile) a numbered footnote marker (e.g. '[3]') opens a small popup showing the citation content — reference type at top, then author/title/snippet — without navigating away or jumping to the References section at the bottom of the page. Same visual design language as Wikipedia's general 'Page Previews' link-hover cards. Enabled by default for all readers including logged-out; togglable off in Preferences > Appearance.",
+     "url": "https://www.mediawiki.org/wiki/Help:Reference_Previews ; https://tech-news.wikimedia.de/2021/07/08/new-wikipedia-feature-reference-previews-to-speed-up-the-identification-of-sources/",
+     "lay_comprehension": "Piccardi et al., 'Quantifying Engagement with Citations on Wikipedia,' WWW 2020 (EPFL/Wikimedia) — actual click-through to citations is very low: ~0.29% of pageviews result in a reference click overall (1 in ~340 page loads); desktop is 4x mobile (1:178 vs 1:769). Clicking correlates with SHORTER, LOWER-QUALITY articles — readers dig into sources mainly when the article itself fails to answer their question, not as routine verification behavior. Implication: the affordance is consulted rarely even when it's a zero-navigation hover — its main value for most readers may be ambient reassurance ('I could check') rather than actual use."
+    },
+    {
+     "name": "\"Verifiability, not truth\" — retired policy tagline (cautionary case study)",
+     "product": "Wikipedia (core content policy, WP:V)",
+     "what_it_looks_like": "N/A — a sentence in policy text, not a UI element: 'The threshold for inclusion in Wikipedia is verifiability, not truth.'",
+     "url": "https://en.wikipedia.org/wiki/Wikipedia:Verifiability,_not_truth",
+     "lay_comprehension": "Coined Dec 2004, added to WP:NOR Mar 2005, moved to WP:V as the LEAD sentence Aug 2005. Removed from the policy lead in July 2012 after a 30-day community discussion, specifically because readers and newcomers consistently misread it as 'Wikipedia doesn't care whether things are true' — the opposite of the intended meaning (verifiability was meant as a floor, not a ceiling, on truth). Replaced with plainer language: 'content is determined by previously published information... Even if you're sure something is true, it must be verifiable before you can add it.' This is a rare, well-documented instance of an abstract-dichotomy trust phrase being field-tested on millions of lay readers for 7 years and then retired for causing exactly the kind of misreading a term like 'engine-checked, not fact-checked' risks."
+    }
+   ],
+   "adaptations": [
+    "Keep the 考据 card's structure (source phrase + literal meaning + claim + seal) rather than a bare seal/badge — the PNAS Nexus study found bare crowd-labels underperform even expert-only labels; trust comes from the explanation sitting next to the claim, not from the stamp's authority alone.",
+    "Avoid Wikipedia's 'verifiability not truth' mistake: do NOT lead the honesty note or method page with a clever abstract dichotomy (e.g. framing 'engine-checked' as distinct from 'fact-checked' without immediately grounding it). State literally what happened per line ('this claim was checked against [source]') rather than a philosophical distinction readers can invert.",
+    "For the gate-off toggle: make the CONTRADICTED/struck-through demo show the explanatory WHY (what it conflicts with in source), not just a red strikethrough — the PNAS finding that context beats bare flags applies directly to this UI moment, which is our highest-stakes trust surface.",
+    "Design the collapsed/idle state (amber lamp, card icon) to carry meaning on its own rather than assuming most visitors will click through to the 考据 card — Wikipedia's own citation-click data (0.29% of pageviews) suggests most users won't open it even when the interaction cost is near-zero, so the lamp's always-visible presence is likely doing more trust-work than the card's contents.",
+    "On the method page, explicitly contrast our pre-publish verification against Community Notes' well-documented coverage failure (>90% of notes never shown, 7-70hr lag) as a stated design differentiator — 'every line is checked before publish, not eventually, maybe' is a concrete, evidence-backed claim our audience (educators/judges) can verify against a known, criticized alternative."
+   ],
+   "warnings": [
+    "Two of five WebFetch attempts (communitynotes.x.com/guide, help.x.com) were blocked with HTTP 402/403 — the exact copy/layout of a Community Note as shown to ordinary (non-contributor) readers on X is reconstructed from search-result snippets and training knowledge, NOT a directly-fetched primary source this session; treat specific wording claims (e.g. the 'Readers added context...' header text) as unverified.",
+    "WebSearch and WebFetch tool budgets were exhausted before I could independently confirm Wikipedia's exact current WP:V lead wording or pull a screenshot-level description of the Community Note UI — recommend a follow-up pass with fresh budget (or opencli/twitter CLI) if pixel-exact layout matters for implementation.",
+    "No published research was found on lay comprehension specifically of Wikipedia's [citation needed] tag or the Reference Previews hover card (only usage/click-rate data, not comprehension studies) — the legibility claim for [citation needed] rests on indirect pop-culture evidence, not a controlled study."
+   ]
+  },
+  {
+   "family": "Family 4 — Content provenance & AI labeling (C2PA / Content Credentials / platform AI labels)",
+   "patterns": [
+    {
+     "name": "CR pin icon + 4-level progressive disclosure (L1-L4)",
+     "product": "C2PA / Content Authenticity Initiative (Adobe, Microsoft, etc.)",
+     "what_it_looks_like": "A small circular pin icon with lowercase 'cr' and a 90-degree-angled corner, placed consistently on/near the content. L1 = icon alone (presence + valid/invalid crypto state, shown via a secondary status glyph, never overlaid on the 'cr' glyph itself). Hover/click reveals L2: a compact sidebar/panel with signer, creation tool, date, and key assertions in plain wording ('Content Credentials issued by...', 'Edits and activity'). A 'Learn more' link expands to L3 (full manifest history, edit timeline, thumbnails) and L4 (forensic signature detail) for power users. Spec explicitly bans decorating the icon (no fills/shadows) and bans stacking a validity badge over the letters.",
+     "lay_comprehension": "No published comprehension study of the CR icon itself found. The spec's own UX guidance concedes it relies on design principles ('avoid new paradigms/terminology', WCAG, OS-consistent patterns) rather than cited user testing, and calls itself 'an evolving document, informed by real world experiences' -- i.e. comprehension evidence is aspirational, not yet demonstrated.",
+     "url": "https://spec.c2pa.org/specifications/specifications/1.4/ux/UX_Recommendations.html ; https://c2pa.org/introducing-official-content-credentials-icon/"
+    },
+    {
+     "name": "Verify inspector tool ('digital nutrition label')",
+     "product": "Adobe / Content Authenticity Initiative — verify.contentauthenticity.org",
+     "what_it_looks_like": "Drag-and-drop web tool: drop an image/video/PDF in, it decodes the embedded C2PA manifest and shows a side panel described in coverage as a 'digital nutrition label' -- creator/publisher, capture device or generating tool, timestamp, and a chronological list of edits, each with a thumbnail. Cryptographic signature/certificate detail is present but demoted below the human-readable summary, consistent with the C2PA L2->L3 layering.",
+     "lay_comprehension": "Not independently studied for this tool; the 'nutrition label' framing is the vendor's own analogy, not a tested one -- flag as marketing language, not evidence.",
+     "url": "https://verify.contentauthenticity.org/ (redirects from https://contentcredentials.org/verify)"
+    },
+    {
+     "name": "Automatic platform AI-generated label sourced from embedded Content Credentials",
+     "product": "TikTok",
+     "what_it_looks_like": "TikTok reads C2PA metadata on upload and, if present, automatically stamps an 'AI-generated' label on the video -- no creator action required, distinguishing it from self-disclosed labels. TikTok reports labeling over 1.3B AI videos this way (Content Credentials + invisible watermark + detection models combined).",
+     "lay_comprehension": "No comprehension study found; only adoption-scale claims from TikTok/CAI press material -- treat the 1.3B figure as a vendor claim, not third-party verified.",
+     "url": "https://contentauthenticity.org/blog/tiktok-joins-content-authenticity-efforts ; https://newsroom.tiktok.com/en-us/partnering-with-our-industry-to-advance-ai-transparency-and-literacy"
+    },
+    {
+     "name": "'Altered or synthetic content' banner + expandable 'How this content was made'",
+     "product": "YouTube",
+     "what_it_looks_like": "A banner appears beneath the video player (and inline in Shorts feed) when a creator discloses realistic AI/synthetic content. Clicking 'How this content was made' expands a short plain-language explanation of what was altered/generated. Sensitive topics (health, news, elections, finance) can also get an on-video label, not just below-player.",
+     "lay_comprehension": "No public comprehension study found for this specific YouTube UI.",
+     "url": "https://support.google.com/youtube/answer/15447836?hl=en ; https://blog.youtube/news-and-events/disclosing-ai-generated-content/"
+    },
+    {
+     "name": "Camera-to-web provenance chain (secure capture device signing)",
+     "product": "Leica M11-P / SL3-S, Sony Camera Verify, Google Pixel 10",
+     "what_it_looks_like": "A secure chip inside the camera cryptographically signs the C2PA manifest at the moment of shutter press (time, location, device), before any software touches the file. The chain is then meant to persist through editing and publication, verifiable later via the same Verify tool. Sony's version launched restricted to registered press/news orgs only.",
+     "lay_comprehension": "Not studied for end users (this is a capture-side/producer feature, not consumer-facing). Notably Nikon's Z6 III firmware version of this was suspended after researchers found a vulnerability letting fraudulent composites keep a 'valid' signature -- i.e. the chain-of-custody promise itself can be defeated, which is the exact risk a lay user's trust in the badge can't detect.",
+     "url": "https://blog.adobe.com/en/publish/2023/10/26/leica-launches-world-first-camera-with-content-credentials-built-in ; https://en.wikipedia.org/wiki/Content_Credentials"
+    },
+    {
+     "name": "Three-layer durability model (metadata + invisible watermark + fingerprint)",
+     "product": "Adobe / Content Authenticity Initiative",
+     "what_it_looks_like": "Because platforms strip C2PA metadata on upload (privacy/size reasons), CAI layers an invisible watermark (TrustMark) and a cryptographic visual fingerprint underneath, so at least one signal survives re-upload/screenshot/crop. Not really a 'UI pattern' -- it's the plumbing that makes any lay-facing badge still resolve after the image has been re-shared.",
+     "lay_comprehension": "N/A -- infrastructure, not a user-facing surface. Relevant to us only as a lesson: a badge is only as trustworthy as its weakest hop.",
+     "url": "https://contentauthenticity.org/blog/three-pillars-of-provenance"
+    }
+   ],
+   "warnings": [
+    "Provenance != truth, and users conflate the two: CDT explicitly warns 'the public may conflate verified content with true content' and draws the direct analogy to Twitter/X blue checkmarks, which started as identity verification and became meaningless once purchasable. A provenance badge that looks like a truth-stamp will eventually be gamed or misread as one. (https://cdt.org/insights/the-promise-and-risk-of-digital-content-provenance/)",
+    "Labels changing PERCEPTION of authorship does not mean they change TRUST or behavior: Stanford HAI's n=1,500 randomized study found AI-authorship labels shifted whether people believed content was AI-written, but had NO significant effect on the content's persuasiveness, perceived accuracy, or share intent. A label can be 'noticed' and still not do the trust-calibration work you want. (https://hai.stanford.edu/policy/labeling-ai-generated-content-may-not-change-its-persuasiveness, paper: arxiv.org/abs/2504.09865)",
+    "UW Center for an Informed Public (2024) found provenance signals had only 'limited to modest effect on user behavior' when assessing AI-generated media -- the strongest available field evidence, and it's a soft null, not a strong positive. (cited via https://cdt.org/insights/the-promise-and-risk-of-digital-content-provenance/)",
+    "A focus-group study of real platform AI labels (Instagram/TikTok/LinkedIn/YouTube) found inconsistent comprehension: some participants missed labels entirely, some dismissed them as 'corporate disclaimers' rather than genuine signals, and wording/placement mattered more than presence of a label at all. (arxiv.org/pdf/2505.22845)",
+    "Nutrition-label precedent (Apple iOS privacy labels) cautions that visible != read: CDT notes the reception was 'mixed' -- many users ignored the labels even once shipped everywhere, and voluntary reporting created accuracy gaps. Eye-tracking literature on real nutrition labels separately shows self-reported viewing is reliably higher than actual measured viewing -- don't trust user self-report on whether they 'saw' your lamp/badge.",
+    "Chain-of-custody claims can be defeated at the weakest link: Nikon's camera-signing feature was pulled after a vulnerability let fraudulent composites retain a valid signature. A cryptographic-sounding badge implies a stronger guarantee than most implementations can actually back.",
+    "C2PA's own guidance flags an overgeneralization risk: raising awareness of misinformation/fabrication can increase blanket skepticism toward factual content too, not just fabricated content -- calibrate the gate-off demo so it doesn't teach 'don't trust any of this.'"
+   ],
+   "adaptations": [
+    "Amber lamp: treat it strictly as a C2PA-style L1 presence/state indicator, not a verdict on truth. Keep it binary and minimal like the CR pin, but label the state literally ('Verified against source' / 'Checks recorded') rather than an unqualified checkmark -- this directly defends against the CDT-documented 'verified = true' conflation that broke platform blue-checkmarks.",
+    "考据 card: this already matches the C2PA L2->L3 progressive-disclosure model (icon -> summary -> full detail) better than most real products do -- keep that structure, but borrow the spec's plain-language substitution table (e.g. say 'checked against' not 'assertion', 'source phrase' not 'claim graph node') since C2PA's own MVP-L2 fields are exactly signer/date/key-claim, which maps 1:1 to your source-phrase/meaning/verdict/seal.",
+    "Gate-off toggle: lean into this being stronger than any industry pattern found -- YouTube/TikTok labels are static and the Stanford HAI study suggests static labels don't move trust. An active, watchable catch (fabricated line struck through, export blocked) is a demonstrated mechanism, not an asserted one; keep it as the centerpiece rather than downgrading it to match industry's passive-badge norm.",
+    "Method page: explicitly write the CDT warning into the copy -- state in plain terms that verification checks facts against source text, it is not a certification that the retelling is 'true' or complete, mirroring the honest framing C2PA uses ('Content Credential unavailable or invalid') instead of implying cryptographic-grade certainty you don't have.",
+    "Badge (any export/share badge): given the Nikon chain-of-custody failure and the CDT brittleness warning (metadata gets stripped on re-upload), don't imply your badge survives copy/paste or screenshot the way a C2PA-signed image claims to -- if the badge can't travel with the artifact, say so rather than let users assume portability they won't get."
+   ]
+  },
+  {
+   "family": "Trust seals & badges (e-commerce trust marks, NNGroup/Baymard credibility research, verified checkmarks)",
+   "patterns": [
+    {
+     "name": "Norton Secured / SSL site seal",
+     "product": "Norton/DigiCert, tested across e-commerce checkouts",
+     "what_it_looks_like": "Small badge icon (shield + checkmark, brand-colored) placed near the payment form or footer, often clickable to a verification popup.",
+     "lay_comprehension": "Baymard (2013-2023 studies, ~3,500+ respondents in 2022 round) found Norton was chosen as most-trusted by 35.4% of users, ~2x the runner-up and ~10x an average unbranded seal. But the mechanism is brand recognition, NOT technical understanding — Baymard explicitly states users' trust is driven by 'gut feeling' from visual familiarity, not comprehension of what SSL/certification means.",
+     "url": "https://www.trustsignals.com/blog/trust-badges-work-and-we-have-the-receipts-to-prove-it"
+    },
+    {
+     "name": "The fake-seal finding (decorative vs credible)",
+     "product": "Baymard Institute checkout research",
+     "what_it_looks_like": "A generic, non-certified padlock icon with text like 'This site is SSL SECURED' — invented for the test, not tied to any real certifying authority.",
+     "lay_comprehension": "This fabricated seal outperformed real seals from lesser-known legitimate vendors (Thawte, GeoTrust). Direct evidence that lay users cannot tell a real credential from a plausible-looking fake one — badge legitimacy is judged by visual familiarity/design quality, not by verifying the claim behind it. Cautionary for us: our lamp has no pre-existing brand recognition to borrow, so the icon alone will not carry credibility the way Norton's does.",
+     "url": "https://www.trustsignals.com/blog/trust-badges-work-and-we-have-the-receipts-to-prove-it"
+    },
+    {
+     "name": "Amazon 'Verified Purchase' badge",
+     "product": "Amazon reviews",
+     "what_it_looks_like": "Small orange/gray text tag 'Verified Purchase' attached directly under a reviewer's name on each individual review — scoped to that one review, not the product or seller as a whole.",
+     "lay_comprehension": "Academic/platform research shows it acts as a strong trust cue, raising perceived helpfulness and reported conversion lift (168% cited in secondary sources) — but it is also over-trusted: users treat it as proof of authenticity when it only proves a purchase occurred, not that the review is honest. Lesson: a badge scoped to a narrow, literal fact ('this person bought it') gets over-generalized by readers into a broader claim ('this review is trustworthy') unless the copy stays literal.",
+     "url": "https://link.springer.com/article/10.1007/s12525-025-00833-4"
+    },
+    {
+     "name": "Twitter/X blue checkmark collapse",
+     "product": "Twitter/X verification badge, pre- and post-2023",
+     "what_it_looks_like": "Same blue checkmark icon, but its underlying criterion changed overnight from 'platform confirmed this is a notable real identity' to 'this account pays $8/month' — no visual change to the badge itself.",
+     "lay_comprehension": "Directly evidenced by press coverage and public reaction: once criteria became purchasable/inconsistent, the badge inverted from a status symbol to (per Axios) 'a badge of dishonor,' and created a documented rise in impersonation confusion. This is the single clearest cautionary case in the family — a badge's entire credibility rests on its criteria being fixed, auditable, and non-negotiable. Any perceived inconsistency (badge shown for something that shouldn't qualify) can retroactively poison trust in every prior instance of the badge.",
+     "url": "https://www.axios.com/2023/04/23/verified-checkmark-twitter-badge"
+    },
+    {
+     "name": "NewsGuard 'Nutrition Label'",
+     "product": "NewsGuard browser extension / API",
+     "what_it_looks_like": "A small trust-score icon (0-100, color-coded) appears inline next to links in search/social feeds. Hover = one-line summary. Click = full 'Nutrition Label': a structured breakdown against 9 named journalistic criteria (e.g., 'repeatedly publishes false content: yes/no', 'discloses ownership: yes/no') with the evidence behind each.",
+     "lay_comprehension": "No independent third-party comprehension study found in this pass (unverified) — but structurally this is the closest real-world analog to our 考据 card: icon-in-context → click → itemized, auditable rationale rather than a bare trust claim. Its design intent (per NewsGuard's own materials) is explicitly to let users 'make their own judgments' by seeing the reasoning, not just the verdict.",
+     "url": "https://www.newsguardtech.com/how-it-works/"
+    },
+    {
+     "name": "Google ClaimReview fact-check snippet (now discontinued)",
+     "product": "Google Search fact-check labels, 2016-2025",
+     "what_it_looks_like": "A labeled snippet under search results tagging an article as a fact-check, sourced via structured ClaimReview schema markup added by outlets like PolitiFact/FactCheck.org.",
+     "lay_comprehension": "Retired June 2025; fact-checkers quoted by Poynter/Nieman Lab said the concern is that once the badge is 'thrown into the mix with a hodgepodge of other' generic search features, it loses its distinct signal value — i.e., a verification badge that isn't visually and structurally distinguished from ordinary content stops registering as verification at all. Relevant warning for us: the amber lamp must never look like just another decorative icon among unrelated UI elements.",
+     "url": "https://www.niemanlab.org/2025/06/google-kills-the-fact-checking-snippet/"
+    },
+    {
+     "name": "NNGroup's 4 credibility factors (non-badge baseline)",
+     "product": "Nielsen Norman Group synthesis of Fogg/Stanford credibility research",
+     "what_it_looks_like": "No specific badge UI — a framework: (1) design quality/polish, (2) upfront disclosure of terms/costs, (3) comprehensive & current content, (4) links out to the rest of the web (third-party validation).",
+     "lay_comprehension": "NNGroup's user-quote evidence: a single typo or broken link measurably drops trust ('just some simple stuff like that can change my impression'), and users explicitly distrust sites 'that weren't recommended by friends or family' more than the site's own claims about itself. Key implication: our method page and site polish generally are doing as much trust work as the lamp icon itself — a badge sitting on a site with any rough edges will read as decorative.",
+     "url": "https://www.nngroup.com/articles/trustworthy-design/"
+    }
+   ],
+   "warnings": [
+    "Badge icons alone carry almost no inherent credibility for lay users — Baymard's fake-seal result shows a generic invented icon can beat real certifications from lesser-known real authorities. Our amber lamp has zero pre-existing brand recognition, so the icon cannot do the work alone; it needs a plain-English claim next to it every time it appears, not just on click-through.",
+    "A badge's credibility is destroyed retroactively, not just going forward, if its criteria are ever inconsistent or negotiable (Twitter/X case). Any perceived case of 'sometimes the lamp is lit when it shouldn't be' will poison trust in every other instance. The criteria must be described as fixed and mechanical, never discretionary.",
+    "Verified badges get over-generalized by readers beyond their literal scope (Amazon: 'purchased' gets read as 'honest'). Watch our own copy — 'verified' on the amber lamp could get read by educators as 'the whole story/translation is perfect' when it only means 'each factual claim was checked against source text.' Copy needs to state the narrow scope explicitly.",
+    "A verification signal that isn't visually/structurally distinct from surrounding decorative UI stops registering as a verification signal at all (Google ClaimReview 'hodgepodge' problem) — the lamp and 考据 card need consistent, unmistakable visual treatment distinct from generic UI chrome, every time.",
+    "No study found in this pass gives hard quantitative lay-comprehension numbers for click-through explanation patterns (NewsGuard, click-to-verify tooltips) — those claims are structural/directional, not comprehension-tested. Flagging as unverified rather than asserting effectiveness."
+   ],
+   "adaptations": [
+    "Lamp: never let it stand alone as a bare icon — always pair with a short literal claim ('Every factual claim checked against source text') in immediate proximity, since we have no brand recognition to borrow and Baymard shows lay users judge badges on gut-feeling/familiarity, not comprehension.",
+    "考据 card: this already mirrors NewsGuard's Nutrition Label structure (click → itemized criteria + evidence) — keep it, but make sure it's reachable identically from every line/article so the badge behavior stays perceptibly consistent (per the Twitter-collapse lesson that any inconsistency poisons trust).",
+    "Gate toggle demo (fabricated line caught + blocked): lean into this harder than typical trust badges do — most real-world badges (Norton, blue check) never visibly demonstrate a failure case, which is exactly why skeptics distrust them as 'decorative, always says yes.' Showing CONTRADICTED + struck-through + export-BLOCKED is a stronger credibility move than anything in this research set; keep it prominent, maybe promote it earlier in the page flow rather than as a secondary toggle.",
+    "Method page: restructure as a fixed, numbered rubric (like NewsGuard's 9 named criteria) rather than narrative marketing copy — state exactly what disqualifies a claim (CONTRADICTED conditions) in plain, auditable language, since ClaimReview's retirement shows vague/folded-in verification signals lose meaning fast."
+   ]
+  },
+  {
+   "family": "Layered disclosure: nutrition labels, model/system cards, museum object labels, food-traceability QR",
+   "patterns": [
+    {
+     "name": "FDA Nutrition Facts Label — glance/detail/full-record in one panel",
+     "product": "FDA-mandated packaged food label (2016 redesign)",
+     "url": "https://www.fda.gov/food/nutrition-facts-label/whats-nutrition-facts-label",
+     "what_it_looks_like": "Three visual tiers stacked in one box, no clicking required. GLANCE: 'Calories' in oversized bold type at top, directly under bold 'Serving size'. DETAIL: a table below with nutrients (fat, sodium, carbs, sugars, protein) each with a %DV number in its own right-aligned column. FULL RECORD: small-type footnote explaining what %DV means, plus the ingredient list (legally ordered by descending weight) below the table. Bold/size is the sole tier-signal — no icons, no expand/collapse.",
+     "lay_comprehension": "VERIFIED via PubMed abstract (Kim, Ellison, Prescott, Nayga 2021, n=992 US adults, Prolific sample, published in Am J Health Promotion): average objective comprehension across original/updated conditions was 81.4%, but the 2016 redesign did NOT significantly improve comprehension overall, and participants specifically struggled with total/added-sugars questions even on the updated label. Takeaway: adding a number (bold, %DV) does not by itself fix understanding of what the number means."
+    },
+    {
+     "name": "Dataset Nutrition Label",
+     "product": "MIT Media Lab / Data Nutrition Project",
+     "url": "https://arxiv.org/abs/1805.03677",
+     "what_it_looks_like": "A standardized diagnostic 'label' for datasets modeled explicitly on the FDA panel: modules for provenance, variables, ground-truth correlations, and statistics, displayed in the same fixed order every time so a reader can compare two datasets by scanning the same slot. Positioned as pre-model-development documentation, i.e. a 'glance' gate before deeper data science begins.",
+     "lay_comprehension": "NOT independently verified this session (263-citation paper, arxiv abstract only reviewed — did not reach a usability/comprehension study in the time available)."
+    },
+    {
+     "name": "Model Cards — fixed-section skeleton, same order every time",
+     "product": "Google (Mitchell et al. 2019) + Google's open-source Model Card Toolkit",
+     "url": "https://arxiv.org/abs/1810.03993",
+     "what_it_looks_like": "Every model card uses the identical section order: Model Details -> Intended Use -> Training Data -> Evaluation Results (often with a per-subgroup breakdown table) -> Limitations -> Ethical Considerations. Paper explicitly frames this for two audiences at once: 'intentional users' (implementers, who read deep) and 'unintentional users' (end users/public, who skim the top). The fixed order is the layering mechanism — top sections are glance-level prose, bottom sections are quantitative tables for the detail/full-record reader.",
+     "lay_comprehension": "NOT independently verified this session — a follow-up query on model-card comprehension studies (e.g. Crisan et al.'s interactive-model-card work, recalled from background knowledge, not re-confirmed) could not be run because the web-tool budget for this context was exhausted mid-research. Flagging as unverified rather than asserting it."
+    },
+    {
+     "name": "AI System Cards — blog post (glance) + full PDF (full record)",
+     "product": "OpenAI GPT-4/GPT-4o System Cards; Anthropic Transparency Hub",
+     "url": "https://openai.com/index/gpt-4o-system-card/",
+     "what_it_looks_like": "Two-artifact pattern: a short public blog post/landing page is the glance layer, linking out to a long PDF (GPT-4's ran ~60 pages) organized into named evaluation categories (Capability Assessments / Risk & Safety Evaluations / External Red Teaming) as the full record. Anthropic's Transparency Hub adds a middle tier: a 'model report' page described (per search snippet, not independently fetched — WebFetch was blocked by a budget hook mid-session) as 'distilled accessible highlights' sitting between the landing page and a much longer system card PDF (up to 200+ pages for recent models).",
+     "lay_comprehension": "NOT verified this session."
+    },
+    {
+     "name": "Museum tombstone label -> extended label -> catalogue raisonné",
+     "product": "Museum exhibition practice (Beverly Serrell's 'Exhibit Labels: An Interpretive Approach'); V&A gallery-text guidance",
+     "url": "https://www.vam.ac.uk/blog/creating-new-europe-1600-1800-galleries/labels-gallery-text",
+     "what_it_looks_like": "Three tiers, physically separated: (1) 'tombstone' label next to the object — title/artist/date/medium only, ~15-25 words; (2) extended/interpretive label or wall panel — one short paragraph of context, kept intentionally brief because visitors have limited reading time; (3) the catalogue raisonné or museum's online collection database — full scholarly record with complete provenance (ownership chain), exhibition history, bibliography, condition reports, and critical essays. QR/NFC codes on the physical tombstone label are increasingly used as the bridge from tier 1 straight to tier 3 without cluttering the wall.",
+     "lay_comprehension": "PARTIALLY sourced: found via a blog review of Serrell's book (not the primary source directly) that her research method centers on measured 'stopping rate' and 'reading rate' per label, and that her core finding is shorter, well-designed labels get read more completely — but I could not pull the actual word-count numbers or comprehension percentages from a primary source this session. Treat the general shorter-is-read-more finding as credible (it's the foundational premise of the whole museum-studies label-design literature) but the specific figures as unverified."
+    },
+    {
+     "name": "Catalogue raisonné entry — the 'full record' tier",
+     "product": "Art-history scholarly convention",
+     "url": "https://en.wikipedia.org/wiki/Catalogue_raisonn%C3%A9",
+     "what_it_looks_like": "Per-work entry with a fixed field list: title/variant titles, dimensions, date, medium, current owner, full provenance (list of every known owner/dealer in sequence), exhibition history, bibliography, condition, signatures/inscriptions, critical essay, reproduction. This is the tier almost no lay visitor ever reaches — it exists for scholars/authenticators, reached only via deliberate lookup, never surfaced by default.",
+     "lay_comprehension": "N/A — by design this tier is not meant for lay comprehension; it's the audit trail for experts, which is itself the useful design lesson (see adaptations)."
+    },
+    {
+     "name": "Food-traceability QR scan (Walmart/IBM mango pilot)",
+     "product": "Walmart + IBM Food Trust (Hyperledger Fabric)",
+     "url": "https://jbba.scholasticahq.com/article/3712-food-traceability-on-blockchain-walmart-s-pork-and-mango-pilots-with-ibm/",
+     "what_it_looks_like": "Consumer scans a QR code on the product and gets a short, plain-language screen: farm origin, harvest date, transport conditions — no blockchain jargon, no ledger IDs shown. The full cryptographic/ledger record exists underneath but is deliberately never surfaced to the shopper; it's cited in B2B/press materials as 'trace time cut from 7 days to 2.2 seconds' for Walmart's internal recall use, not as a consumer-facing metric.",
+     "lay_comprehension": "NOT independently verified (no consumer comprehension study found — only the internal trace-speed metric, which measures Walmart's operational capability, not shopper understanding)."
+    },
+    {
+     "name": "Provenance.org 'Proof Points' — claim badge with click-through evidence",
+     "product": "Provenance (provenance.org), B2B sustainability-claims platform",
+     "url": "https://www.provenance.org/framework",
+     "what_it_looks_like": "On a retailer product page, a small claim badge (e.g. 'organic', 'living wage') appears at glance level. Provenance's rule: every displayed claim must carry a minimum level of third-party evidence before the badge can be shown at all — verification happens before publish, not after. Clicking/tapping the badge reveals the verifying body and evidence type (detail tier); it does not typically expose the raw audit document to consumers (that stays with the 70+ verifier network, B2B-only).",
+     "lay_comprehension": "NOT independently verified this session (company/product marketing copy only, no third-party comprehension study found)."
+    }
+   ],
+   "warnings": [
+    "Research was cut short: a per-context web-tool budget hook blocked WebFetch/WebSearch after 6 successful searches + 1 successful fetch (~20 calls counted against a 15-call budget), so several planned direct verifications (live DeepMind/Hugging Face model card pages, Anthropic model-report exact layout, a dedicated model-card lay-comprehension study) could NOT be completed. Everything above marked 'NOT independently verified this session' should be treated as directional, not confirmed.",
+    "The one comprehension study I did verify (FDA Nutrition Facts, Kim et al. 2021) is a cautionary finding, not a success story: a major, well-funded, professionally-designed redesign (bigger bold calories, added %DV columns) still did NOT significantly improve lay comprehension, and consumers still misread the added-sugars figures specifically. Don't treat 'add a number in bold' as a solved problem — the number needs an adjacent explanation of what counts as good/bad, not just visual emphasis.",
+    "Every pattern in this family assumes the lay reader voluntarily seeks the deeper tier (clicks the QR code, opens the PDF, reads the catalogue). None of them are evidence that lay readers WILL seek it — the museum literature's core premise is that most visitors stop at tier 1 and never go further, which argues for putting your most important trust signal in the glance tier, not burying it in the method page.",
+    "Catalogue raisonné / raw ledger tiers are reached by essentially nobody in the lay audience — they exist purely as an audit trail for the rare expert/skeptic. Don't over-invest polish there; the ROI on the deep tier is for hackathon judges, not readers."
+   ],
+   "adaptations": [
+    "Amber lamp: borrow the FDA panel's 'one bold number at a glance' but pair it with a plain-language anchor the FDA case shows is missing — e.g. not just a lamp + count, but 'lamp + N/N claims verified' where N/N itself is legible without a legend (avoids the %DV failure mode of showing a number readers can't interpret alone).",
+    "考据 card: adopt the museum's three-tier depth explicitly rather than the current two. Add a true tombstone tier before the click (seal icon + one clause, ~10 words, visible on hover/glance) so the card itself becomes tier 2 (extended label: source phrase + meaning + claim), and add a 'view full record' link at the card's bottom that deep-links to the raw build-pipeline verdict log entry — reserved for the rare judge/skeptic, mirroring how catalogue raisonné is never surfaced to casual visitors.",
+    "Method page: enforce the model-card discipline of a FIXED section order, identical across every visit, so repeat readers build a mental map (e.g. always: What This Checks -> How It Checks -> What It Doesn't Check -> Known Limitations). This is the one lesson from the model-card literature I can state with confidence even without a comprehension study — the paper's own framing (intentional vs. unintentional users reading the same fixed structure at different depths) matches the product's own two audiences of educators (skim) and judges (deep read).",
+    "Gate-off toggle (CONTRADICTED/BLOCKED demo): borrow Provenance.org's 'claim shown only with evidence attached' rule — when the fabricated line is struck through, show the specific source phrase it contradicts side-by-side in the same view, not just a red BLOCKED label. This converts the toggle from 'trust us, we caught it' into 'here is the exact literal text that disagrees,' which is the glance-to-evidence jump the food-QR and Provenance patterns both make in one tap."
+   ]
+  }
+ ],
+ "synthesis": "# Verification UI — Ranked Recommendation Memo\n\n## Top 8 Recommendations\n\n**1. Full Fact's two-line skeleton → 考据 card, line one.** \"Source says: [phrase]\" / \"Engine verdict: VERIFIED/CONTRADICTED\" as the *first* thing shown, before literal-meaning + seal detail. Fits our 5-min non-technical reader: verdict in <2 sec without opening the whole card. Surface: **考据 card**. Effort: **S**.\n\n**2. AFP's annotate-the-artifact pattern → gate toggle.** AFP never uses a separate meter — it draws red Xs directly on the evidence. Keep our strikethrough live and inline on the fabricated text itself (already planned), and add a one-line caption naming *what it conflicts with*, on the artifact, not off to the side. Surface: **gate toggle**. Effort: **S**.\n\n**3. PNAS Community Notes finding → gate toggle detail.** Explanatory context (not source authority) is what moved trust 4.8–9.6pp in the one controlled study we have; bare crowd flags underperformed even expert flags. When CONTRADICTED fires, show the exact literal source phrase it disagrees with side-by-side — not just a red label. Surface: **gate toggle**. Effort: **S/M**.\n\n**4. Baymard + Twitter blue-check → lamp, every instance.** A bare icon carries near-zero credibility for an unrecognized brand (a fake seal beat real minor-vendor seals in testing), and any perceived inconsistency retroactively poisons trust. Pair the lamp with a fixed, literal, narrow-scope sentence every time it appears (\"Every factual claim checked against source text\") — never the icon alone. Criteria must be described as mechanical, never discretionary. Surfaces: **lamp, index**. Effort: **S**.\n\n**5. NotebookLM-style hover preview → 考据 card.** Click-through on inline verification affordances tops out at ~22% even on the best product (ChatGPT); ~80% never click. Add a hover/glance preview (source phrase + literal meaning, one line) so the majority who never click still register a real, inspectable check. Surface: **考据 card**. Effort: **M**.\n\n**6. Model Cards' fixed section order → method page.** Google's Model Cards use an identical section order every visit specifically because they serve two audiences reading at different depths (skimmers vs. implementers) — exactly our educators-vs-judges split. Restructure as: *What This Checks → How It Checks → What It Doesn't Check → Known Limitations*, same order always. Surface: **method page**. Effort: **M**.\n\n**7. NewsGuard's itemized, auditable rubric → method page.** Google's ClaimReview snippet died in 2025 partly because folded-in verdicts stopped reading as distinct signal. State the exact, numbered conditions that trigger CONTRADICTED in plain auditable language (not narrative marketing copy) so the rubric is checkable, not just asserted. Surface: **method page**. Effort: **M**.\n\n**8. Museum tombstone-label tiering → badge+chips.** Physically separate tiers (title/date at the object → one paragraph of context → full catalogue) let casual visitors stop early without losing signal. Give any claim badge/chip a ~10-word tombstone label at glance level, with a \"view full record\" deep-link to the raw build-pipeline log reserved for the rare skeptic/judge — don't over-invest polish there; almost no lay reader reaches it (Wikipedia: 0.29% of pageviews click a citation). Surface: **badge+chips**. Effort: **S/M**.\n\n## Tensions the data does NOT resolve — don't average these away\n\n- **Confidence vs. hedging.** PolitiFact's clarity comes from a declarative closing line (\"We rate the statement X\"). C2PA/CDT warn hard against implying certainty you don't have (the \"verified = true\" conflation that broke Twitter's blue check). We need a **plain, literal, narrow-scope declarative** (\"this claim was checked against [source]\") — confident in wording, modest in scope. Avoid both a mushy hedge and an overclaim.\n- **Passive vs. active trust-building.** Citation-UX research says most users never click (12–25%), arguing the *idle* state (lamp) must carry the trust load alone. But FDA nutrition-label data shows bigger/bolder numbers alone don't fix comprehension either — visual emphasis without adjacent plain-language anchoring is a dead end either way. Neither \"make it bigger\" nor \"make it clickable\" alone is enough; both need literal copy next to them.\n- **Granularity.** Snopes retired 3 of ~20 rating tiers as \"confusing\"; Amazeen et al. found scale-granularity added no comprehension benefit for low-stakes content. This argues to **keep the lamp binary**, resisting any temptation to add a \"partially verified\" middle tier later.\n\n## 3 Anti-Patterns to Avoid\n\n1. **Multi-point granular verdict scales.** Snopes actively retired ambiguous middle categories; PolitiFact's 6-point gauge showed zero extra comprehension benefit over plain text once stakes rose. Don't build toward a \"confidence score\" or multi-tier rating.\n2. **Clever abstract dichotomies in copy.** Wikipedia's \"verifiability, not truth\" was field-tested on millions of readers for 7 years and retired because it was consistently misread as the opposite of its intent. Don't frame \"engine-checked\" vs. \"fact-checked\" as a philosophical distinction anywhere — state literally what happened per line.\n3. **Decorative badges with no adjacent claim, or folded into generic chrome.** Baymard's fake seal beat real minor certifications; Google killed ClaimReview once it blended into \"a hodgepodge of other search features.\" The lamp/badge must be visually distinct every time AND never stand alone without its literal sentence.\n\n## Signature Move\n\n**Move the gate-off toggle's failure demo to the most prominent position on the page (ideally above the fold on the index/first article) and pair it with the source-phrase-side-by-side (rec #3), not tucked as a secondary control.** No pattern in any of the six families — not Norton's seal, not the blue check, not YouTube's AI label, not C2PA's pin — visibly demonstrates a *caught failure* live. Every real-world trust badge only ever says \"yes.\" A skeptical judge watching CONTRADICTED + strikethrough + export-BLOCKED fire in real time, with the exact contradicting source text shown beside it, is the one thing on this list with no industry precedent to compete against — it converts \"trust us\" into \"watch it fail and get caught,\" in under 15 seconds."
+}

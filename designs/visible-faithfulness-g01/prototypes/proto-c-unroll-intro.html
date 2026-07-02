@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>原型 C · 固定舞台 + 开场展卷动画 — 管寧割席</title>
+<!--
+  PROTOTYPE C of 3 — layout decision only. 结构与原型 A 完全相同(满屏固定舞台+镜头轻移),
+  只多一段开场:手卷从右向左"展开"露出全图(3.4s,点击/按键可跳过,prefers-reduced-motion 直接免掉)。
+  底图 = 纯 CSS/SVG 占位层峦(真迹 crop 是后续独立决策)。闸门/徽章未接线。
+  单文件离线。SCENE 数据逐字复用 v1(REVIEWED·PASS,不可改字)。
+-->
+<style>
+  :root{
+    --ground:#141109; --silk:#e8dab9; --silk-2:#e0cfa8; --silk-edge:#c7b184;
+    --ink:#2a2116; --ink-soft:#6a5c42; --ink-faint:#9a8a6a;
+    --qing:#2f5b6d; --lu:#3f7458; --pine:#25503f;
+    --amber:#e6a441; --amber-soft:#f0c072;
+    --zhu:#a83a29; --zhu-bright:#c2422c;
+    --line:rgba(122,102,64,.28);
+    --f-title:"Xingkai SC","STXingkai","Weibei SC","Baoli SC","KaiTi","Kaiti SC","STKaiti","楷体",serif;
+    --f-song:"Songti SC","STSong","Songti TC","SimSun","Noto Serif SC",serif;
+    --f-kai:"Kaiti SC","STKaiti","KaiTi","楷体","Noto Serif SC",serif;
+    --f-latin:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;overflow:hidden;}
+  body{background:var(--ground);font-family:var(--f-song);color:var(--ink);}
+
+  .stage{
+    position:fixed;inset:0;overflow:hidden;
+    background:
+      radial-gradient(130% 100% at 50% -10%, #f0e4c4 0%, var(--silk) 42%, var(--silk-2) 72%, var(--silk-edge) 100%);
+  }
+  .stage::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+    filter:url(#paper);opacity:.42;mix-blend-mode:multiply;
+  }
+  .stage::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+    box-shadow:inset 0 0 120px 30px rgba(70,52,28,.28);
+  }
+
+  /* ---- 开场展卷:右→左揭示;卷轴杆随揭示缘移动 ---- */
+  @media (prefers-reduced-motion:no-preference){
+    .stage.unrolling{clip-path:inset(0 0 0 100%);animation:unroll 3.4s cubic-bezier(.3,.65,.25,1) .3s forwards;}
+    #roller.unrolling{left:calc(100% - 8px);animation:roll 3.4s cubic-bezier(.3,.65,.25,1) .3s forwards;}
+  }
+  @keyframes unroll{from{clip-path:inset(0 0 0 100%);}to{clip-path:inset(0 0 0 0);}}
+  @keyframes roll{from{left:calc(100% - 8px);}to{left:-34px;}}
+  #roller{
+    position:fixed;top:-2vh;bottom:-2vh;width:26px;left:-34px;z-index:6;pointer-events:none;
+    background:linear-gradient(90deg,#1d150a,#4a3820 30%,#6b5432 50%,#4a3820 70%,#1d150a);
+    border-radius:12px;box-shadow:0 0 22px 4px rgba(0,0,0,.55);
+  }
+  #roller::before,#roller::after{ /* 轴头 */
+    content:"";position:absolute;left:50%;transform:translateX(-50%);
+    width:38px;height:16px;border-radius:8px;
+    background:linear-gradient(90deg,#2b2113,#7a6238 50%,#2b2113);
+  }
+  #roller::before{top:6vh;} #roller::after{bottom:6vh;}
+  #skipNote{
+    position:fixed;bottom:30px;right:34px;z-index:6;
+    font-family:var(--f-kai);font-size:12px;letter-spacing:.22em;color:rgba(232,218,185,.85);
+    transition:opacity .4s;
+  }
+  #skipNote.gone,#roller.gone{opacity:0;visibility:hidden;}
+
+  #world{
+    position:absolute;inset:-5%;
+    transition:transform 1.25s cubic-bezier(.22,.9,.28,1);
+    will-change:transform;
+  }
+  .hills{position:absolute;inset:0;width:100%;height:100%;}
+
+  .station{
+    position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);
+    background:none;border:none;cursor:pointer;z-index:2;
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .lamp{
+    width:13px;height:13px;border-radius:50%;
+    background:radial-gradient(circle at 40% 35%, var(--amber-soft), var(--amber) 55%, #b9791f 100%);
+    box-shadow:0 0 5px 1px rgba(230,164,65,.75), 0 0 14px 4px rgba(230,164,65,.38);
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .lamp{animation:flicker 4.5s ease-in-out infinite;}
+    .station:nth-of-type(odd) .lamp{animation-delay:-2s;}
+  }
+  @keyframes flicker{0%,100%{opacity:.85;}45%{opacity:1;}70%{opacity:.76;}}
+  .qianpai{
+    writing-mode:vertical-rl;text-orientation:upright;
+    font-family:var(--f-kai);font-size:17px;letter-spacing:.28em;color:var(--ink);
+    background:linear-gradient(175deg,#f4ead0,#e6d7b2);
+    border:1px solid rgba(90,70,40,.5);border-radius:3px;
+    padding:10px 5px 12px;line-height:1;
+    box-shadow:0 2px 6px -1px rgba(40,28,10,.45);
+    position:relative;transition:background .3s,color .3s,box-shadow .3s;
+  }
+  .qianpai::before{
+    content:"";position:absolute;top:3px;left:50%;transform:translateX(-50%);
+    width:4px;height:4px;border-radius:50%;background:rgba(90,70,40,.55);
+  }
+  .st-en{font-family:var(--f-latin);font-style:italic;font-size:11.5px;color:var(--ink-soft);letter-spacing:.04em;}
+  .station:hover .qianpai{box-shadow:0 3px 10px -1px rgba(40,28,10,.55), 0 0 0 1px rgba(230,164,65,.45);}
+  .station:focus-visible{outline:none;}
+  .station:focus-visible .qianpai{box-shadow:0 0 0 2px var(--amber);}
+  .station.selected .qianpai{
+    background:linear-gradient(175deg,#2c5a48,var(--pine));
+    color:#f0e6cc;border-color:rgba(20,40,30,.7);
+  }
+  .station.selected .qianpai::before{background:rgba(240,230,204,.7);}
+  .station.selected .lamp{box-shadow:0 0 7px 2px rgba(230,164,65,.95), 0 0 22px 7px rgba(230,164,65,.5);}
+
+  .title-vert{
+    position:fixed;left:26px;top:26px;z-index:4;
+    writing-mode:vertical-rl;text-orientation:upright;
+    font-family:var(--f-title);font-size:clamp(30px,4.6vh,44px);letter-spacing:.16em;
+    color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.25);
+    display:flex;gap:10px;
+  }
+  .title-src{
+    writing-mode:vertical-rl;font-family:var(--f-song);font-size:12px;
+    color:var(--ink-faint);letter-spacing:.12em;margin-top:8px;
+  }
+  .corner-seal{
+    position:fixed;left:30px;bottom:30px;z-index:4;
+    width:52px;height:52px;background:var(--zhu);border-radius:2px;transform:rotate(-2.5deg);
+    display:grid;grid-template-columns:1fr 1fr;padding:5px;gap:1px;
+    box-shadow:0 3px 9px -3px rgba(0,0,0,.5);
+  }
+  .corner-seal span{font-family:var(--f-title);font-size:15px;color:var(--silk);display:grid;place-items:center;}
+  .ctl{position:fixed;top:20px;right:22px;z-index:4;display:flex;gap:10px;}
+  .ctl .tab{
+    writing-mode:vertical-rl;text-orientation:upright;
+    font-family:var(--f-kai);font-size:12.5px;letter-spacing:.2em;color:var(--ink-soft);
+    background:linear-gradient(175deg,#f2e8ce,#e4d5b0);border:1px solid rgba(90,70,40,.42);
+    border-radius:3px;padding:9px 4px 10px;opacity:.55;cursor:not-allowed;
+    box-shadow:0 2px 5px -1px rgba(40,28,10,.4);
+  }
+  .hint{
+    position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:4;
+    font-family:var(--f-kai);font-size:13.5px;letter-spacing:.3em;color:var(--ink-soft);
+    background:rgba(232,218,185,.72);padding:7px 18px 7px 22px;border-radius:999px;
+    border:1px solid var(--line);backdrop-filter:blur(2px);
+  }
+  .proto-tag{
+    position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:4;
+    font-family:var(--f-kai);font-size:11px;letter-spacing:.18em;color:var(--ink-faint);
+    border:1px dashed rgba(122,102,64,.45);border-radius:2px;padding:3px 10px;
+    background:rgba(232,218,185,.6);
+  }
+
+  #panel{
+    position:fixed;top:16px;bottom:16px;right:16px;z-index:5;
+    width:clamp(330px,29vw,420px);
+    background:
+      linear-gradient(160deg, rgba(255,250,235,.35), rgba(0,0,0,.03)),
+      radial-gradient(120% 100% at 30% 0%, #efe3c4 0%, #e6d7b2 60%, #d9c69c 100%);
+    border:1px solid rgba(90,70,40,.45);border-radius:3px;
+    box-shadow:-18px 0 50px -18px rgba(20,12,4,.55);
+    transform:translateX(118%);
+    transition:transform .55s cubic-bezier(.22,.9,.28,1);
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  #panel.open{transform:translateX(0);}
+  #panel::before{content:"";position:absolute;inset:0;pointer-events:none;filter:url(#paper);opacity:.35;mix-blend-mode:multiply;}
+  .panel-in{position:relative;overflow-y:auto;padding:22px 22px 26px;scrollbar-width:thin;}
+  .panel-head{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+  .beat-seal{
+    font-family:var(--f-title);font-size:19px;color:var(--silk);background:var(--qing);
+    padding:4px 9px 5px;border-radius:2px;letter-spacing:.06em;box-shadow:0 2px 5px -2px rgba(0,0,0,.4);
+  }
+  .beat-title{font-family:var(--f-latin);font-style:italic;color:var(--ink-soft);font-size:14px;}
+  .close{
+    margin-left:auto;background:none;border:1px solid var(--line);border-radius:2px;
+    font-family:var(--f-kai);font-size:12px;color:var(--ink-soft);padding:4px 9px;cursor:pointer;
+  }
+  .close:hover{color:var(--ink);border-color:var(--ink-faint);}
+  .beat-desc{font-family:var(--f-kai);color:var(--ink-faint);font-size:12.5px;margin-bottom:14px;}
+  .yuanwen{
+    font-family:var(--f-song);font-size:17.5px;letter-spacing:.07em;line-height:2.05;color:var(--ink);
+    padding:11px 14px;margin-bottom:16px;
+    border-left:3px solid var(--zhu);background:rgba(168,58,41,.05);
+  }
+  .yuanwen .ph{border-radius:2px;transition:background .35s, box-shadow .35s;padding:0 1px;}
+  .yuanwen .ph.lit{
+    background:rgba(230,164,65,.34);
+    box-shadow:0 0 0 1px rgba(230,164,65,.5), 0 0 12px 2px var(--amber-soft);
+  }
+  .line{
+    display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start;
+    padding:9px 10px 9px 7px;border-radius:4px;cursor:pointer;
+    border:1px solid transparent;transition:background .25s;
+  }
+  .line:hover{background:rgba(122,102,64,.08);}
+  .line:focus-visible{outline:none;border-color:var(--amber);}
+  .line.active{background:rgba(230,164,65,.14);border-color:rgba(230,164,65,.4);}
+  .line .lamp{width:11px;height:11px;margin-top:7px;flex-shrink:0;}
+  .line-en{font-family:var(--f-latin);font-size:14.5px;color:var(--ink);line-height:1.65;}
+  .kaoju{
+    max-height:0;opacity:0;overflow:hidden;margin:0 0 0 28px;
+    transition:max-height .4s ease,opacity .3s;
+  }
+  .kaoju.show{max-height:220px;opacity:1;margin-bottom:8px;}
+  .kaoju-in{border-left:2px solid rgba(122,102,64,.35);padding:8px 12px;}
+  .kaoju-k{font-family:var(--f-kai);font-size:10.5px;letter-spacing:.14em;color:var(--ink-faint);margin-bottom:4px;}
+  .kaoju-claim{font-family:var(--f-latin);font-style:italic;font-size:13px;color:var(--ink-soft);line-height:1.6;}
+  .stamp{margin-top:9px;display:inline-flex;align-items:center;gap:8px;font-family:var(--f-kai);font-size:11.5px;color:var(--zhu);}
+  .stamp .sq{
+    font-family:var(--f-title);font-size:13px;color:var(--silk);background:var(--zhu);
+    width:25px;height:25px;display:grid;place-items:center;border-radius:2px;transform:rotate(-3deg);
+  }
+  .panel-foot{
+    font-family:var(--f-kai);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;
+    padding:10px 22px 14px;border-top:1px dashed var(--line);position:relative;
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="paper" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="7" stitchTiles="stitch" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .06 0"/>
+    <feComposite operator="over" in2="SourceGraphic"/>
+    <feDiffuseLighting in="n" surfaceScale="1.4" diffuseConstant="1" lighting-color="#fff" result="light">
+      <feDistantLight azimuth="45" elevation="60"/>
+    </feDiffuseLighting>
+    <feColorMatrix in="light" type="matrix" values="0 0 0 0 .82  0 0 0 0 .72  0 0 0 0 .5  0 0 0 .5 0"/>
+  </filter>
+  <filter id="brush">
+    <feTurbulence type="turbulence" baseFrequency="0.012 0.03" numOctaves="2" seed="11" result="t"/>
+    <feDisplacementMap in="SourceGraphic" in2="t" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="stage unrolling" id="stage">
+  <div id="world">
+    <svg class="hills" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M0,545 C130,505 250,462 400,492 C540,520 640,468 780,490 C920,512 1050,462 1190,488 C1330,512 1470,478 1600,500 L1600,900 0,900 Z" fill="#2f5b6d" opacity=".15" filter="url(#brush)"/>
+      <path d="M0,635 C90,595 175,532 265,556 C355,580 430,498 545,528 C660,558 725,608 845,588 C965,568 1030,502 1150,538 C1270,574 1390,618 1600,580 L1600,900 0,900 Z" fill="#3f7458" opacity=".28" filter="url(#brush)"/>
+      <path d="M120,700 C180,610 240,570 300,596 C330,610 360,640 390,700 Z" fill="#2f5b6d" opacity=".36" filter="url(#brush)"/>
+      <path d="M980,690 C1040,596 1090,560 1150,590 C1185,606 1215,648 1245,700 Z" fill="#35607a" opacity=".3" filter="url(#brush)"/>
+      <path d="M0,760 C150,722 300,692 470,716 C640,740 800,700 960,726 C1120,752 1330,714 1600,742 L1600,900 0,900 Z" fill="#2f5b6d" opacity=".4" filter="url(#brush)"/>
+      <rect x="0" y="598" width="1600" height="74" fill="url(#mist)" opacity=".55" style="filter:blur(7px)"/>
+      <rect x="0" y="714" width="1600" height="62" fill="url(#mist)" opacity=".5" style="filter:blur(7px)"/>
+      <defs>
+        <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e8dab9" stop-opacity="0"/>
+          <stop offset=".5" stop-color="#f0e4c6"/>
+          <stop offset="1" stop-color="#e8dab9" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <button class="station" data-beat="B01" style="--x:22%;--y:62%" aria-label="驿站:金 The Gold">
+      <span class="lamp"></span><span class="qianpai">金</span><span class="st-en">The Gold</span>
+    </button>
+    <button class="station" data-beat="B02" style="--x:47%;--y:44%" aria-label="驿站:軒冕 The Carriage">
+      <span class="lamp"></span><span class="qianpai">軒冕</span><span class="st-en">The Carriage</span>
+    </button>
+    <button class="station" data-beat="B03" style="--x:71%;--y:64%" aria-label="驿站:割席 Cutting the Mat">
+      <span class="lamp"></span><span class="qianpai">割席</span><span class="st-en">Cutting the Mat</span>
+    </button>
+  </div>
+
+  <div class="title-vert"><span class="title-src">世說新語 · 德行</span><h1 style="font:inherit">管寧割席</h1></div>
+  <div class="corner-seal" aria-hidden="true"><span>言</span><span>必</span><span>有</span><span>據</span></div>
+  <div class="ctl" aria-hidden="true">
+    <span class="tab" title="原型未接线 · v2 接入信任徽章">言必有據</span>
+    <span class="tab" title="原型未接线 · v2 接入朱笔闸门">如果没有闸门</span>
+  </div>
+  <div class="proto-tag">原型 C · 固定舞台+开场展卷 · 底图为占位层峦</div>
+  <div class="hint" id="hint">点驿站 · 展册页</div>
+</div>
+
+<div id="roller" class="unrolling" aria-hidden="true"></div>
+<div id="skipNote">点击任意处跳过展卷</div>
+
+<aside id="panel" aria-label="册页">
+  <div class="panel-in">
+    <div class="panel-head">
+      <span class="beat-seal" id="pSeal"></span>
+      <span class="beat-title" id="pTitle"></span>
+      <button class="close" id="pClose" aria-label="收起册页">收 · 返回</button>
+    </div>
+    <div class="beat-desc" id="pDesc"></div>
+    <div class="yuanwen" id="pYuanwen"></div>
+    <div id="pLines"></div>
+  </div>
+  <div class="panel-foot">点句考據 · 灯火=已核实 · 徽章/朱笔闸门 v2 接线</div>
+</aside>
+
+<script>
+/* SCENE 数据逐字复用 v1(REVIEWED·PASS)。 */
+const SCENE = {
+  beats:[
+    {id:"B01",seal:"金",title:"The Gold",desc:"对财物的两种反应"},
+    {id:"B02",seal:"軒冕",title:"The Carriage",desc:"对权位的两种反应"},
+    {id:"B03",seal:"割席",title:"Cutting the Mat",desc:"以割席绝交"}
+  ],
+  chunks:{
+    C01:[{k:"a",t:"管寧、華歆"},{k:"F01",t:"共園中鋤菜"},{k:"b",t:"，"},{k:"F02",t:"見地有片金"},{k:"c",t:"，"},{k:"F03",t:"管揮鋤與瓦石不異"},{k:"d",t:"，"},{k:"F04",t:"華捉而擲去之"},{k:"e",t:"。"}],
+    C02:[{k:"F05",t:"又嘗同席讀書，有乘軒冕過門者"},{k:"f",t:"，"},{k:"F06",t:"寧讀如故"},{k:"g",t:"，"},{k:"F07",t:"歆廢書出看"},{k:"h",t:"。"}],
+    C03:[{k:"F08",t:"寧割席分坐"},{k:"i",t:"曰："},{k:"F09",t:"「子非吾友也。」"}]
+  },
+  lines:[
+    {n:1,beat:"B01",chunk:"C01",fact:"F01",en:"In the same garden, Guan Ning and Hua Xin bend to the same rows, hoes rising and falling.",claim:"Guan Ning and Hua Xin work the vegetable garden together."},
+    {n:2,beat:"B01",chunk:"C01",fact:"F02",en:"In the soil at their feet, half-buried, a piece of gold catches their eye.",claim:"Their hoes uncover a piece of gold lying in the soil."},
+    {n:3,beat:"B01",chunk:"C01",fact:"F03",en:"Guan Ning does not slow — his hoe falls on the gold as on any tile or stone.",claim:"Guan Ning keeps hoeing, handling the gold no differently from a piece of tile or stone."},
+    {n:4,beat:"B01",chunk:"C01",fact:"F04",en:"Hua Xin takes the gold in his hand — then throws it aside.",claim:"Hua Xin picks the gold up, then throws it away."},
+    {n:5,beat:"B02",chunk:"C02",fact:"F05",en:"One day, as the two sit reading on the same mat, someone in an official’s carriage passes by the gate.",claim:"While the two sit reading, an official’s carriage passes by the gate."},
+    {n:6,beat:"B02",chunk:"C02",fact:"F06",en:"Guan Ning’s eyes never leave the page.",claim:"Guan Ning reads on as before."},
+    {n:7,beat:"B02",chunk:"C02",fact:"F07",en:"Hua Xin sets down his book and steps out to watch it pass.",claim:"Hua Xin puts down his book and goes out to look at the carriage."},
+    {n:8,beat:"B03",chunk:"C03",fact:"F08",en:"Guan Ning cuts the mat in two and draws their seats apart.",claim:"Guan Ning cuts the mat and separates their seats."},
+    {n:9,beat:"B03",chunk:"C03",fact:"F09",en:"“You are no friend of mine,” he says.",claim:"Guan Ning says that Hua Xin is not his friend."}
+  ]
+};
+
+const $=(s,r=document)=>r.querySelector(s);
+const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
+
+const CAM = {B01:"translate(6vw,1vh) scale(1.12)",B02:"translate(-2vw,3vh) scale(1.12)",B03:"translate(-10vw,-1vh) scale(1.12)"};
+const ORIGIN = {B01:"22% 62%",B02:"47% 44%",B03:"71% 64%"};
+let curBeat=null;
+
+function openBeat(bid){
+  curBeat=bid;
+  document.querySelectorAll(".station").forEach(s=>s.classList.toggle("selected",s.dataset.beat===bid));
+  const w=$("#world"); w.style.transformOrigin=ORIGIN[bid]; w.style.transform=CAM[bid];
+  const b=SCENE.beats.find(x=>x.id===bid);
+  $("#pSeal").textContent=b.seal; $("#pTitle").textContent=b.title; $("#pDesc").textContent=b.desc;
+  const yw=$("#pYuanwen"); yw.innerHTML="";
+  const chunk=SCENE.lines.find(l=>l.beat===bid).chunk;
+  SCENE.chunks[chunk].forEach(p=>{
+    const s=el("span",p.k.startsWith("F")?"ph":null,p.t);
+    if(p.k.startsWith("F"))s.dataset.fact=p.k;
+    yw.appendChild(s);
+  });
+  const root=$("#pLines"); root.innerHTML="";
+  SCENE.lines.filter(l=>l.beat===bid).forEach(l=>{
+    const line=el("div","line"); line.tabIndex=0; line.setAttribute("role","button");
+    line.appendChild(el("span","lamp"));
+    line.appendChild(el("span","line-en",l.en));
+    const kj=el("div","kaoju");
+    kj.innerHTML='<div class="kaoju-in"><div class="kaoju-k">闸门核过的事实 · VERIFIED CLAIM</div>'+
+      '<div class="kaoju-claim">'+l.claim+'</div>'+
+      '<div class="stamp"><span class="sq">據</span><span>出自《世說新語 · 德行》 · '+l.fact+'</span></div></div>';
+    line.addEventListener("click",()=>selectLine(l,line,kj));
+    line.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectLine(l,line,kj);}});
+    root.appendChild(line); root.appendChild(kj);
+  });
+  $("#panel").classList.add("open");
+  $("#hint").textContent="点句考據 · 文言原文点亮";
+}
+function selectLine(l,node,kj){
+  document.querySelectorAll(".line.active").forEach(n=>n.classList.remove("active"));
+  document.querySelectorAll(".kaoju.show").forEach(n=>n.classList.remove("show"));
+  document.querySelectorAll("#pYuanwen .ph.lit").forEach(s=>s.classList.remove("lit"));
+  node.classList.add("active"); kj.classList.add("show");
+  const ph=document.querySelector('#pYuanwen .ph[data-fact="'+l.fact+'"]');
+  if(ph)ph.classList.add("lit");
+}
+function closePanel(){
+  curBeat=null;
+  $("#panel").classList.remove("open");
+  document.querySelectorAll(".station.selected").forEach(s=>s.classList.remove("selected"));
+  $("#world").style.transform="";
+  $("#hint").textContent="点驿站 · 展册页";
+}
+document.querySelectorAll(".station").forEach(s=>s.addEventListener("click",e=>{e.stopPropagation();openBeat(s.dataset.beat);}));
+$("#pClose").addEventListener("click",closePanel);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePanel();});
+$("#stage").addEventListener("click",e=>{if(e.target.closest(".station"))return;if(curBeat)closePanel();});
+
+/* ---- 开场展卷:动画结束或用户跳过后清场 ---- */
+const stage=$("#stage"), roller=$("#roller"), skipNote=$("#skipNote");
+let unrolled=false;
+function endUnroll(){
+  if(unrolled)return; unrolled=true;
+  stage.classList.remove("unrolling");
+  stage.style.clipPath="none";
+  roller.classList.add("gone"); skipNote.classList.add("gone");
+}
+stage.addEventListener("animationend",endUnroll,{once:true});
+/* 跳过:动画期间点击/按键即完成展开 */
+document.addEventListener("click",()=>{if(!unrolled)endUnroll();},{capture:true});
+document.addEventListener("keydown",()=>{if(!unrolled)endUnroll();},{capture:true});
+/* 无动画环境(reduced-motion)直接清场 */
+if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)endUnroll();
+</script>
+</body>
+</html>

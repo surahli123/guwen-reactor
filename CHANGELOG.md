@@ -4,6 +4,15 @@ All notable changes to Guwen Reactor. Format: [Keep a Changelog](https://keepach
 
 ## [Unreleased]
 
+### Added — 2026-07-01/02 — 山河卷多篇中心站(原型 D)+ 真投影舆图 + EN-first 信任层
+- **舞台三原型 A/B/C**(单变量实验)→ owner 圈定 B/C → **三线评审合议 C-modified**(5×Opus workflow + Codex critique theatre(真调 `open-design-critique-theater`)+ baoyu 准则 critic;7 视角一致),B 降级篇内可选;5 项 BLOCKER 修法 → `reviews/2026-07-01-proto-bc-synthesis.md`。
+- **proto-d 多篇中心站**:节点=文章(G01/G02/G03),beat 下沉册页;篇目榜(門類分组、中性排序);按篇灯火诚实(仅 G01 亮);印章作用域注(已核实 1/3 篇);密度预览(12 签牌);展卷 localStorage 首访一次(Q2 拍板)。
+- **底图两次革命**:手绘 SVG(r1-r4 画室迭代)→ **Natural Earth 50m + Albers(25°/47°N,105°E)真投影**(owner 要求真比例+真地点):轮廓/长江黄河/40 山系全部经纬重锚;驿站=考订地点(朱虛/建康/臨沂,引线指真锚,册页锚点行带史源,詠雪注明"地點史文未明依門第")。古图研究(Codex web 实爬 LOC/Wikimedia)落地:计里画方淡网格、山形三族(丘/三瓣符/低脊晕)、河流双笔+竖排河名、建康城郭符、褐纸签签牌、洛陽/長安/會稽静默标注 → `designs/visible-faithfulness-g01/REFERENCE-guditu.md`(含 PD 高清直链)。
+- **EN-first 信任层**(主用户=英语教育者):两道关口径、考据卡加事实英文释文(canon_gold 逐字)、**朱笔闸门接线**(实弹演示:编造句被抓→CONTRADICTED·export BLOCKED,chip 翻面已取证)、**言必有據方法页**(4 步+诚实声明"构建期核验,页面展示记录在案判定")、面板开时控件签牌左移(两次同类 z-index bug 教训)。
+- **信任UX三方研究**:自研提案 `TRUST-UX-PROPOSAL.md` + X 实战信号(agent-reach;营养标签隐喻/确定性+测试数=信任通货)+ **Sonnet 5 六路 web 深搜** `TRUST-UX-RESEARCH.md`(Top-8+反模式+签名动作,全量 JSON 入库)。**Owner 已拍板执行;签名动作 = 闸门失败演示浏览器内真跑引擎规则子集并前置。**
+- 评审归档:`reviews/2026-07-02-map-critique-theatre.md`(Keep-with-fixes,3 BLOCKER 当场修毕)。
+- 全程验证纪律:每改 serve + 0 外部请求 + console 0 错误 + 截图亲验(shots/ 过程稿 19MB 留本地不入库)。
+
 ### Added — 2026-06-30 — Phase 4b pipeline + Phase 5.2 canvas (offline prototype complete)
 - **Phase 4b (Wave 2):** `safety_eval` (deterministic deny-list, wired real into `evaluate_run`), `regen_loop` (`run_with_regen`, fail-closed at 3 attempts), `trace` + `workflow_integrity` (OTel JSONL + IN_ORDER; event-vocabulary conformance-locked to the YAML), `approval` + `export_bundle` (refuses unless content-clean AND human-approved; sha256 + AIGC-label manifest), and **`app/cli.py`** — the non-cuttable e2e: `run <dir> --approve` exports; a drift run is BLOCKED with no manifest.
 - **Phase 5.2:** `render_canvas` → self-contained no-key `docs/demo/index.html` (D5: zero external refs, 19 tests).
