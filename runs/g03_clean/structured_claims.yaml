@@ -1,0 +1,25 @@
+# Clean claims fixture — G03 道旁苦李 (tier-1 enrichment, 2026-07-02, Contract A).
+# Hand-authored against data/gold/canon_gold.yaml G03. Invariants (a correct gate → ALL-SUPPORTED):
+#   - every claim cites ONLY facts from its declared beat; B01-B05 fully covered -> coverage 1.0
+#   - C07 keeps 「此必苦李」 as Wang Rong's reported claim (speech-act), not narrator fact
+#   - C08 keeps the final 「取之」 subject unspecified (guardrail: 主语开放,最不可能是王戎)
+#   - C09 renders 「信然」 as outcome-matched-his-words; no tasting, no causal extrapolation
+#   - no claim matches G03 forbidden_claims (no clever/poised evaluations, no broken branches,
+#     no "passers-by ate the sweet ones" rationalization)
+scene_id: G03
+run_id: g03_clean
+claims:
+  # --- Beat B01: setup (F01-F02) ---
+  - {claim_id: C01, beat_id: B01, claim_text: "Wang Rong is seven years old.", source_fact_ids: [F01], assertion_type: visual, hedging: asserted, artifact_path: "storyboard.panels.P01.caption_en"}
+  - {claim_id: C02, beat_id: B01, claim_text: "He is out roaming and playing with a group of other young children.", source_fact_ids: [F02], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P02.caption_en"}
+  # --- Beat B02: the tree (F03; 看 subject unspecified -> perception framing, no seer named) ---
+  - {claim_id: C03, beat_id: B02, claim_text: "By the roadside, a plum tree laden with fruit comes into view, its branches weighed down.", source_fact_ids: [F03], assertion_type: visual, hedging: asserted, artifact_path: "storyboard.panels.P03.caption_en"}
+  # --- Beat B03: contrast in action (F04-F05) ---
+  - {claim_id: C04, beat_id: B03, claim_text: "The other children race over to pick the plums.", source_fact_ids: [F04], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P04.caption_en"}
+  - {claim_id: C05, beat_id: B03, claim_text: "Only Wang Rong does not move to pick.", source_fact_ids: [F05], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P05.caption_en"}
+  # --- Beat B04: question + Wang Rong's claim as speech-act (F06-F07) ---
+  - {claim_id: C06, beat_id: B04, claim_text: "Someone asks Wang Rong.", source_fact_ids: [F06], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P06.caption_en"}
+  - {claim_id: C07, beat_id: B04, claim_text: "Wang Rong answers that the tree stands by the roadside yet has many fruits, so these must be bitter plums.", source_fact_ids: [F07], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P07.caption_en"}
+  # --- Beat B05: resolution (F08-F09; picker unspecified, 信然 = as he said) ---
+  - {claim_id: C08, beat_id: B05, claim_text: "Afterward the plums are picked, by an unspecified party.", source_fact_ids: [F08], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P08.caption_en"}
+  - {claim_id: C09, beat_id: B05, claim_text: "It turns out to be just as Wang Rong had said.", source_fact_ids: [F09], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P09.caption_en"}
