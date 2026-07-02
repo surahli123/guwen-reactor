@@ -8,7 +8,7 @@
   PROTOTYPE D — C-modified v2 骨架 + Q3 寻路原型。
   评审合议(reviews/2026-07-01-proto-bc-synthesis.md)5 个 BLOCKER 的修法已建入:
     B1 节点=文章(G01/G02/G03 三枚签牌),beat 下沉册页、数据驱动
-    B2 灯火=按篇核实状态(G01 亮 / G02、G03 暗);印章带作用域注(已核实 1/3 篇);徽章按篇+口径句
+    B2 灯火=按篇核实状态(G01、G02 亮 / G03 暗;G02 于 2026-07-02 过两道关点亮);印章带作用域注(已核实 2/3 篇);徽章按篇+口径句
     B3 跨篇动线:地图即 hub + 右上「篇目」榜(門類分组,中性排序)
     B5 不伪造地理:門類分区(德行/言語/雅量,canon_gold source_id 现成)+「非地理」声明
   Q2 已定:开场展卷 localStorage 门控,首访播一次(可跳过),之后直达。
@@ -534,7 +534,7 @@
   <div class="title-vert"><span class="title-src">看得見的忠實 · 三則</span><h1 style="font:inherit">世說新語</h1></div>
   <div class="corner-seal-wrap">
     <div class="corner-seal" aria-hidden="true"><span>言</span><span>必</span><span>有</span><span>據</span></div>
-    <div class="seal-scope" id="sealScope">已核实 1 / 3 篇</div>
+    <div class="seal-scope" id="sealScope">已核实 2 / 3 篇</div>
   </div>
   <div class="ctl">
     <button class="tab" id="btnIndex" aria-label="打开篇目榜">篇目</button>
@@ -587,6 +587,8 @@ const SCENES = {
       F10:"Guan Ning and Hua Xin are sitting on the same mat while reading."
     },
     gate_demo:true, /* 闸门演示数据在 GATE_CASES(单一来源,防止双份编造句漂移) */
+    /* hedged 解读逐字来自 committed runs/demo_clean C10(台账单列,不计数) */
+    hedged:{text:"Taken together, these contrasting responses to the gold may suggest the two friends place different value on wealth.",facts:"F03 + F04"},
     anchor_note:"錨點:北海朱虛(管寧籍貫,《三國志·管寧傳》;今山東臨朐-安丘間)",
     station:{x:"72.75%", y:"46.75%", cam:"translate(-14vw,1vh) scale(1.1)"},
     beats:[
@@ -612,12 +614,55 @@ const SCENES = {
     ]
   },
   G02: {
+    /* 亮灯依据(2026-07-02):引擎 runs/g02_clean = 9/9 SUPPORTED · coverage 5/5 ·
+       READY_FOR_APPROVAL;独立审校 Codex 两轮(R1 FAIL→修 未若,R2 PASS)。
+       血缘文档:designs/visible-faithfulness-g01/content-retelling-g02.md(REVIEWED·PASS)。
+       跋(#8-9)= 背景层:F08/F09 不属任何 required beat,计精确率不计覆盖。 */
     title_zh:"詠雪", title_en:"Xie Daoyun's Snow Simile",
     men:"言語", men_en:"Speech",
-    status:"pending", beatCount:5,
-    anchor_note:"錨點:建康烏衣巷(詠雪地點史文未明,依謝氏門第作接受史錨點;《世說新語·言語》)",
+    status:"verified", beatCount:5,
+    stats:"✓ 9/9 句已核实(7 情节 + 2 背景注)· 5/5 幕覆盖 · 0 虚构",
+    review:"✓ 讀本 REVIEWED · PASS",
+    facts:{
+      F01:"On a cold, snowy day, Grand Tutor Xie held a family gathering.",
+      F02:"He discussed the meaning of literary texts with the younger members of the family.",
+      F03:"Shortly afterward, the snow fell suddenly and heavily.",
+      F04:"The Lord, with a pleased expression, asked what the thick, fast-falling white snow resembled.",
+      F05:"The elder brother's son, Hu'er, said scattering salt in the air could roughly be compared to it.",
+      F06:"The elder brother's daughter said it was not as good as willow catkins rising on the wind.",
+      F07:"The Lord laughed heartily and was delighted.",
+      F08:"She was the daughter of the Lord's eldest elder brother Wuyi.",
+      F09:"She was the wife of Wang Ningzhi, General of the Left."
+    },
+    anchor_note:"錨點:建康烏衣巷(詠雪地點史文未明,依謝氏門第作接受史錨點;篇名沿接受史稱謝道韞,讀本正文不具名;《世說新語·言語》)",
     station:{x:"73.2%", y:"66%", cam:"translate(-14vw,-5vh) scale(1.1)"},
-    chunks_full:["謝太傅寒雪日內集，","與兒女講論文義。","俄而雪驟，","公欣然曰：「白雪紛紛何所似？」","兄子胡兒曰：「撒鹽空中差可擬。」","兄女曰：「未若柳絮因風起。」","公大笑樂。","即公大兄無奕女，左將軍王凝之妻也。"]
+    beats:[
+      {id:"B01",seal:"內集",title:"The Gathering",desc:"寒雪日召集讲论"},
+      {id:"B02",seal:"雪驟",title:"The Question",desc:"雪骤而问"},
+      {id:"B03",seal:"鹽",title:"The Salt Simile",desc:"胡儿先对"},
+      {id:"B04",seal:"柳絮",title:"The Willow Catkins",desc:"兄女再对"},
+      {id:"B05",seal:"笑",title:"The Laugh",desc:"只录大笑,不判高下"},
+      {id:"CODA",seal:"跋",title:"The Narrator's Note",desc:"旁白身份补注 · 背景层非情节拍"}
+    ],
+    chunks:{
+      D01:[{k:"F01",t:"謝太傅寒雪日內集"},{k:"a",t:"，"},{k:"F02",t:"與兒女講論文義"},{k:"b",t:"。"}],
+      D02:[{k:"F03",t:"俄而雪驟"},{k:"c",t:"，"},{k:"F04",t:"公欣然曰：「白雪紛紛何所似？」"}],
+      D03:[{k:"F05",t:"兄子胡兒曰：「撒鹽空中差可擬。」"}],
+      D04:[{k:"F06",t:"兄女曰：「未若柳絮因風起。」"}],
+      D05:[{k:"F07",t:"公大笑樂"},{k:"d",t:"。"}],
+      D06:[{k:"F08",t:"即公大兄無奕女"},{k:"e",t:"，"},{k:"F09",t:"左將軍王凝之妻也"},{k:"f",t:"。"}]
+    },
+    lines:[
+      {n:1,beat:"B01",chunk:"D01",fact:"F01",en:"On a cold day of falling snow, Grand Tutor Xie gathers the family indoors.",claim:"On a cold, snowy day, Grand Tutor Xie holds a family gathering."},
+      {n:2,beat:"B01",chunk:"D01",fact:"F02",en:"With the younger ones of the family, he takes up the meaning of the texts.",claim:"He discusses the meaning of literary texts with the younger members of the family."},
+      {n:3,beat:"B02",chunk:"D02",fact:"F03",en:"Then, all at once, the snow thickens \u2014 flakes crowding thick and fast.",claim:"Soon the snow falls suddenly and heavily."},
+      {n:4,beat:"B02",chunk:"D02",fact:"F04",en:"The Lord brightens: \u201cAll this whirling white snow \u2014 what does it resemble?\u201d",claim:"Pleased, the Lord asks what the fast-falling white snow resembles."},
+      {n:5,beat:"B03",chunk:"D03",fact:"F05",en:"His elder brother\u2019s son, Hu\u2019er, answers: \u201cScattering salt in the air \u2014 that might roughly compare.\u201d",claim:"Hu'er, the elder brother's son, says scattering salt in the air could roughly be compared to it."},
+      {n:6,beat:"B04",chunk:"D04",fact:"F06",en:"His elder brother\u2019s daughter says: \u201cNot as good as willow catkins rising on the wind.\u201d",claim:"The elder brother's daughter says it is not as good as willow catkins rising on the wind."},
+      {n:7,beat:"B05",chunk:"D05",fact:"F07",en:"The Lord bursts into laughter, delighted.",claim:"The Lord laughs heartily and is delighted."},
+      {n:8,beat:"CODA",chunk:"D06",fact:"F08",en:"The story closes on the narrator\u2019s note: she was the daughter of the Lord\u2019s eldest brother, Wuyi \u2014",claim:"The narrator notes she was the daughter of the Lord's eldest elder brother, Wuyi."},
+      {n:9,beat:"CODA",chunk:"D06",fact:"F09",en:"\u2014 and the wife of Wang Ningzhi, General of the Left.",claim:"The narrator notes she was the wife of Wang Ningzhi, General of the Left."}
+    ]
   },
   G03: {
     title_zh:"道旁苦李", title_en:"Wang Rong and the Roadside Plums",
@@ -800,8 +845,9 @@ function panelHeader(sc){
     /* 数字变账本(研究 rec:静态断言 → 可点台账,天然可信) */
     const st=el("span","chip link",sc.stats); st.id="chipStats";
     st.title="Open the ledger · 点开台账"; st.setAttribute("role","button"); st.tabIndex=0;
-    st.addEventListener("click",()=>openLedger(sc));
-    st.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openLedger(sc);}});
+    const aid=cur; /* openArticle 已把 cur 设为本篇 id;点击时 cur 可能已变 */
+    st.addEventListener("click",()=>openLedger(aid,sc));
+    st.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openLedger(aid,sc);}});
     meta.appendChild(st);
   }else{
     meta.appendChild(el("span","chip pend","讀本待创作"));
@@ -925,7 +971,7 @@ function renderIndex(root){
       const en=el("span","idx-en",sc.title_en); en.setAttribute("lang","en"); mid.appendChild(en);
       it.appendChild(mid);
       const meta=el("div","idx-meta");
-      meta.innerHTML=(sc.beats?sc.beats.length:sc.beatCount)+" 幕<br>"+(sc.status==="verified"?"✓ 已核实·REVIEWED":"讀本待创作");
+      meta.innerHTML=(sc.beatCount||(sc.beats?sc.beats.length:0))+" 幕<br>"+(sc.status==="verified"?"✓ 已核实·REVIEWED":"讀本待创作");
       it.appendChild(meta);
       it.addEventListener("click",()=>openArticle(id));
       it.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openArticle(id);}});
@@ -1051,28 +1097,26 @@ function wireGate(bar,gh,sc){
     runCase(GATE_CASES[gateCaseIdx]);
   });
 }
-/* ---------- Wave 2:可审计台账(TRUST-UX-SPEC §5) ----------
-   11 行 = 9 条 PASS claim + 1 条 hedged 解读(单列,不计数)+ 1 行 0 编造(指向闸门)。
-   C10 文本逐字来自 committed runs/demo_clean/structured_claims.yaml。 */
-const HEDGED_C10={text:"Taken together, these contrasting responses to the gold may suggest the two friends place different value on wealth.",facts:"F03 + F04"};
-function jumpToLine(n){
-  openArticle("G01");
+/* ---------- Wave 2:可审计台账(TRUST-UX-SPEC §5;已泛化,任何亮灯篇可用) ----------
+   行数 = 情节/背景 claims + hedged 解读(如有,单列不计数)+ 1 行 0 编造。 */
+function jumpToLine(aid,n){
+  openArticle(aid);
   setTimeout(()=>{
     const ln=document.querySelectorAll("#panelIn .line")[n-1];
     if(ln){ln.scrollIntoView({behavior:"smooth",block:"center"});ln.click();}
   },420);
 }
-function openLedger(sc){
+function openLedger(aid,sc){
   cur="LEDGER";
   const root=$("#panelIn"); root.innerHTML="";
   const top=el("div","panel-top");
   const tw=el("div");
   tw.appendChild(el("div","p-title-zh","覆核台账"));
-  const te=el("div","p-title-en","The ledger behind \u201c\u2713 9/9\u201d"); te.setAttribute("lang","en"); tw.appendChild(te);
+  const te=el("div","p-title-en","The ledger behind the number · "+sc.title_en); te.setAttribute("lang","en"); tw.appendChild(te);
   top.appendChild(tw);
   const btns=el("div","p-btns");
-  const back=el("button","close","◀ 返回本篇"); back.setAttribute("aria-label","返回管寧割席");
-  back.addEventListener("click",()=>openArticle("G01"));
+  const back=el("button","close","◀ 返回本篇"); back.setAttribute("aria-label","返回"+sc.title_zh);
+  back.addEventListener("click",()=>openArticle(aid));
   const close=el("button","close","收 · 返回"); close.addEventListener("click",closePanel);
   btns.appendChild(back); btns.appendChild(close); top.appendChild(btns);
   root.appendChild(top);
@@ -1082,25 +1126,31 @@ function openLedger(sc){
   sc.lines.forEach(l=>{
     const row=el("div","ledg-row");
     row.innerHTML='<span class="ledg-num">#'+l.n+'</span>'+
-      '<span class="ledg-badge">\u2713 PASS · '+l.fact+'</span>'+
+      '<span class="ledg-badge">✓ PASS · '+l.fact+'</span>'+
       '<span class="ledg-claim" lang="en">'+l.claim+'</span>';
     const j=el("button","ledg-jump","看这句 ›"); j.setAttribute("aria-label","跳到第"+l.n+"句");
-    j.addEventListener("click",()=>jumpToLine(l.n));
+    j.addEventListener("click",()=>jumpToLine(aid,l.n));
     row.appendChild(j);
     root.appendChild(row);
   });
-  const h=el("div","ledg-row");
-  h.innerHTML='<span class="ledg-num">#10</span>'+
-    '<span class="ledg-badge hedge">HEDGED · not counted</span>'+
-    '<span class="ledg-claim" lang="en">\u201c'+HEDGED_C10.text+'\u201d \u2014 an interpretation ('+HEDGED_C10.facts+'), labeled and excluded from the 9/9.</span>'+
-    '<span></span>';
-  root.appendChild(h);
+  if(sc.hedged){
+    const h=el("div","ledg-row");
+    h.innerHTML='<span class="ledg-num">#'+(sc.lines.length+1)+'</span>'+
+      '<span class="ledg-badge hedge">HEDGED · not counted</span>'+
+      '<span class="ledg-claim" lang="en">\u201c'+sc.hedged.text+'\u201d \u2014 an interpretation ('+sc.hedged.facts+'), labeled and excluded from the verified count.</span>'+
+      '<span></span>';
+    root.appendChild(h);
+  }
   const f=el("div","ledg-row");
   f.innerHTML='<span class="ledg-num">—</span>'+
     '<span class="ledg-badge zhu">0 fabrications</span>'+
     '<span class="ledg-claim" lang="en">None in the published text.</span>';
-  const g=el("button","ledg-jump","看一句被抓 ›"); g.addEventListener("click",goGateDemo);
-  f.appendChild(g);
+  if(sc.gate_demo){
+    const g=el("button","ledg-jump","看一句被抓 ›"); g.addEventListener("click",goGateDemo);
+    f.appendChild(g);
+  }else{
+    f.appendChild(el("span"));
+  }
   root.appendChild(f);
   root.scrollTop=0;
   $("#panelFoot").textContent="台账 · 每行=一条引擎核验记录 · raw JSON 在「言必有據」";
