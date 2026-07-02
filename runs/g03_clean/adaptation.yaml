@@ -1,0 +1,28 @@
+# Clean adaptation fixture — G03 道旁苦李 (tier-1 enrichment, 2026-07-02).
+# Guardrails applied (annotation-guardrails.md §B 道旁苦李 — the inference-trap scene):
+#   - 「此必苦李」 is Wang Rong's SPEECH-ACT/claim, never narrator fact ("the plums ARE bitter")
+#   - 「信然」 = the outcome matched his words; NOT "tasted and found bitter", no causal extrapolation
+#   - two 「取之」 have different subjects: the children race to pick (C04); the final picking (C08)
+#     has an UNSPECIFIED subject — kept passive, never attributed (least of all to Wang Rong)
+#   - 「折枝」 = branches weighed down/bent, not broken
+#   - 「不動」 = did not go pick ("stays where he is" acceptable phrasing)
+#   - zero evaluations: no clever/precocious/poised Wang Rong, no greedy/foolish children
+scene_id: G03
+run_id: g03_clean
+title_en: "Wang Rong and the Roadside Plums"
+title_zh: "道旁苦李"
+source_id: shishuo_xinyu_ya_liang_dao_pang_ku_li
+
+storyboard:
+  panels:
+    - {id: P01, beat_id: B01, caption_en: "Wang Rong is seven years old."}
+    - {id: P02, beat_id: B01, caption_en: "He is out roaming and playing with a group of other young children."}
+    - {id: P03, beat_id: B02, caption_en: "By the roadside, a plum tree laden with fruit comes into view, its branches weighed down."}
+    - {id: P04, beat_id: B03, caption_en: "The other children race over to pick the plums."}
+    - {id: P05, beat_id: B03, caption_en: "Only Wang Rong does not move to pick."}
+    - {id: P06, beat_id: B04, caption_en: "Someone asks Wang Rong."}
+    - {id: P07, beat_id: B04, caption_en: "Wang Rong answers that the tree stands by the roadside yet has many fruits, so these must be bitter plums."}
+    - {id: P08, beat_id: B05, caption_en: "Afterward the plums are picked, by an unspecified party."}
+    - {id: P09, beat_id: B05, caption_en: "It turns out to be just as Wang Rong had said."}
+
+aigc_label: "AI-generated adaptation. No existing English translation was provided to the generator."
