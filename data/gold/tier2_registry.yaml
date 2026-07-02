@@ -1,0 +1,65 @@
+# Tier-2 registry — 山河卷收录篇目(2026-07-02,owner 拍板"至少 10 篇"后的广度轴)
+# 状态:source_committed = 文言原文已入库(公版,底本复核待做);金标(atomic facts /
+# required_beats / forbidden_claims)与生动读本均【未建】,灯火保持暗——诚实分层。
+# 刻意不进 canon_gold.yaml:该文件是引擎的 conformance 锚(131 测试),tier-2 草案
+# 不得污染;某篇升 tier-1 时,按 Phase-1 流程(护栏研究 + 对抗审计)另行入金标。
+# 地点凡例:事发地未载者,依籍贯/郡望/都城作接受史锚点,逐条披露(与 G02 詠雪同例)。
+tier: 2
+scenes:
+  - scene_id: G04
+    title_zh: 陳太丘與友期行
+    title_en: "Yuanfang at the Gate"
+    men: 方正
+    source_id: shishuo_xinyu_fang_zheng_chen_taiqiu
+    source_dir: data/sources/chen_taiqiu_appointment
+    anchor: "潁川許縣(陳寔家門外;籍貫見《後漢書·陳寔傳》)"
+    anchor_lonlat: [113.85, 34.02]
+  - scene_id: G05
+    title_zh: 小時了了,大未必佳
+    title_en: "Precocious, They Said"
+    men: 言語
+    source_id: shishuo_xinyu_yan_yu_xiao_shi_liao_liao
+    source_dir: data/sources/kong_rong_visits_li
+    anchor: "洛陽(隨父到洛,詣李元禮府)"
+    anchor_lonlat: [112.45, 34.62]
+  - scene_id: G06
+    title_zh: 望梅止渴
+    title_en: "The Plum Grove Ahead"
+    men: 假譎
+    source_id: shishuo_xinyu_jia_jue_wang_mei
+    source_dir: data/sources/wang_mei_zhi_ke
+    anchor: "譙(事發行軍道中未載,依魏武籍貫作接受史錨點)"
+    anchor_lonlat: [115.78, 33.85]
+  - scene_id: G07
+    title_zh: 七步詩
+    title_en: "Seven Paces"
+    men: 文學
+    source_id: shishuo_xinyu_wen_xue_qi_bu_shi
+    source_dir: data/sources/seven_step_poem
+    anchor: "洛陽(事發地未明言,依魏都洛陽)"
+    anchor_lonlat: [112.45, 34.62]
+  - scene_id: G08
+    title_zh: 急不相棄
+    title_en: "No Casting Off in a Crisis"
+    men: 德行
+    source_id: shishuo_xinyu_de_xing_ji_bu_xiang_qi
+    source_dir: data/sources/hua_wang_boat
+    anchor: "平原高唐(華歆籍貫;事發乘船避難途中未載)"
+    anchor_lonlat: [116.20, 36.85]
+    note: "替换原候选〈床頭捉刀人〉:其结尾『追殺此使』不宜儿童教育场景,且必触安全 deny-list;本篇同为德行名篇,且与 G01 共享华歆(人物连线)。owner 待追认。"
+  - scene_id: G09
+    title_zh: 荀巨伯遠看友人疾
+    title_en: "Xun Jubo Stays"
+    men: 德行
+    source_id: shishuo_xinyu_de_xing_xun_jubo
+    source_dir: data/sources/xun_jubo_friend
+    anchor: "潁川陽翟(郡名未載,依荀氏郡望作接受史錨點)"
+    anchor_lonlat: [113.47, 34.15]
+  - scene_id: G10
+    title_zh: 舉目見日,不見長安
+    title_en: "The Sun and Chang'an"
+    men: 夙惠
+    source_id: shishuo_xinyu_su_hui_ju_mu_jian_ri
+    source_dir: data/sources/sun_and_changan
+    anchor: "建康(晉元帝朝;與 G02 詠雪同城,簽牌分向)"
+    anchor_lonlat: [118.78, 32.04]

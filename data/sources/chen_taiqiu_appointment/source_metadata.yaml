@@ -1,0 +1,8 @@
+# provenance: 世說新語·方正第五 · 136字 · tier-2 收录(2026-07-02);通行本文字,底本(ctext 宋本)复核待做
+source_id: shishuo_xinyu_fang_zheng_chen_taiqiu
+allowed: true
+source_mode: public_domain_original
+english_translation_ingested: false
+text_verified_against_edition: false  # tier-2 诚实标记:未经底本逐字复核
+allowed_operations: [explain_in_own_english, create_teaching_pack, create_text_storyboard, export_educational_adaptation]
+required_export_label: ["AI-assisted educational adaptation based on public-domain original Chinese text."]
