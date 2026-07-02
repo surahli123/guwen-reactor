@@ -8,7 +8,7 @@
   PROTOTYPE D — C-modified v2 骨架 + Q3 寻路原型。
   评审合议(reviews/2026-07-01-proto-bc-synthesis.md)5 个 BLOCKER 的修法已建入:
     B1 节点=文章(G01/G02/G03 三枚签牌),beat 下沉册页、数据驱动
-    B2 灯火=按篇核实状态(G01、G02 亮 / G03 暗;G02 于 2026-07-02 过两道关点亮);印章带作用域注(已核实 2/3 篇);徽章按篇+口径句
+    B2 灯火=按篇核实状态(三篇全亮;G02/G03 于 2026-07-02 各过两道关点亮);印章带作用域注(已核实 3/3 篇);徽章按篇+口径句
     B3 跨篇动线:地图即 hub + 右上「篇目」榜(門類分组,中性排序)
     B5 不伪造地理:門類分区(德行/言語/雅量,canon_gold source_id 现成)+「非地理」声明
   Q2 已定:开场展卷 localStorage 门控,首访播一次(可跳过),之后直达。
@@ -534,7 +534,7 @@
   <div class="title-vert"><span class="title-src">看得見的忠實 · 三則</span><h1 style="font:inherit">世說新語</h1></div>
   <div class="corner-seal-wrap">
     <div class="corner-seal" aria-hidden="true"><span>言</span><span>必</span><span>有</span><span>據</span></div>
-    <div class="seal-scope" id="sealScope">已核实 2 / 3 篇</div>
+    <div class="seal-scope" id="sealScope">已核实 3 / 3 篇</div>
   </div>
   <div class="ctl">
     <button class="tab" id="btnIndex" aria-label="打开篇目榜">篇目</button>
@@ -665,13 +665,55 @@ const SCENES = {
     ]
   },
   G03: {
+    /* 亮灯依据(2026-07-02):引擎 runs/g03_clean = 9/9 SUPPORTED · coverage 5/5 ·
+       READY_FOR_APPROVAL;独立审校 Codex(推论坑最集中的一篇:此必苦李=speech-act、
+       信然≠尝出苦、两次取之主语分立、折枝=压弯)。
+       血缘文档:designs/visible-faithfulness-g01/content-retelling-g03.md。 */
     title_zh:"道旁苦李", title_en:"Wang Rong and the Roadside Plums",
     men:"雅量", men_en:"Composure",
-    status:"pending", beatCount:5,
+    status:"verified", beatCount:5,
+    stats:"✓ 9/9 情节句已核实 · 5/5 幕覆盖 · 0 虚构",
+    review:"✓ 讀本 REVIEWED · PASS",
+    facts:{
+      F01:"Wang Rong was seven years old.",
+      F02:"On one occasion he was roaming and playing with a group of other young children.",
+      F03:"By the roadside, a plum tree laden with fruit, its branches weighed down, was seen (subject unspecified).",
+      F04:"The other children raced over to pick the plums.",
+      F05:"Only Wang Rong did not move (did not go to pick).",
+      F06:"Someone asked Wang Rong.",
+      F07:"Wang Rong answered that the tree stands by the roadside yet has many fruits, so these must be bitter plums.",
+      F08:"Afterward the plums were picked (by an unspecified party).",
+      F09:"It turned out to be just as Wang Rong had said."
+    },
     anchor_note:"錨點:琅琊臨沂(王戎籍貫,《晉書·王戎傳》)",
     station:{x:"61.6%", y:"57.7%", cam:"translate(-8vw,-2vh) scale(1.1)"},
-    chunks_full:["王戎七歲，","嘗與諸小兒遊。","看道邊李樹多子折枝，","諸兒競走取之，","唯戎不動。","人問之，","答曰：「樹在道邊而多子，此必苦李。」","取之，","信然。"]
+    beats:[
+      {id:"B01",seal:"七歲",title:"The Outing",desc:"七岁,与诸小儿游"},
+      {id:"B02",seal:"李樹",title:"The Tree",desc:"道边多子折枝(压弯非折断)"},
+      {id:"B03",seal:"不動",title:"The Stillness",desc:"诸儿竞走,唯戎不动"},
+      {id:"B04",seal:"苦李",title:"The Claim",desc:"他的判断以他的话引出——非叙述者定论"},
+      {id:"B05",seal:"信然",title:"As He Said",desc:"只述果如其言,不写尝李"}
+    ],
+    chunks:{
+      D01:[{k:"F01",t:"王戎七歲"},{k:"a",t:"，"},{k:"F02",t:"嘗與諸小兒遊"},{k:"b",t:"。"}],
+      D02:[{k:"F03",t:"看道邊李樹多子折枝"},{k:"c",t:"，"}],
+      D03:[{k:"F04",t:"諸兒競走取之"},{k:"d",t:"，"},{k:"F05",t:"唯戎不動"},{k:"e",t:"。"}],
+      D04:[{k:"F06",t:"人問之"},{k:"f",t:"，"},{k:"F07",t:"答曰：「樹在道邊而多子，此必苦李。」"}],
+      D05:[{k:"F08",t:"取之"},{k:"g",t:"，"},{k:"F09",t:"信然"},{k:"h",t:"。"}]
+    },
+    lines:[
+      {n:1,beat:"B01",chunk:"D01",fact:"F01",en:"Wang Rong is seven.",claim:"Wang Rong is seven years old."},
+      {n:2,beat:"B01",chunk:"D01",fact:"F02",en:"One day he is out roaming with a crowd of other children.",claim:"He is out roaming and playing with a group of other young children."},
+      {n:3,beat:"B02",chunk:"D02",fact:"F03",en:"By the roadside a plum tree comes into view \u2014 thick with fruit, its branches bowed under the weight.",claim:"By the roadside, a plum tree laden with fruit comes into view, its branches weighed down."},
+      {n:4,beat:"B03",chunk:"D03",fact:"F04",en:"The other children break into a run, racing to pick the plums.",claim:"The other children race over to pick the plums."},
+      {n:5,beat:"B03",chunk:"D03",fact:"F05",en:"Only Wang Rong stays where he is.",claim:"Only Wang Rong does not move to pick."},
+      {n:6,beat:"B04",chunk:"D04",fact:"F06",en:"Someone asks him.",claim:"Someone asks Wang Rong."},
+      {n:7,beat:"B04",chunk:"D04",fact:"F07",en:"His answer: \u201cThe tree stands by the road, yet hangs full of fruit \u2014 these must be bitter plums.\u201d",claim:"Wang Rong answers that the tree stands by the roadside yet has many fruits, so these must be bitter plums."},
+      {n:8,beat:"B05",chunk:"D05",fact:"F08",en:"The plums are picked \u2014",claim:"Afterward the plums are picked, by an unspecified party."},
+      {n:9,beat:"B05",chunk:"D05",fact:"F09",en:"\u2014 and it is just as Wang Rong said.",claim:"It turned out to be just as Wang Rong had said."}
+    ]
   }
+
 };
 
 /* ============================================================
