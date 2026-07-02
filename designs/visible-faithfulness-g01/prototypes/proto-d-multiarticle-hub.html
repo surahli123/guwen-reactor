@@ -416,6 +416,21 @@
   .rawrec-cap{font-family:var(--f-latin);font-size:11px;color:var(--ink-faint);padding:2px 12px 8px;line-height:1.6;}
   .rawrec pre{margin:0;padding:10px 12px;font-size:10.5px;line-height:1.5;overflow-x:auto;
     color:var(--ink-soft);border-top:1px dashed var(--line);font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  /* ---------- Wave 3:考据卡两行骨架 + hover 预览 + 案例轮换(TRUST-UX-SPEC §4/§7) ---------- */
+  .kaoju-zhsrc{font-family:var(--f-song);font-style:normal;letter-spacing:.05em;color:var(--ink);}
+  .kaoju-verdict{font-family:var(--f-latin);font-size:12px;font-weight:600;color:var(--lu);margin-top:4px;}
+  /* hover 预览:~80% 用户从不点击(NotebookLM/引用UX 数据),idle 态也要携带真信号 */
+  #peek{position:fixed;z-index:7;max-width:340px;pointer-events:none;display:none;
+    background:rgba(240,228,198,.97);border:1px solid rgba(122,90,52,.5);border-radius:2px;
+    padding:7px 10px;font-family:var(--f-latin);font-size:11.5px;color:var(--ink-soft);line-height:1.55;
+    box-shadow:0 3px 10px -2px rgba(40,28,10,.4);}
+  #peek .pk-zh{font-family:var(--f-song);color:var(--ink);}
+  .gate-again{display:none;margin-left:10px;background:none;border:1px dashed rgba(168,58,41,.45);
+    border-radius:2px;font-family:var(--f-latin);font-size:11.5px;color:var(--zhu);
+    padding:5px 10px;cursor:pointer;vertical-align:middle;}
+  .gate-again.on{display:inline-block;}
+  .gate-again:hover{background:rgba(168,58,41,.07);}
 </style>
 </head>
 <body>
@@ -523,7 +538,7 @@
   </div>
   <div class="ctl">
     <button class="tab" id="btnIndex" aria-label="打开篇目榜">篇目</button>
-    <button class="tab" id="btnMethod" aria-label="How is this verified">言必有據</button>
+    <button class="tab" id="btnMethod" aria-label="How is this verified" title="“Every claim must have a source” — how this page is checked">言必有據</button>
     <button class="tab" id="btnGate" aria-label="What if the gate were off">如果没有闸门</button>
   </div>
   <div class="proto-tag">原型 D · 多篇中心站(真投影舆图+篇目榜) · 字体为占位</div>
@@ -739,6 +754,24 @@ function renderStage(){
 /* ---------- 册页:整篇视图(评审必改:beat 下沉为节,考据行内展开) ---------- */
 let cur=null; /* 当前打开的篇 id 或 "INDEX" */
 
+/* ---------- Wave 3:hover 预览 + 原文短语查找 ---------- */
+function zhOf(sc,f){
+  for(const cid in sc.chunks){for(const p of sc.chunks[cid]){if(p.k===f)return p.t;}}
+  return "";
+}
+const peek=el("div"); peek.id="peek"; document.body.appendChild(peek);
+function showPeek(l,sc,node){
+  if(node.classList.contains("active"))return; /* 已展开考据的行不再预览 */
+  const zhp=zhOf(sc,l.fact);
+  peek.innerHTML='<span class="pk-zh">'+(zhp.startsWith("「")?zhp:"「"+zhp+"」")+'</span> \u2014 '+sc.facts[l.fact];
+  const r=node.getBoundingClientRect();
+  peek.style.left=Math.max(12,r.left)+"px";
+  peek.style.top=(r.bottom+6)+"px";
+  peek.style.display="block";
+}
+function hidePeek(){peek.style.display="none";}
+document.getElementById("panelIn").addEventListener("scroll",hidePeek,{passive:true});
+
 function panelHeader(sc){
   const frag=document.createDocumentFragment();
   const top=el("div","panel-top");
@@ -809,18 +842,27 @@ function renderArticleG01(root,sc){
       const line=el("div","line"); line.tabIndex=0; line.setAttribute("role","button");
       line.appendChild(el("span","dot"));
       const en=el("span","line-en",l.en); en.setAttribute("lang","en"); line.appendChild(en);
-      line.appendChild(el("span","line-cue","考據 ›"));
+      const cue=el("span","line-cue","考據 ›");
+      cue.title="k\u01ceoj\u00f9 \u2014 the classical scholar\u2019s practice of tracing every statement to its source. Click to trace this line.";
+      line.appendChild(cue);
       const kj=el("div","kaoju");
+      /* Full Fact 两行骨架(TRUST-UX-SPEC §4):Source says → Engine verdict,判定 <2 秒可读 */
+      const zhp=zhOf(sc,l.fact);
       kj.innerHTML='<div class="kaoju-clip"><div class="kaoju-in">'+
-        '<div class="kaoju-lead" lang="en">✓ Verified against the source</div>'+
-        '<div class="kaoju-k" lang="en">The highlighted phrase literally records (fact '+l.fact+'):</div>'+
+        '<div class="kaoju-lead" lang="en">Source says: <span class="kaoju-zhsrc">'+(zhp.startsWith("「")?zhp:"「"+zhp+"」")+'</span></div>'+
         '<div class="kaoju-fact" lang="en">\u201c'+sc.facts[l.fact]+'\u201d</div>'+
-        '<div class="kaoju-k" lang="en" style="margin-top:7px">Engine-checked claim of this line \u2014 PASS:</div>'+
+        '<div class="kaoju-verdict" lang="en">Engine verdict: \u2713 VERIFIED ('+l.fact+')</div>'+
+        '<div class="kaoju-k" lang="en" style="margin-top:7px">Engine-checked claim of this line:</div>'+
         '<div class="kaoju-claim" lang="en">'+l.claim+'</div>'+
-        '<div class="stamp"><span class="sq">據</span><span>出自《世說新語 · 德行》 · '+l.fact+'</span></div>'+
+        '<div class="stamp"><span class="sq" title="k\u01ceoj\u00f9 \u2014 trace every statement to its source">據</span><span>出自《世說新語 · 德行》 · '+l.fact+'</span></div>'+
         '<span class="zhs">所本原文已點亮;這句只述原文之事,未添一笔。</span></div></div>';
       line.addEventListener("click",()=>selectLine(l,line,kj));
       line.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectLine(l,line,kj);}});
+      if(window.matchMedia("(hover: hover)").matches){
+        line.addEventListener("mouseenter",()=>showPeek(l,sc,line));
+        line.addEventListener("mouseleave",hidePeek);
+        line.addEventListener("click",hidePeek);
+      }
       blk.appendChild(line); blk.appendChild(kj);
       /* 朱笔闸门:浏览器内真跑规则子集(TRUST-UX-SPEC §3;先算后演) */
       if(l.n===4&&sc.gate_demo){
@@ -836,6 +878,7 @@ function renderArticleG01(root,sc){
           '<div class="ledger" id="gateLedger" aria-live="polite"></div>'+
           '<div class="srccard" id="gateSrc"></div>'+
           '<div class="ghost-verdict" id="gateVerdict" lang="en"></div>'+
+          '<button class="gate-again" id="gateAgain" lang="en">Try another fabrication ↻ · 换一句编造</button>'+
           '</div></div>';
         blk.appendChild(gh);
         wireGate(bar,gh,sc);
@@ -944,50 +987,68 @@ function selectLine(l,node,kj){
 }
 /* 闸门交互:先算后演。verdict 同步算出(console.log 先于首行揭示,可证——
    动画只是已算出结果的逐行排版,不是假进度)。关闸全复原,可反复扳。 */
-let gateTimers=[];
+let gateTimers=[]; let gateCaseIdx=0;
 function wireGate(bar,gh,sc){
   const led=gh.querySelector("#gateLedger"), src=gh.querySelector("#gateSrc"),
-        ver=gh.querySelector("#gateVerdict"), fl=gh.querySelector(".ghost-false");
+        ver=gh.querySelector("#gateVerdict"), fl=gh.querySelector(".ghost-false"),
+        again=gh.querySelector("#gateAgain");
   const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function reset(){
     gateTimers.forEach(clearTimeout); gateTimers=[];
     led.innerHTML=""; src.innerHTML=""; src.classList.remove("on");
     ver.textContent=""; ver.classList.remove("on");
-    fl.classList.remove("struck");
+    fl.classList.remove("struck"); again.classList.remove("on");
     const st=document.getElementById("chipStats");
     if(st){st.textContent=sc.stats; st.classList.remove("blocked");}
   }
-  bar.querySelector("#gateToggle").addEventListener("change",e=>{
-    const on=e.target.checked;
-    gh.classList.toggle("show",on);
+  /* 轮换案例走同一条真计算路径;案例 B(动机走私,引用真实 F08 仍被抓)证明非关键词匹配 */
+  function runCase(c){
     reset();
-    if(!on)return;
-    const c=GATE_CASES[0];
+    fl.textContent=c.en;
     const r=gateCheck(c.en,c.motive);            /* ① 先算(同步) */
-    console.log("[gate] verdict computed before reveal:",r.verdict,r.fact?"at "+r.fact.id:"");
+    const label=r.why==="unhedged-motive"?"UNHEDGED MOTIVE":r.verdict;
+    console.log("[gate] verdict computed before reveal:",r.verdict,r.fact?"at "+r.fact.id:"",r.why||"");
     led.innerHTML='<div class="ledger-h" lang="en">CHECKING AGAINST SOURCE FACTS · 逐条核对</div>';
     const rows=r.steps.map(s=>{
       const row=el("div","ledger-row "+(s.hit?"fail":"pass"));
       row.innerHTML=s.hit?"<b>"+s.fact+" ✗ CONTRADICTION</b>":"<b>"+s.fact+" ✓</b> pass";
       led.appendChild(row); return row;
     });
-    const stepMs=reduced?0:230;                  /* ② 逐行揭示已算出的结果 */
+    if(r.why==="unhedged-motive"){
+      const mr=el("div","ledger-row fail");
+      mr.innerHTML="<b>✗ UNHEDGED MOTIVE</b> — \u201c"+c.motive.text+"\u201d is not stated in the source (the event itself, "+c.motive.eventFact+", is real ✓)";
+      led.appendChild(mr); rows.push(mr);
+    }
+    const stepMs=reduced?0:(rows.length>6?140:230);   /* ② 逐行揭示已算出的结果 */
     rows.forEach((row,i)=>gateTimers.push(setTimeout(()=>row.classList.add("on"),120+i*stepMs)));
     gateTimers.push(setTimeout(()=>{             /* ③ 源文并排 + 朱笔落线 + 定谳 */
       if(r.fact){
         const zq=r.fact.zh.startsWith("「")?r.fact.zh:"「"+r.fact.zh+"」";
+        const extra=r.why==="unhedged-motive"?" — the source states the act, never a motive.":"";
         src.innerHTML='<div class="srccard-k" lang="en">SOURCE SAYS · 原文</div>'+
           '<div class="srccard-zh">'+zq+'</div>'+
-          '<div class="srccard-en" lang="en">'+sc.facts[r.fact.id]+' ('+r.fact.id+')</div>';
+          '<div class="srccard-en" lang="en">'+sc.facts[r.fact.id]+' ('+r.fact.id+')'+extra+'</div>';
         src.classList.add("on");
       }
       fl.classList.add("struck");
-      ver.textContent="朱批 ✗ "+r.verdict+" · export BLOCKED";
+      ver.textContent="朱批 ✗ "+label+" · export BLOCKED";
+      ver.title="zh\u016bp\u012b — the vermilion ink reserved for a verdict. Here: the engine\u2019s rejection mark.";
       ver.classList.add("on");
+      again.classList.add("on");
       const st=document.getElementById("chipStats");
-      if(st){st.textContent="✗ 1 fabrication blocked · "+r.verdict+" · export BLOCKED";st.classList.add("blocked");}
+      if(st){st.textContent="✗ 1 fabrication blocked · "+label+" · export BLOCKED";st.classList.add("blocked");}
     },120+rows.length*stepMs+180));
+  }
+  bar.querySelector("#gateToggle").addEventListener("change",e=>{
+    const on=e.target.checked;
+    gh.classList.toggle("show",on);
+    if(!on){reset();return;}
+    runCase(GATE_CASES[gateCaseIdx]);
     gh.scrollIntoView({behavior:"smooth",block:"center"});
+  });
+  again.addEventListener("click",()=>{
+    gateCaseIdx=(gateCaseIdx+1)%GATE_CASES.length;
+    runCase(GATE_CASES[gateCaseIdx]);
   });
 }
 /* ---------- Wave 2:可审计台账(TRUST-UX-SPEC §5) ----------
@@ -1048,6 +1109,7 @@ function openLedger(sc){
 }
 function closePanel(){
   cur=null;
+  hidePeek();
   $("#panel").classList.remove("open");
   document.body.classList.remove("panelopen");
   document.querySelectorAll(".station.selected").forEach(s=>s.classList.remove("selected"));
