@@ -1,0 +1,32 @@
+# Clean adaptation fixture — G02 詠雪 (tier-1 enrichment, 2026-07-02).
+# Mirrors runs/demo_clean (G01): each gated plot artifact (panels.*.caption_en,
+# narrator_note.*) sources one StructuredClaim in structured_claims.yaml via artifact_path.
+# Guardrails applied (annotation-guardrails.md §B 咏雪):
+#   - no superiority verdict between the two similes (「公大笑樂」 records a reaction only)
+#   - no real names (謝安 / 謝朗 / 謝道韞 stay in the inference layer, not in any claim)
+#   - 兒女 = younger members of the family, NOT "his own sons and daughters"
+#   - C08 identity note = background-fact layer, not a plot beat (beat_id: null downstream)
+scene_id: G02
+run_id: g02_clean
+title_en: "Xie Daoyun's Snow Simile"
+title_zh: "詠雪"
+source_id: shishuo_xinyu_yan_yu_yong_xue
+
+storyboard:
+  panels:
+    - {id: P01, beat_id: B01, caption_en: "On a cold, snowy day, Grand Tutor Xie holds a family gathering."}
+    - {id: P02, beat_id: B01, caption_en: "He discusses the meaning of literary texts with the younger members of the family."}
+    - {id: P03, beat_id: B02, caption_en: "Soon the snow falls suddenly and heavily."}
+    - {id: P04, beat_id: B02, caption_en: "Pleased, the Lord asks what the fast-falling white snow resembles."}
+    - {id: P05, beat_id: B03, caption_en: "Hu'er, the elder brother's son, says scattering salt in the air could roughly be compared to it."}
+    - {id: P06, beat_id: B04, caption_en: "The elder brother's daughter says it is not as good as willow catkins rising on the wind."}
+    - {id: P07, beat_id: B05, caption_en: "The Lord laughs heartily and is delighted."}
+
+# 篇末旁白身份补注 — background-fact layer (guardrail: 非情节节拍); claims cite these
+# with beat_id null; F08/F09 belong to no required beat, so the audit counts them in
+# factual precision but not in beat coverage.
+narrator_note:
+  identity_daughter_en: "The narrator notes she was the daughter of the Lord's eldest elder brother, Wuyi."
+  identity_wife_en: "The narrator notes she was the wife of Wang Ningzhi, General of the Left."
+
+aigc_label: "AI-generated adaptation. No existing English translation was provided to the generator."
