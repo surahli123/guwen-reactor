@@ -32,6 +32,10 @@ runs/*
 !runs/demo_drift/
 !runs/g02_clean/
 !runs/g03_clean/
+
+# Map-geometry build inputs/outputs (regenerable via tools/build_geo.py)
+tools/*.geojson
+tools/mapgeo.js
 # ...but generated run OUTPUTS (trace/manifest) are not fixtures — re-ignore them.
 runs/**/trace.jsonl
 runs/**/manifest.yaml
