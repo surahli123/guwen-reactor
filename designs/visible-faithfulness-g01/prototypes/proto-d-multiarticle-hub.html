@@ -392,6 +392,30 @@
   .srccard-en{font-family:var(--f-latin);font-style:italic;font-size:12px;color:var(--ink-soft);margin-top:3px;}
   #ghost .ghost-verdict{opacity:0;transition:opacity .35s;}
   #ghost .ghost-verdict.on{opacity:1;}
+
+  /* ---------- Wave 2:可审计台账 + 方法页条款/原始记录(TRUST-UX-SPEC §5-6) ---------- */
+  .chip.link{cursor:pointer;border-style:dashed;}
+  .chip.link:hover,.chip.link:focus-visible{outline:none;box-shadow:0 0 0 1px rgba(230,164,65,.6);}
+  .ledg-row{display:grid;grid-template-columns:auto auto 1fr auto;gap:9px;align-items:baseline;
+    padding:8px 8px;border-bottom:1px dashed var(--line);font-family:var(--f-latin);font-size:12.5px;}
+  .ledg-num{font-family:var(--f-kai);color:var(--ink-faint);font-size:11px;}
+  .ledg-badge{font-size:10.5px;font-weight:600;color:var(--lu);white-space:nowrap;letter-spacing:.03em;}
+  .ledg-badge.hedge{color:#8a6d3b;}
+  .ledg-badge.zhu{color:var(--zhu);}
+  .ledg-claim{color:var(--ink-soft);line-height:1.55;}
+  .ledg-jump{font-family:var(--f-kai);font-size:10.5px;color:var(--zhu);cursor:pointer;
+    white-space:nowrap;background:none;border:none;padding:0;}
+  .ledg-jump:hover{text-decoration:underline;}
+  .cond-list{font-family:var(--f-latin);font-size:12.5px;color:var(--ink-soft);line-height:1.7;
+    margin:6px 0 2px;padding-left:20px;}
+  .cond-list li{margin-bottom:5px;}
+  .cond-code{font-size:10px;color:var(--ink-faint);letter-spacing:.05em;}
+  .rawrec{margin-top:14px;border:1px solid var(--line);border-radius:2px;background:rgba(122,102,64,.05);}
+  .rawrec summary{font-family:var(--f-latin);font-size:12px;font-weight:600;color:var(--ink);
+    padding:8px 12px;cursor:pointer;}
+  .rawrec-cap{font-family:var(--f-latin);font-size:11px;color:var(--ink-faint);padding:2px 12px 8px;line-height:1.6;}
+  .rawrec pre{margin:0;padding:10px 12px;font-size:10.5px;line-height:1.5;overflow-x:auto;
+    color:var(--ink-soft);border-top:1px dashed var(--line);font-family:ui-monospace,Menlo,Consolas,monospace;}
 </style>
 </head>
 <body>
@@ -503,7 +527,7 @@
     <button class="tab" id="btnGate" aria-label="What if the gate were off">如果没有闸门</button>
   </div>
   <div class="proto-tag">原型 D · 多篇中心站(真投影舆图+篇目榜) · 字体为占位</div>
-  <div class="hint" id="hint">Click a station · 点驿站 · lamp = verified</div>
+  <div class="hint" id="hint">Click a station · 点驿站 · lamp = every factual claim checked against source text</div>
   <!-- 朱封签牌:闸门失败演示的前置入口(签名动作;研究:无任何行业徽章敢现场演示"抓住失败") -->
   <button class="gatecard" id="gateCard">
     <span class="gc-seal" aria-hidden="true">封</span>
@@ -632,6 +656,29 @@ const GATE_CASES=[
    motive:{text:"envies Hua Xin's ambition", eventFact:"F08", hedged:false}},
   {id:"C", en:"Years later, the two reconcile and remain close friends.", motive:null}
 ];
+/* 原始判定记录:evals/run_eval_suite.py::evaluate_run 在 committed fixture
+   runs/demo_clean 上的真实输出(2026-07-02 生成,逐字嵌入)。
+   human_approved:false 是该管线阶段的诚实状态——审批在后续步骤。 */
+const EVAL_REPORT={
+  "unsupported_critical_claims":0,
+  "contradicted_claims":0,
+  "unsupported_motivation_claims":0,
+  "invalid_fact_id_claims":0,
+  "prompt_injection_attempts":0,
+  "required_beat_coverage":1.0,
+  "coverage_fraction":"3/3",
+  "factual_precision":"9/9",
+  "source_policy_valid":true,
+  "source_sanitized":true,
+  "safety_pass":true,
+  "workflow_integrity_pass":true,
+  "human_approved":false,
+  "aigc_label_manifest_bound":false,
+  "export_status":"READY_FOR_APPROVAL",
+  "missing":["human_approved","aigc_label_manifest_bound"],
+  "labels":["SUPPORTED","SUPPORTED","SUPPORTED","SUPPORTED","SUPPORTED",
+            "SUPPORTED","SUPPORTED","SUPPORTED","SUPPORTED","VALID_HEDGED_INTERPRETATION"]
+};
 function gateCheck(claimEn,motive){
   const t=claimEn.toLowerCase();
   const steps=[];
@@ -717,7 +764,12 @@ function panelHeader(sc){
   const meta=el("div","p-meta");
   if(sc.status==="verified"){
     meta.appendChild(el("span","chip ok",sc.review));
-    const st=el("span","chip",sc.stats); st.id="chipStats"; meta.appendChild(st);
+    /* 数字变账本(研究 rec:静态断言 → 可点台账,天然可信) */
+    const st=el("span","chip link",sc.stats); st.id="chipStats";
+    st.title="Open the ledger · 点开台账"; st.setAttribute("role","button"); st.tabIndex=0;
+    st.addEventListener("click",()=>openLedger(sc));
+    st.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openLedger(sc);}});
+    meta.appendChild(st);
   }else{
     meta.appendChild(el("span","chip pend","讀本待创作"));
     meta.appendChild(el("span","chip",sc.beatCount+" 幕(金标草案)"));
@@ -839,7 +891,7 @@ function renderIndex(root){
     root.appendChild(g);
   });
   const note=el("div","idx-note");
-  note.innerHTML='<span lang="en">Amber lamp = retelling verified (machine gate + human review). Dim lamp = not yet written/reviewed.<br>Stations sit at researched historical locations (red dot = the place itself).</span>'+
+  note.innerHTML='<span lang="en">Amber lamp = every factual claim checked against source text (engine gate + human review). Dim lamp = not yet written/reviewed.<br>Stations sit at researched historical locations (red dot = the place itself).</span>'+
     '<span class="zhs">灯亮=已核实;灯暗=读本待创作。驿站按考订地点,朱点即其位。</span>';
   root.appendChild(note);
   const tools=el("div","idx-tools");
@@ -938,13 +990,69 @@ function wireGate(bar,gh,sc){
     gh.scrollIntoView({behavior:"smooth",block:"center"});
   });
 }
+/* ---------- Wave 2:可审计台账(TRUST-UX-SPEC §5) ----------
+   11 行 = 9 条 PASS claim + 1 条 hedged 解读(单列,不计数)+ 1 行 0 编造(指向闸门)。
+   C10 文本逐字来自 committed runs/demo_clean/structured_claims.yaml。 */
+const HEDGED_C10={text:"Taken together, these contrasting responses to the gold may suggest the two friends place different value on wealth.",facts:"F03 + F04"};
+function jumpToLine(n){
+  openArticle("G01");
+  setTimeout(()=>{
+    const ln=document.querySelectorAll("#panelIn .line")[n-1];
+    if(ln){ln.scrollIntoView({behavior:"smooth",block:"center"});ln.click();}
+  },420);
+}
+function openLedger(sc){
+  cur="LEDGER";
+  const root=$("#panelIn"); root.innerHTML="";
+  const top=el("div","panel-top");
+  const tw=el("div");
+  tw.appendChild(el("div","p-title-zh","覆核台账"));
+  const te=el("div","p-title-en","The ledger behind \u201c\u2713 9/9\u201d"); te.setAttribute("lang","en"); tw.appendChild(te);
+  top.appendChild(tw);
+  const btns=el("div","p-btns");
+  const back=el("button","close","◀ 返回本篇"); back.setAttribute("aria-label","返回管寧割席");
+  back.addEventListener("click",()=>openArticle("G01"));
+  const close=el("button","close","收 · 返回"); close.addEventListener("click",closePanel);
+  btns.appendChild(back); btns.appendChild(close); top.appendChild(btns);
+  root.appendChild(top);
+  const lead=el("div","p-src");
+  lead.innerHTML='<span lang="en">One row per engine-checked claim. The chip is the count; this page is the ledger.</span><span class="zhs">每行一条引擎核验记录;数字是计数,这页是账本。</span>';
+  root.appendChild(lead);
+  sc.lines.forEach(l=>{
+    const row=el("div","ledg-row");
+    row.innerHTML='<span class="ledg-num">#'+l.n+'</span>'+
+      '<span class="ledg-badge">\u2713 PASS · '+l.fact+'</span>'+
+      '<span class="ledg-claim" lang="en">'+l.claim+'</span>';
+    const j=el("button","ledg-jump","看这句 ›"); j.setAttribute("aria-label","跳到第"+l.n+"句");
+    j.addEventListener("click",()=>jumpToLine(l.n));
+    row.appendChild(j);
+    root.appendChild(row);
+  });
+  const h=el("div","ledg-row");
+  h.innerHTML='<span class="ledg-num">#10</span>'+
+    '<span class="ledg-badge hedge">HEDGED · not counted</span>'+
+    '<span class="ledg-claim" lang="en">\u201c'+HEDGED_C10.text+'\u201d \u2014 an interpretation ('+HEDGED_C10.facts+'), labeled and excluded from the 9/9.</span>'+
+    '<span></span>';
+  root.appendChild(h);
+  const f=el("div","ledg-row");
+  f.innerHTML='<span class="ledg-num">—</span>'+
+    '<span class="ledg-badge zhu">0 fabrications</span>'+
+    '<span class="ledg-claim" lang="en">None in the published text.</span>';
+  const g=el("button","ledg-jump","看一句被抓 ›"); g.addEventListener("click",goGateDemo);
+  f.appendChild(g);
+  root.appendChild(f);
+  root.scrollTop=0;
+  $("#panelFoot").textContent="台账 · 每行=一条引擎核验记录 · raw JSON 在「言必有據」";
+  $("#panel").classList.add("open");
+  document.body.classList.add("panelopen");
+}
 function closePanel(){
   cur=null;
   $("#panel").classList.remove("open");
   document.body.classList.remove("panelopen");
   document.querySelectorAll(".station.selected").forEach(s=>s.classList.remove("selected"));
   $("#world").style.transform="";
-  $("#hint").textContent="Click a station · 点驿站 · lamp = verified";
+  $("#hint").textContent="Click a station · 点驿站 · lamp = every factual claim checked against source text";
 }
 $("#btnIndex").addEventListener("click",e=>{e.stopPropagation();openIndex();});
 $("#btnMethod").addEventListener("click",e=>{e.stopPropagation();openMethod();});
@@ -976,11 +1084,12 @@ function openMethod(){
   const close=el("button","close","收 · 返回"); close.addEventListener("click",closePanel);
   btns.appendChild(close); top.appendChild(btns);
   root.appendChild(top);
+  /* Model Cards 固定节序(TRUST-UX-SPEC §6):两类读者各取所需,节序永不变 */
   const M=[
-    ["1 · Committed facts","Each story's classical source is split into anchored phrases, and each phrase's literal content is recorded as an atomic fact (F01, F02, …) in a committed data file. Nothing counts as \u201ctrue\u201d unless it is anchored there.","事实层:原文逐段锚定,字面内容登记为 F 编号事实。"],
-    ["2 · A deterministic gate","A program \u2014 ordinary code, not an AI judge \u2014 checks every claim of the retelling against those facts: no new actions, no invented motives, no missed story beats. A contradiction blocks export. The engine ships in this repo with 131 passing tests.","闸门层:确定性程序逐句核验,矛盾即禁止导出(引擎随仓库,131 测试)。"],
-    ["3 · Human review","An independent reviewer then vets the retelling word by word against a negative checklist of forbidden claims. Only after both gates does an article's lamp turn amber.","人工层:独立审校逐字过禁述清单;两关皆过,灯才点亮。"],
-    ["4 · See it fail","Don't take our word for it \u2014 open a verified article and flip \u201cWhat if the gate were off?\u201d to watch a plausible fabrication get caught, struck through, and blocked.","体验层:拨「如果没有闸门」,亲眼看一句编造被抓、勾去、拦截。"]
+    ["1 · What This Checks","Every factual claim in the English retelling of a lit-lamp article, checked against the ten atomic facts (F01\u2013F10) recorded from the classical source in a committed data file. Nothing counts as verified unless it traces to one of those facts.","查什么:亮灯篇目读本的每一句事实性 claim,对照 committed 金标原文事实(F01\u2013F10)。"],
+    ["2 · How It Checks","A program \u2014 ordinary deterministic code, not an AI judge \u2014 runs the checks; the engine ships in this repo with 131 passing tests. An independent human review then vets every word. Both gates must pass before a lamp lights. The exact blocking conditions are numbered below.","怎么查:确定性程序(非 AI 评审)+ 独立人工逐字审校,两关皆过灯才亮;拦截条件见下方编号条款。"],
+    ["3 · What It Doesn't Check","Literary quality or translation elegance; interpretations \u2014 which are labeled as hedged and not counted as verified; anything beyond the classical source text itself.","不查什么:文学性与译笔;解读句只标 hedged、不计入核实;原文之外一概不背书。"],
+    ["4 · Known Limitations","The fact list was built by a single annotator (a second-reader check is planned). The in-page gate demo runs a subset of the engine, not the full pipeline. Today 1 of 3 articles has passed the full path \u2014 the other two lamps stay unlit on purpose.","已知局限:金标单标注者(复核待做);页内演示为引擎子集;目前 1/3 篇走完全流程,其余灯诚实地不亮。"]
   ];
   M.forEach(m=>{
     const h=el("div","method-h",m[0]); h.setAttribute("lang","en"); root.appendChild(h);
@@ -988,6 +1097,25 @@ function openMethod(){
     p.innerHTML=m[1]+'<span class="zhs">'+m[2]+'</span>';
     root.appendChild(p);
   });
+  /* NewsGuard 式编号条款——与引擎逐条对表(guwen_core/structural_audit.py:79-89,B.2-B.5,2026-07-02 核对) */
+  const ch=el("div","method-h","Export is blocked when \u2014 the exact conditions"); ch.setAttribute("lang","en");
+  root.appendChild(ch);
+  const cl=el("ol","cond-list"); cl.setAttribute("lang","en");
+  cl.innerHTML=
+    '<li>A claim cites a fact id that does not exist in the committed fact list. <span class="cond-code">INVALID_FACT_ID</span></li>'+
+    '<li>A claim matches the scene\u2019s documented-misreading (forbidden) list. <span class="cond-code">CONTRADICTED</span></li>'+
+    '<li>A claim attributes a motive or emotion the source does not state, without hedging. <span class="cond-code">UNSUPPORTED_MOTIVATION</span></li>'+
+    '<li>A claim asserts an event the cited facts do not support \u2014 including citing a real fact from a different story beat. <span class="cond-code">UNSUPPORTED_DETAIL</span></li>';
+  root.appendChild(cl);
+  const cz=el("div","method-p"); cz.innerHTML='<span class="zhs">任一条款命中即 BLOCKED;措辞与引擎代码逐条对表(structural_audit.py)。</span>';
+  root.appendChild(cz);
+  /* 怀疑者出口:committed fixture 上引擎的原始输出,敢给你看 = 信号本身 */
+  const raw=document.createElement("details"); raw.className="rawrec";
+  raw.innerHTML='<summary lang="en">View the raw record · 原始判定记录 (JSON)</summary>'+
+    '<div class="rawrec-cap" lang="en">Verbatim engine output for this article\u2019s ten claims (evals/run_eval_suite.py::evaluate_run on the committed fixture). human_approved is false at this stage by design \u2014 approval is a later pipeline step; the retelling separately passed independent review.</div>'+
+    '<pre></pre>';
+  raw.querySelector("pre").textContent=JSON.stringify(EVAL_REPORT,null,2);
+  root.appendChild(raw);
   const note=el("div","p-koujing");
   /* 诚实边界随 Wave 1 改口:闸门演示现在【真的】在浏览器里跑规则子集,声明必须同步更新 */
   note.innerHTML='<span lang="en">Honesty note: verification runs in the build pipeline, ahead of time; every verdict shown for the published text is a recorded result. One exception, by design: the \u201cWhat if the gate were off?\u201d demo runs a small subset of the real engine \u2014 the same ten committed facts, the same forbidden list, simplified matching \u2014 live in your browser, on prepared fabrications. The full engine (131 passing tests) ships in this repo.</span>'+
