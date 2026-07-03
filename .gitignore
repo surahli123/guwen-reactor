@@ -36,6 +36,10 @@ runs/*
 # Map-geometry build inputs/outputs (regenerable via tools/build_geo.py)
 tools/*.geojson
 tools/mapgeo.js
+# Font-subset build inputs/outputs (regenerable via tools/subset_font.py;
+# the subset ships embedded in the demo HTML — keep the 24MB source font out)
+tools/*.ttf
+tools/*.woff
 # ...but generated run OUTPUTS (trace/manifest) are not fixtures — re-ignore them.
 runs/**/trace.jsonl
 runs/**/manifest.yaml
