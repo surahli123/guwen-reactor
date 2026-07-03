@@ -1,8 +1,8 @@
-# provenance: 世說新語·假譎第二十七 · 52字 · tier-2 收录(2026-07-02);通行本文字,底本(ctext 宋本)复核待做
+# provenance: 世說新語·假譎第二十七 · 52字 · ctext.org 核實;字符 exact-match;標點為本庫編輯約定
 source_id: shishuo_xinyu_jia_jue_wang_mei
 allowed: true
 source_mode: public_domain_original
 english_translation_ingested: false
-text_verified_against_edition: false  # tier-2 诚实标记:未经底本逐字复核
+text_verified_against_edition: true  # tier-2 诚实标记:已按 ctext 底本逐字复核
 allowed_operations: [explain_in_own_english, create_teaching_pack, create_text_storyboard, export_educational_adaptation]
 required_export_label: ["AI-assisted educational adaptation based on public-domain original Chinese text."]

@@ -1,5 +1,7 @@
 # Tier-2 registry — 山河卷收录篇目(2026-07-02,owner 拍板"至少 10 篇"后的广度轴)
-# 状态:source_committed = 文言原文已入库(公版,底本复核待做);金标(atomic facts /
+# 状态:source_committed = 文言原文已入库(公版,已于 2026-07-02 对读
+# ctext《四部叢刊初編》本完成逐字复核;标点为本库编辑约定;证据见
+# reviews/tier2-verification-2026-07-02.md);金标(atomic facts /
 # required_beats / forbidden_claims)与生动读本均【未建】,灯火保持暗——诚实分层。
 # 刻意不进 canon_gold.yaml:该文件是引擎的 conformance 锚(131 测试),tier-2 草案
 # 不得污染;某篇升 tier-1 时,按 Phase-1 流程(护栏研究 + 对抗审计)另行入金标。
