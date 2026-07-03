@@ -39,6 +39,7 @@ tools/mapgeo.js
 # ...but generated run OUTPUTS (trace/manifest) are not fixtures — re-ignore them.
 runs/**/trace.jsonl
 runs/**/manifest.yaml
+runs/**/eval_report.yaml
 *.log
 dist/
 build/
