@@ -4,6 +4,18 @@ All notable changes to Guwen Reactor. Format: [Keep a Changelog](https://keepach
 
 ## [Unreleased]
 
+### Added — 2026-07-02 — 信任UX三波落地 + G02/G03 两道关点灯 + 山河卷扩为十篇 + LXGW 内嵌
+- **TRUST-UX-SPEC v1 定稿并全量实施**(owner 三项形态决策:朱封签牌/朱批台账/全国框景):
+  - **Wave 1(签名动作)**:闸门从预录判定升级为**浏览器内真跑引擎规则子集**(canon_gold 十条事实+forbidden 逐字嵌入,事实矛盾+unhedged-motive 两规则);**先算后演**(console 先于首帧输出 verdict,机器可证);朱封签牌前置首屏;划线改 line-through(色条只锚折行首行的 bug);CI ✓/✗ 全量。
+  - **Wave 2**:`✓ 9/9` chip → **可审计台账**(11 行:9 PASS+hedged 单列+0 编造→闸门);灯火恒带 literal copy;方法页 Model-Cards 四节 + 编号拦截条款(与 `structural_audit.py:79-89` 对表)+ **raw JSON 折叠**(evaluate_run 逐字输出)。
+  - **Wave 3**:考据卡 Full Fact 两行骨架(Source says →Engine verdict);hover 预览;考據/朱批/言必有據 tooltip;**Try another fabrication 三案例轮换**(B 案动机走私:十条事实全 ✓ 后被动机规则抓住,证明非关键词匹配)。
+- **G02 詠雪、G03 道旁苦李点灯(2/3→3/3)**:各走完整两道关——`runs/g0x_clean` fixture → 真引擎 `evaluate_run`(双双 9/9 SUPPORTED·5/5 覆盖·READY_FOR_APPROVAL)→ **Codex 独立审校**(G02 R1 FAIL:作者把「未若」的比较锋芒磨掉,与 G01 的"加无据之物"成镜像;修后 R2 PASS。G03 一轮 PASS——护栏最细的一篇良率最高)。血缘文档 `content-retelling-g02/g03.md` 全程记录;台账/跳转已泛化(去 G01 硬编码)。
+- **山河卷扩为十篇(owner 拍板 ≥10)**:tier-2 七篇(陳太丘與友期行/小時了了/望梅止渴/七步詩/急不相棄/荀巨伯/舉目見日)source-committed 层——原文入 `data/sources/`(`text_verified_against_edition:false` 诚实标记)、登记 `data/gold/tier2_registry.yaml`(**刻意不进 canon_gold** 保护引擎);`build_geo.py` 十锚点重生成(G01-03 逐位一致);篇目榜 7 門類;假密度签牌退役;印章 3/10;暗灯册页新诚实卡。**替换获批**:床頭捉刀人(追殺结尾不宜儿童教育)→ 急不相棄(与 G01 共享华歆)。
+- **LXGW 文楷子集内嵌(跨机 BLOCKER 解除)**:916 字 woff base64(254KB,单文件 449KB,0 外部请求);`tools/subset_font.py` 一键复现;SVG 地名层同步。
+- **工程事故与恢复(记录在案)**:Wave 3 补丁切片终点锚在 CSS 中有同前缀孪生 → 反向切片复制半个文件;browser console 不报解析错误,由 `node --check` 抓获;`git checkout` 恢复 + 补丁纪律升级(`assert i<j` + 限定搜索起点 + 每补丁必 node 语法检)。
+- 验证纪律全程:每改 serve + 0 外部请求 + console 0 错误 + 截图(shots/w1-01…font-01);12 commits,每 wave/每篇独立提交。
+
+
 ### Added — 2026-07-01/02 — 山河卷多篇中心站(原型 D)+ 真投影舆图 + EN-first 信任层
 - **舞台三原型 A/B/C**(单变量实验)→ owner 圈定 B/C → **三线评审合议 C-modified**(5×Opus workflow + Codex critique theatre(真调 `open-design-critique-theater`)+ baoyu 准则 critic;7 视角一致),B 降级篇内可选;5 项 BLOCKER 修法 → `reviews/2026-07-01-proto-bc-synthesis.md`。
 - **proto-d 多篇中心站**:节点=文章(G01/G02/G03),beat 下沉册页;篇目榜(門類分组、中性排序);按篇灯火诚实(仅 G01 亮);印章作用域注(已核实 1/3 篇);密度预览(12 签牌);展卷 localStorage 首访一次(Q2 拍板)。
