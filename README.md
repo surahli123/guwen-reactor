@@ -88,7 +88,8 @@ other recent versions are untested.
 | MCP Server | Code | `app/mcp_server.py` — 3 stdio tools wrapping the deterministic gate, pinned `mcp==1.28.1` |
 | Security features | Code | public-domain-only source guard, sanitizer (NFKC/zero-width/sha256), prompt-injection detection, metadata-only source access, fail-closed regeneration cap |
 | Deployability | Video | `docs/demo/index.html` — single file, zero external requests, no API key, opens in any browser |
-| Antigravity | Video | repo release workflow (merge + public GitHub push) performed in Antigravity, shown in the submission video |
+
+The submission demonstrates the three course concepts above. (Antigravity was used to publish the public repository; it is not claimed as one of the demonstrated concepts, since the submission video does not show it.)
 
 ## Repo map
 
