@@ -13,7 +13,7 @@ run_id: demo_clean
 claims:
   # --- Beat B01: the gold test (F01-F04) ---
   - {claim_id: C01, beat_id: B01, claim_text: "Guan Ning and Hua Xin work the vegetable garden together.", source_fact_ids: [F01], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P01.caption_en"}
-  - {claim_id: C02, beat_id: B01, claim_text: "Their hoes uncover a piece of gold lying in the soil.", source_fact_ids: [F02], assertion_type: visual, hedging: asserted, artifact_path: "storyboard.panels.P02.caption_en"}
+  - {claim_id: C02, beat_id: B01, claim_text: "They see a piece of gold half-buried in the ground.", source_fact_ids: [F02], assertion_type: visual, hedging: asserted, artifact_path: "storyboard.panels.P02.caption_en"}
   - {claim_id: C03, beat_id: B01, claim_text: "Guan Ning keeps hoeing, handling the gold no differently from a piece of tile or stone.", source_fact_ids: [F03], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P03.caption_en"}
   - {claim_id: C04, beat_id: B01, claim_text: "Hua Xin picks the gold up, then throws it away.", source_fact_ids: [F04], assertion_type: action, hedging: asserted, artifact_path: "storyboard.panels.P04.caption_en"}
   # --- Beat B02: the carriage test (F05-F07) ---

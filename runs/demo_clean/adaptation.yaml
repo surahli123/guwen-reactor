@@ -10,7 +10,7 @@ source_id: shishuo_xinyu_de_xing_guan_ning
 storyboard:
   panels:
     - {id: P01, beat_id: B01, caption_en: "Guan Ning and Hua Xin work the vegetable garden together."}
-    - {id: P02, beat_id: B01, caption_en: "Their hoes uncover a piece of gold lying in the soil."}
+    - {id: P02, beat_id: B01, caption_en: "They see a piece of gold half-buried in the ground."}
     - {id: P03, beat_id: B01, caption_en: "Guan Ning keeps hoeing, handling the gold no differently from a piece of tile or stone."}
     - {id: P04, beat_id: B01, caption_en: "Hua Xin picks the gold up, then throws it away."}
     - {id: P05, beat_id: B02, caption_en: "While the two sit reading, an official's carriage passes by the gate."}
