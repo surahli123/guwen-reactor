@@ -40,6 +40,23 @@ MCP server · Agent skills · Security (gate / sanitize / DoW cap / HITL) ·
 **Evaluation** (the showpiece) · Deployability (cached static canvas + public repo).
 Upside 6th: Antigravity (shown in the video).
 
+## MCP Server
+
+The local stdio MCP server exposes three offline tools:
+
+- `run_eval_suite(run_id)` wraps the deterministic faithfulness gate for `runs/<run_id>`.
+- `check_source_policy(source_id)` checks source metadata with the existing policy gate.
+- `get_source(source_id)` returns source metadata pointers and character count only.
+
+Run it from the repo root:
+
+```bash
+python -m app.mcp_server
+```
+
+Security note: source access is metadata-only, never raw text; export trust still comes
+from the deterministic eval gate, not model self-report.
+
 ## Copyright posture
 
 Ingests **original Chinese public-domain text only** and generates its own

@@ -7,3 +7,4 @@ pytest==9.0.3
 jinja2==3.1.6
 typer==0.26.7
 rich==13.9.4
+mcp==1.28.1
