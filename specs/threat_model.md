@@ -23,7 +23,7 @@ or generate images.
 | `adaptation.yaml` | Generated educator-facing content; UNTRUSTED when passed to judges |
 | `eval_report.yaml` | Trust gate artifact; must reflect actual audit, not self-report |
 | `manifest.yaml` | Binds artifacts, SHA-256, and AIGC labels |
-| `run_canvas.html` | Primary judged demo |
+| `docs/demo/index.html` | Primary judged demo |
 | API / model credentials | Must not appear in cached demo or repo |
 
 ## Trust Boundaries
