@@ -6,7 +6,7 @@
 story cards for educators, then refuses to hand over any sentence it cannot trace back
 to a committed fact in the original Chinese source.
 
-> [PLACEHOLDER: cover image]
+![Guwen Reactor — Visible Faithfulness](cover-kaggle.png)
 
 ---
 
@@ -210,6 +210,6 @@ verticals — museums, language-learning platforms, diaspora education.
 ## Links
 
 - GitHub repository: https://github.com/surahli123/guwen-reactor
-- Cached demo (no API key required): [PLACEHOLDER — `docs/demo/index.html` via GitHub Pages]
+- Cached demo (no API key required): https://surahli123.github.io/guwen-reactor/demo/
 - Video (≤5 min): [PLACEHOLDER]
-- Cover image: [PLACEHOLDER]
+- Cover image: [`docs/cover-kaggle.png`](cover-kaggle.png)
