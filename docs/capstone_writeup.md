@@ -3,7 +3,7 @@
 *Kaggle "AI Agents: Intensive — Vibe Coding" capstone · Track: Agents for Good*
 
 **One line:** Guwen Reactor turns public-domain Classical Chinese scenes into English
-story cards for educators, then refuses to publish any sentence it cannot trace back
+story cards for educators, then refuses to hand over any sentence it cannot trace back
 to a committed fact in the original Chinese source.
 
 > [PLACEHOLDER: cover image]
@@ -28,7 +28,7 @@ fidelity. So the trust has to be built into the tool.
 Guwen Reactor's promise is narrow on purpose: **source-grounded plot fidelity for a
 classroom-safe adaptation.** We do not claim the adaptation is interpretively
 "correct" — that stays advisory. We claim, and can prove, that every plot sentence we
-publish is grounded in the original Chinese.
+export is grounded in the original Chinese.
 
 ---
 
@@ -59,7 +59,7 @@ only when all of its facts are actually supported, never from self-reported cita
 The export gate then requires `unsupported_critical_claims == 0`, coverage ≥ 0.85,
 plus source-policy, safety, and human approval.
 
-The chain a judge can walk is **claim → fact → 古文 chunk**: every published sentence
+The chain a judge can walk is **claim → fact → 古文 chunk**: every exported sentence
 points to an `atomic_fact`, and every fact is anchored to a specific phrase in the
 committed Chinese text. Running the engine today on the demo scene 管寧割席 (Guan Ning
 Cuts the Mat) returns `factual_precision 9/9`, `coverage 3/3`, zero unsupported,
@@ -126,7 +126,7 @@ invented *reason* wrapped around true *events*.
 The honest boundary is stated on the page itself: the in-browser checker is a small
 subset of the full engine — same facts, same forbidden list, simplified matching, three
 prepared cases — while the full suite runs in the build pipeline and every verdict shown
-for the *published* text is a committed record, not a live generation. (The method page
+for the *exported* text is a committed record, not a live generation. (The method page
 cites the engine's 131 tests; the full suite is 136 including 5 MCP-server wrapper tests.)
 
 ---
@@ -209,7 +209,7 @@ verticals — museums, language-learning platforms, diaspora education.
 
 ## Links
 
-- GitHub repository: [PLACEHOLDER]
+- GitHub repository: https://github.com/surahli123/guwen-reactor
 - Cached demo (no API key required): [PLACEHOLDER — `docs/demo/index.html` via GitHub Pages]
 - Video (≤5 min): [PLACEHOLDER]
 - Cover image: [PLACEHOLDER]
