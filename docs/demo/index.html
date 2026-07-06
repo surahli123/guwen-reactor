@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>原型 D · 多篇中心站(門類分区 + 篇目榜) — 世說新語 · 看得見的忠實</title>
+<title>世說新語 · Visible Faithfulness — source-grounded adaptation demo</title>
 <!--
   PROTOTYPE D — C-modified v2 骨架 + Q3 寻路原型。
   评审合议(reviews/2026-07-01-proto-bc-synthesis.md)5 个 BLOCKER 的修法已建入:
@@ -124,7 +124,9 @@
   }
   .qianpai::before{content:"";position:absolute;top:3px;left:50%;transform:translateX(-50%);
     width:4px;height:4px;border-radius:50%;background:rgba(90,70,40,.55);}
-  .st-en{font-family:var(--f-latin);font-style:italic;font-size:11px;color:var(--ink-soft);letter-spacing:.04em;}
+  .st-en{font-family:var(--f-latin);font-style:italic;font-size:10px;color:var(--ink-soft);letter-spacing:.03em;max-width:82px;white-space:normal;line-height:1.08;text-align:center;}
+  /* dark (unverified) stations recede — the 3 lit ones carry the map (declutter + honest hierarchy) */
+  .station:has(.lamp.ember) .st-en{opacity:.5;}
   /* 褐纸签微斜:延绥东路地理图本的贴签感 */
   .station:nth-of-type(3n) .qianpai{transform:rotate(-1.3deg);}
   .station:nth-of-type(3n+1) .qianpai{transform:rotate(.9deg);}
@@ -160,18 +162,20 @@
   /* 印章作用域注(评审 B2:不作全站担保) */
   .seal-scope{font-family:var(--f-kai);font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);}
 
-  .ctl{position:fixed;top:20px;right:22px;z-index:6;display:flex;gap:10px;
+  .ctl{position:fixed;top:20px;right:22px;z-index:6;display:flex;flex-direction:column;align-items:flex-end;gap:8px;
     transition:right .55s cubic-bezier(.22,.9,.28,1);}
   /* 面板滑入时控件签牌同步左移,始终可点(参考站右上签牌常驻) */
   body.panelopen .ctl{right:calc(clamp(350px,30vw,450px) + 18px);}
   @media (prefers-reduced-motion:reduce){.ctl{transition:none;}}
   .ctl .tab{
-    writing-mode:vertical-rl;text-orientation:upright;
-    font-family:var(--f-kai);font-size:12.5px;letter-spacing:.2em;color:var(--ink-soft);
+    display:flex;flex-direction:column;align-items:center;gap:1px;
+    font-family:var(--f-kai);color:var(--ink-soft);
     background:linear-gradient(175deg,#f2e8ce,#e4d5b0);border:1px solid rgba(90,70,40,.42);
-    border-radius:3px;padding:9px 4px 10px;
+    border-radius:3px;padding:6px 12px 7px;
     box-shadow:0 2px 5px -1px rgba(40,28,10,.4);
   }
+  .ctl .tab .tab-en{font-family:var(--f-latin);font-size:12.5px;font-weight:600;letter-spacing:.01em;color:var(--ink);white-space:nowrap;}
+  .ctl .tab .tab-zh{font-family:var(--f-kai);font-size:10px;letter-spacing:.14em;color:var(--ink-soft);}
   .ctl button.tab{cursor:pointer;color:var(--ink);}
   .ctl button.tab:hover{box-shadow:0 2px 8px -1px rgba(40,28,10,.5), 0 0 0 1px rgba(230,164,65,.45);}
   .ctl button.tab:focus-visible{outline:none;box-shadow:0 0 0 2px var(--amber);}
@@ -187,12 +191,24 @@
     position:fixed;bottom:28px;right:26px;z-index:4;
     font-family:var(--f-kai);font-size:11px;letter-spacing:.14em;color:var(--ink-faint);
   }
-  .proto-tag{
-    position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:4;
-    font-family:var(--f-kai);font-size:11px;letter-spacing:.18em;color:var(--ink-faint);
-    border:1px dashed rgba(122,102,64,.45);border-radius:2px;padding:3px 10px;
-    background:rgba(232,218,185,.6);
+  /* ---------- English hero band (replaces dev proto-tag) ---------- */
+  .hero-band{
+    position:fixed;top:15px;left:50%;transform:translateX(-50%);z-index:5;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    width:min(560px,70vw);text-align:center;pointer-events:none;
   }
+  .hero-h1{font-family:var(--f-latin);font-size:15.5px;font-weight:600;line-height:1.34;color:var(--ink);
+    text-shadow:0 1px 0 rgba(255,255,255,.4);}
+  .hero-h2{font-family:var(--f-latin);font-size:12px;line-height:1.4;color:var(--ink-soft);}
+  .hero-cta{
+    pointer-events:auto;cursor:pointer;margin-top:2px;
+    font-family:var(--f-latin);font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--silk);
+    background:var(--zhu);border:1px solid rgba(120,30,20,.5);border-radius:3px;padding:8px 16px;
+    box-shadow:0 3px 10px -2px rgba(120,30,20,.5);transition:box-shadow .25s,transform .1s;
+  }
+  .hero-cta:hover{box-shadow:0 4px 14px -2px rgba(120,30,20,.6),0 0 0 1px rgba(230,164,65,.5);}
+  .hero-cta:active{transform:translateY(1px);}
+  .hero-cta:focus-visible{outline:none;box-shadow:0 0 0 2px var(--amber);}
 
   /* ---------- 册页面板:贴右缘满高的书页(评审:非浮卡) ---------- */
   #panel{
@@ -339,6 +355,7 @@
     padding:12px 14px;border-radius:3px;margin:8px 0 6px;}
   .ghost-label{font-family:var(--f-latin);font-size:11px;letter-spacing:.06em;color:var(--zhu);margin-bottom:6px;font-weight:600;}
   .ghost-false{font-family:var(--f-latin);font-size:15px;color:#8a4133;position:relative;display:inline;line-height:1.7;}
+  .gate-cap{font-family:var(--f-latin);font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 2px;font-style:italic;}
   /* 划线在闸门判定后才落笔(TRUST-UX-SPEC §3.3)。用 line-through 而非绝对定位色条:
      句子折行时每一行都要被划到(色条只锚首行,会漏划后续行) */
   .ghost-false.struck{text-decoration:line-through;text-decoration-color:var(--zhu-bright);
@@ -370,7 +387,7 @@
     background:var(--zhu);color:var(--silk);border-radius:2px;transform:rotate(-3deg);
     font-family:var(--f-title);font-size:12px;
   }
-  .gc-en{font-family:var(--f-latin);font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.45;}
+  .gc-en{font-family:var(--f-latin);font-size:11px;font-weight:500;color:var(--ink-soft);line-height:1.4;}
   .gc-zh{font-family:var(--f-kai);font-size:10.5px;color:var(--ink-soft);letter-spacing:.08em;}
   @media (max-width:760px){.gatecard{width:auto;grid-template-columns:auto;} .gc-en,.gc-zh{display:none;}}
   @media (prefers-reduced-motion:no-preference){
@@ -541,11 +558,15 @@
     <div class="seal-scope" id="sealScope">已核实 3 / 10 篇</div>
   </div>
   <div class="ctl">
-    <button class="tab" id="btnIndex" aria-label="打开篇目榜">篇目</button>
-    <button class="tab" id="btnMethod" aria-label="How is this verified" title="“Every claim must have a source” — how this page is checked">言必有據</button>
-    <button class="tab" id="btnGate" aria-label="What if the gate were off">如果没有闸门</button>
+    <button class="tab" id="btnIndex" aria-label="Stories index"><span class="tab-en">① Stories</span><span class="tab-zh">篇目</span></button>
+    <button class="tab" id="btnMethod" aria-label="How it's checked" title="“Every claim must have a source” — how this page is checked"><span class="tab-en">② How it's checked</span><span class="tab-zh">言必有據</span></button>
+    <button class="tab" id="btnGate" aria-label="Flip the gate"><span class="tab-en">③ Flip the gate</span><span class="tab-zh">如果没有闸门</span></button>
   </div>
-  <div class="proto-tag">原型 D · 多篇中心站(真投影舆图+篇目榜) · LXGW 文楷内嵌</div>
+  <div class="hero-band">
+    <div class="hero-h1" lang="en">Visible Faithfulness — Classical Chinese, retold in English, with every sentence checked against the source.</div>
+    <div class="hero-h2" lang="en">3 of 10 stories verified · the other 7 left dark on purpose — we don't light a lamp we haven't checked.</div>
+    <button class="hero-cta" id="heroGate" lang="en">▶ Flip the gate — watch a fabrication get caught</button>
+  </div>
   <div class="hint" id="hint">Click a station · 点驿站 · lamp = every factual claim checked against source text</div>
   <!-- 朱封签牌:闸门失败演示的前置入口(签名动作;研究:无任何行业徽章敢现场演示"抓住失败") -->
   <button class="gatecard" id="gateCard">
@@ -557,7 +578,7 @@
 </div>
 
 <div id="roller" aria-hidden="true"></div>
-<div id="skipNote">点击任意处跳过展卷</div>
+<div id="skipNote">Click anywhere to skip · 点击任意处跳过</div>
 
 <aside id="panel" aria-label="册页">
   <div class="panel-in" id="panelIn"></div>
@@ -810,10 +831,13 @@ const GATE_GOLD={
 /* 预备编造案例:Wave 1 演 A;B(动机走私——引用真实 F08 仍被抓,证明非关键词匹配)、
    C(无中生有)供 Wave 3「try another fabrication」轮换 */
 const GATE_CASES=[
-  {id:"A", en:"Hua Xin, tempted, slips the gold into his sleeve and keeps it.", motive:null},
   {id:"B", en:"Guan Ning cuts the mat because he envies Hua Xin's ambition.",
-   motive:{text:"envies Hua Xin's ambition", eventFact:"F08", hedged:false}},
-  {id:"C", en:"Years later, the two reconcile and remain close friends.", motive:null}
+   motive:{text:"envies Hua Xin's ambition", eventFact:"F08", hedged:false},
+   cap:"Every event here is true — the source never states a motive, so the engine blocks the invented one. This is not keyword matching."},
+  {id:"A", en:"Hua Xin, tempted, slips the gold into his sleeve and keeps it.", motive:null,
+   cap:"This line contradicts a recorded fact — the engine catches it at the exact fact it denies."},
+  {id:"C", en:"Years later, the two reconcile and remain close friends.", motive:null,
+   cap:"This line invents an event the source never records — nothing supports it, so it cannot ship."}
 ];
 /* 原始判定记录:evals/run_eval_suite.py::evaluate_run 在 committed fixture
    runs/demo_clean 上的真实输出(2026-07-02 生成,逐字嵌入)。
@@ -1021,6 +1045,7 @@ function renderArticleG01(root,sc){
         gh.innerHTML='<div class="ghost-clip"><div class="ghost-inner">'+
           '<div class="ghost-label" lang="en">An ungated AI might write: · 未经闸门的 AI 可能这样写</div>'+
           '<div class="ghost-false" lang="en">'+GATE_CASES[0].en+'</div>'+
+          '<div class="gate-cap" id="gateCap" lang="en"></div>'+
           '<div class="ledger" id="gateLedger" aria-live="polite"></div>'+
           '<div class="srccard" id="gateSrc"></div>'+
           '<div class="ghost-verdict" id="gateVerdict" lang="en"></div>'+
@@ -1144,6 +1169,7 @@ function wireGate(bar,gh,sc){
   function runCase(c){
     reset();
     fl.textContent=c.en;
+    const cap=gh.querySelector("#gateCap"); if(cap)cap.textContent=c.cap||"";
     const r=gateCheck(c.en,c.motive);            /* ① 先算(同步) */
     const label=r.why==="unhedged-motive"?"UNHEDGED MOTIVE":r.verdict;
     console.log("[gate] verdict computed before reveal:",r.verdict,r.fact?"at "+r.fact.id:"",r.why||"");
@@ -1170,12 +1196,12 @@ function wireGate(bar,gh,sc){
         src.classList.add("on");
       }
       fl.classList.add("struck");
-      ver.textContent="朱批 ✗ "+label+" · export BLOCKED";
+      ver.textContent="朱批 ✗ "+label+" · REJECTED — would not ship";
       ver.title="zh\u016bp\u012b — the vermilion ink reserved for a verdict. Here: the engine\u2019s rejection mark.";
       ver.classList.add("on");
       again.classList.add("on");
       const st=document.getElementById("chipStats");
-      if(st){st.textContent="✗ 1 fabrication blocked · "+label+" · export BLOCKED";st.classList.add("blocked");}
+      if(st){st.textContent="✗ 1 fabrication blocked · "+label+" · REJECTED — would not ship";st.classList.add("blocked");}
     },120+rows.length*stepMs+180));
   }
   bar.querySelector("#gateToggle").addEventListener("change",e=>{
@@ -1275,6 +1301,7 @@ function goGateDemo(){
 }
 $("#btnGate").addEventListener("click",e=>{e.stopPropagation();goGateDemo();});
 $("#gateCard").addEventListener("click",e=>{e.stopPropagation();goGateDemo();});
+$("#heroGate").addEventListener("click",e=>{e.stopPropagation();goGateDemo();});
 function openMethod(){
   cur="METHOD";
   document.querySelectorAll(".station.selected").forEach(x=>x.classList.remove("selected"));
