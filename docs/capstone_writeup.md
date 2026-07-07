@@ -211,5 +211,5 @@ verticals — museums, language-learning platforms, diaspora education.
 
 - GitHub repository: https://github.com/surahli123/guwen-reactor
 - Cached demo (no API key required): https://surahli123.github.io/guwen-reactor/demo/
-- Video (≤5 min): [PLACEHOLDER]
+- Video (≤5 min): https://youtu.be/lLEzs0uBH8M
 - Cover image: [`docs/cover-kaggle.png`](cover-kaggle.png)
