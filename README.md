@@ -115,6 +115,11 @@ The submission demonstrates the three course concepts above. (Antigravity was us
   this honestly rather than hiding it. The other 7 are source-verified
   against the ctext 《四部叢刊初編》 edition but not yet claim-audited.
 - The in-browser "flip the gate" demo is a simplified rule subset for live
-  interactivity, not the full engine. The full deterministic engine (136
-  tests) runs in the build pipeline and is what every published verdict is
-  based on.
+  interactivity, not the full engine. The full deterministic engine (131
+  engine tests; 136 in the full suite including 5 MCP-server wrapper tests)
+  runs in the build pipeline and is what every published verdict is based on.
+- Two upstream stage gates in `evals/run_eval_suite.py` (`source_policy_valid`,
+  `workflow_integrity_pass`) are default-pass stubs with TODOs — their real
+  checks are not wired yet. The content gates that block export
+  (unsupported-claims == 0, beat coverage ≥ 0.85, structural safety deny-list)
+  are real and tested.
